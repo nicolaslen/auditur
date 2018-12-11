@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F0892542-673F-47FC-ACD3-B6BA3D8DB514}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Auditur.Negocio</RootNamespace>
+    <AssemblyName>Auditur.Negocio</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACM.cs" />
+    <Compile Include="ADM.cs" />
+    <Compile Include="BO_Tickets.cs" />
+    <Compile Include="BSP_Tickets.cs" />
+    <Compile Include="BSP_Ticket_Detalles.cs" />
+    <Compile Include="Compania.cs" />
+    <Compile Include="Companias.cs" />
+    <Compile Include="Agencia.cs" />
+    <Compile Include="Agencias.cs" />
+    <Compile Include="BO_Ticket.cs" />
+    <Compile Include="Moneda.cs" />
+    <Compile Include="Reportes\Facturacion.cs" />
+    <Compile Include="Reportes\Facturaciones.cs" />
+    <Compile Include="Reportes\Result.cs" />
+    <Compile Include="Semana.cs" />
+    <Compile Include="Semanas.cs" />
+    <Compile Include="BSP_Ticket.cs" />
+    <Compile Include="BSP_Ticket_Detalle.cs" />
+    <Compile Include="BSP_Rg.cs" />
+    <Compile Include="Concepto.cs" />
+    <Compile Include="Conceptos.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reportes\BSPNroOP.cs" />
+    <Compile Include="Reportes\BSPNroOPs.cs" />
+    <Compile Include="Reportes\ControlIVA.cs" />
+    <Compile Include="Reportes\ControlIVAs.cs" />
+    <Compile Include="Reportes\CreditoObj.cs" />
+    <Compile Include="Reportes\Creditos.cs" />
+    <Compile Include="Reportes\Debito.cs" />
+    <Compile Include="Reportes\Debitos.cs" />
+    <Compile Include="Reportes\Diferencia.cs" />
+    <Compile Include="Reportes\Diferencias.cs" />
+    <Compile Include="Reportes\Over.cs" />
+    <Compile Include="Reportes\Overs.cs" />
+    <Compile Include="Reportes\Reembolso.cs" />
+    <Compile Include="Reportes\Reembolsos.cs" />
+    <Compile Include="Reportes\Report.cs" />
+    <Compile Include="Reportes\SituacionBO.cs" />
+    <Compile Include="Reportes\SituacionBOs.cs" />
+    <Compile Include="Reportes\SituacionBSP.cs" />
+    <Compile Include="Reportes\SituacionBSPs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{1E148A4E-49A6-40BA-B9AE-AAE03A806F40}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
