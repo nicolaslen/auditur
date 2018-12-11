@@ -25,8 +25,8 @@ Name: spanish; MessagesFile: compiler:Languages\Spanish.isl
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; flags: checkablealone
 
 [Files]
-Source: D:\Users\Nicolas\Documents\Trabajo\Auditur\VS2013\svn\Auditur\Presentacion\bin\Release\Auditur.exe; DestDir: {app}; Flags: ignoreversion; Permissions: users-full
-Source: D:\Users\Nicolas\Documents\Trabajo\Auditur\VS2013\svn\Auditur\Presentacion\bin\Release\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Permissions: users-full
+Source: D:\Users\Nicolas\Documents\Trabajo\Auditur\VS2013\git\Auditur\Presentacion\bin\Release\Auditur.exe; DestDir: {app}; Flags: ignoreversion; Permissions: users-full
+Source: D:\Users\Nicolas\Documents\Trabajo\Auditur\VS2013\git\Auditur\Presentacion\bin\Release\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Permissions: users-full
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
