@@ -1,0 +1,20 @@
+david:
+- enviar por mail nuevos bsp
+- averiguar si el impuesto está discriminado (10,50% y 21%)
+
+
+- CONTADO CREDITO -> FILA POR PAGO (CA CASH, CO CONTADO, ** TOTAL). 
+	Ya no está discriminado por los detalles del ticket. Ahora es del total de un ticket. Se discrimina el contado y el crédito del total.
+
+- ISO -> IMP y T&C (Pertenecen al numero que está al lado)
+- TASAS / IMPUESTOS (CONTADO Y CREDITO) -> Ahora se unifica contado y credito, pero hay imp y t&c
+- COMISION
+	- VALOR: ---COMISION STD---
+	- OVER: ---COMISION SUPP---
+	- IVA: IMPUESTO S/ COMISION
+
+- +RTDN -> Se reemplaza este ticket por el padre (EX ticket anterior)
+- +TKTT -> Ticket descartado
+
+
+- YR YQ
