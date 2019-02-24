@@ -34,13 +34,14 @@
             this.smiImportarBO = new System.Windows.Forms.ToolStripMenuItem();
             this.aBMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smiAgencias = new System.Windows.Forms.ToolStripMenuItem();
+            this.smiConceptos = new System.Windows.Forms.ToolStripMenuItem();
+            this.smiCompanias = new System.Windows.Forms.ToolStripMenuItem();
             this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smiElegirSemana = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smnCargarBD = new System.Windows.Forms.ToolStripMenuItem();
             this.smnBackUp = new System.Windows.Forms.ToolStripMenuItem();
-            this.smiConceptos = new System.Windows.Forms.ToolStripMenuItem();
-            this.smiCompanias = new System.Windows.Forms.ToolStripMenuItem();
+            this.smiTestingBSP = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuGeneral.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,8 @@
             // 
             this.importarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smiImportarBSP,
-            this.smiImportarBO});
+            this.smiImportarBO,
+            this.smiTestingBSP});
             this.importarToolStripMenuItem.Name = "importarToolStripMenuItem";
             this.importarToolStripMenuItem.Size = new System.Drawing.Size(92, 27);
             this.importarToolStripMenuItem.Text = "Importar";
@@ -100,6 +102,20 @@
             this.smiAgencias.Size = new System.Drawing.Size(229, 28);
             this.smiAgencias.Text = "ABM de Agencias";
             this.smiAgencias.Click += new System.EventHandler(this.smiAgencias_Click);
+            // 
+            // smiConceptos
+            // 
+            this.smiConceptos.Name = "smiConceptos";
+            this.smiConceptos.Size = new System.Drawing.Size(229, 28);
+            this.smiConceptos.Text = "ABM de Conceptos";
+            this.smiConceptos.Click += new System.EventHandler(this.smiConceptos_Click);
+            // 
+            // smiCompanias
+            // 
+            this.smiCompanias.Name = "smiCompanias";
+            this.smiCompanias.Size = new System.Drawing.Size(229, 28);
+            this.smiCompanias.Text = "ABM de Compañías";
+            this.smiCompanias.Click += new System.EventHandler(this.smiCompanias_Click);
             // 
             // reportesToolStripMenuItem
             // 
@@ -139,19 +155,12 @@
             this.smnBackUp.Text = "Importar base de datos";
             this.smnBackUp.Click += new System.EventHandler(this.smnCargarBD_Click);
             // 
-            // smiConceptos
+            // smiTestingBSP
             // 
-            this.smiConceptos.Name = "smiConceptos";
-            this.smiConceptos.Size = new System.Drawing.Size(229, 28);
-            this.smiConceptos.Text = "ABM de Conceptos";
-            this.smiConceptos.Click += new System.EventHandler(this.smiConceptos_Click);
-            // 
-            // smiCompanias
-            // 
-            this.smiCompanias.Name = "smiCompanias";
-            this.smiCompanias.Size = new System.Drawing.Size(229, 28);
-            this.smiCompanias.Text = "ABM de Compañías";
-            this.smiCompanias.Click += new System.EventHandler(this.smiCompanias_Click);
+            this.smiTestingBSP.Name = "smiTestingBSP";
+            this.smiTestingBSP.Size = new System.Drawing.Size(239, 28);
+            this.smiTestingBSP.Text = "TESTING";
+            this.smiTestingBSP.Click += new System.EventHandler(this.smiTestingBSP_Click);
             // 
             // ucMenu
             // 
@@ -185,6 +194,6 @@
         private System.Windows.Forms.ToolStripMenuItem smiAgencias;
         private System.Windows.Forms.ToolStripMenuItem smiConceptos;
         private System.Windows.Forms.ToolStripMenuItem smiCompanias;
-
+        private System.Windows.Forms.ToolStripMenuItem smiTestingBSP;
     }
 }
