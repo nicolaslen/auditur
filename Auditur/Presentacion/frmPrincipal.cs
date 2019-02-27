@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Auditur.Negocio;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using System.IO;
 using Helpers;
 using System.Globalization;

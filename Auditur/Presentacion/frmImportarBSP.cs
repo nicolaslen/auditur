@@ -7,10 +7,11 @@ using System.Windows.Forms;
 using Auditur.Negocio;
 using Auditur.Presentacion.Classes;
 using Helpers;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using System.ComponentModel;
 using System.Globalization;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
 
 namespace Auditur.Presentacion
 {
@@ -93,7 +94,7 @@ namespace Auditur.Presentacion
                 {
                     PdfReader pdfReader = new PdfReader(fileName);
                     Agencias agencias = new Agencias();
-                    for (page = 1; page <= pdfReader.NumberOfPages && paginaInicial == 0; page++)
+                    for (page = 1; page <= pdfReader.GetFileLength() && paginaInicial == 0; page++)
                     {
                         currentText = "";
                         currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, new SimpleTextExtractionStrategy());

@@ -7,10 +7,11 @@ using System.Windows.Forms;
 using Auditur.Negocio;
 using Auditur.Presentacion.Classes;
 using Helpers;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using System.ComponentModel;
 using System.Globalization;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
 
 namespace Auditur.Presentacion
 {
@@ -73,10 +74,14 @@ namespace Auditur.Presentacion
                 if (File.Exists(fileName))
                 {
                     PdfReader pdfReader = new PdfReader(fileName);
-                    for (page = pageStart; page <= pdfReader.NumberOfPages; page++)
+                    PdfDocument pdfDoc = new PdfDocument(pdfReader);
+
+                    for (page = pageStart; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
+                        var pdfPage = pdfDoc.GetPage(page);
+
                         currentText = "";
-                        currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, new SimpleTextExtractionStrategy());
+                        currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
                         currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
 
                         string[] arrLineas = currentText.Split(new char[] { '\n' });
@@ -89,6 +94,7 @@ namespace Auditur.Presentacion
                             }
                         }
                     }
+                    pdfDoc.Close();
                     pdfReader.Close();
                 }
             }
