@@ -9,9 +9,13 @@ using Auditur.Presentacion.Classes;
 using Helpers;
 using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
+using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
+using Path = System.IO.Path;
 
 namespace Auditur.Presentacion
 {
@@ -76,9 +80,11 @@ namespace Auditur.Presentacion
                     PdfReader pdfReader = new PdfReader(fileName);
                     PdfDocument pdfDoc = new PdfDocument(pdfReader);
 
-                    for (page = pageStart; page <= pdfDoc.GetNumberOfPages(); page++)
+                    for (page = 2; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
                         var pdfPage = pdfDoc.GetPage(page);
+
+                        var probando = pdfPage.ExtractText(new Rectangle(1, 70, 1000, 800));
 
                         currentText = "";
                         currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
@@ -146,4 +152,48 @@ namespace Auditur.Presentacion
             lblProgressStatus.Text = (string)e.UserState;
         }
     }
+
+    public static class ReaderExtensions
+    {
+        public static string[] ExtractText(this PdfPage page, params Rectangle[] rects)
+        {
+            var textEventListener = new LocationTextExtractionStrategy();
+            PdfTextExtractor.GetTextFromPage(page, textEventListener);
+            string[] result = new string[rects.Length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = textEventListener.GetResultantText(rects[i]);
+            }
+            return result;
+        }
+
+        public static String GetResultantText(this LocationTextExtractionStrategy strategy, Rectangle rect)
+        {
+            IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
+            List<TextChunk> nonMatching = new List<TextChunk>();
+            foreach (TextChunk chunk in locationalResult)
+            {
+                ITextChunkLocation location = chunk.GetLocation();
+                Vector start = location.GetStartLocation();
+                Vector end = location.GetEndLocation();
+                if (!rect.IntersectsLine(start.Get(Vector.I1), start.Get(Vector.I2), end.Get(Vector.I1), end.Get(Vector.I2)))
+                {
+                    nonMatching.Add(chunk);
+                }
+            }
+            nonMatching.ForEach(c => locationalResult.Remove(c));
+            try
+            {
+                return strategy.GetResultantText();
+            }
+            finally
+            {
+                nonMatching.ForEach(c => locationalResult.Add(c));
+            }
+        }
+
+        static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);
+    }
 }
+
+

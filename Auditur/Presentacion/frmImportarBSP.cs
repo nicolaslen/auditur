@@ -93,11 +93,14 @@ namespace Auditur.Presentacion
                 if (File.Exists(fileName))
                 {
                     PdfReader pdfReader = new PdfReader(fileName);
+                    PdfDocument pdfDoc = new PdfDocument(pdfReader);
                     Agencias agencias = new Agencias();
                     for (page = 1; page <= pdfReader.GetFileLength() && paginaInicial == 0; page++)
                     {
+                        var pdfPage = pdfDoc.GetPage(page);
+
                         currentText = "";
-                        currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, new SimpleTextExtractionStrategy());
+                        currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
                         currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
 
                         string[] arrLineas = currentText.Split(new char[] { '\n' });
@@ -199,10 +202,13 @@ namespace Auditur.Presentacion
                     semanaToImport.TicketsBSP = new List<BSP_Ticket>();
 
                     PdfReader pdfReader = new PdfReader(fileName);
-                    for (page = pageStart; page <= pdfReader.NumberOfPages; page++)
+                    PdfDocument pdfDoc = new PdfDocument(pdfReader);
+
+                    for (page = pageStart; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
+                        var pdfPage = pdfDoc.GetPage(page);
                         currentText = "";
-                        currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, new SimpleTextExtractionStrategy());
+                        currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
                         currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
 
                         string[] arrLineas = currentText.Split(new char[] { '\n' });
