@@ -84,9 +84,15 @@ namespace Auditur.Presentacion
                     {
                         var pdfPage = pdfDoc.GetPage(page);
 
-                        var probando = pdfPage.ExtractText(new Rectangle(1, 70, 1000, 800));
+                        var probando = pdfPage.ExtractText(new Rectangle(int.Parse(txtX.Text), int.Parse(txtY.Text), int.Parse(txtWidth.Text), int.Parse(txtHeight.Text)));
 
-                        currentText = "";
+                        using (var tw = new StreamWriter(testingpath, true))
+                        {
+                            tw.WriteLine(probando[0]);
+                        }
+                        break;
+
+                        /*currentText = "";
                         currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
                         currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
 
@@ -98,7 +104,7 @@ namespace Auditur.Presentacion
                             {
                                 tw.WriteLine(linea);
                             }
-                        }
+                        }*/
                     }
                     pdfDoc.Close();
                     pdfReader.Close();
@@ -140,10 +146,11 @@ namespace Auditur.Presentacion
                 MessageBox.Show("La operación ha sido completada con éxito", "Operación terminada", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            lblProgressStatus.Text = "";
+            progressBar1.Value = 0;
+            /*lblProgressStatus.Text = "";
             progressBar1.Value = 0;
 
-            txtFilePath_BSP.ResetText();
+            txtFilePath_BSP.ResetText();*/
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
