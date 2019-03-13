@@ -83,12 +83,11 @@ namespace Auditur.Presentacion
                     for (page = 2; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
                         var pdfPage = pdfDoc.GetPage(page);
-
-                        var probando = pdfPage.ExtractText(new Rectangle(int.Parse(txtX.Text), int.Parse(txtY.Text), int.Parse(txtWidth.Text), int.Parse(txtHeight.Text)));
-
+                        
                         using (var tw = new StreamWriter(testingpath, true))
                         {
-                            tw.WriteLine(probando[0]);
+                            var probando = pdfPage.ExtractText(tw, new Rectangle(int.Parse(txtX.Text), int.Parse(txtY.Text), int.Parse(txtWidth.Text), int.Parse(txtHeight.Text)));
+                            //tw.WriteLine(probando[0]);
                         }
                         break;
 
@@ -160,21 +159,35 @@ namespace Auditur.Presentacion
         }
     }
 
+    public class ReaderObject
+    {
+        public string Text { get; set; }
+        public float StartX { get; set; }
+        public float StartY { get; set; }
+        public float EndX { get; set; }
+        public float EndY { get; set; }
+    }
+
     public static class ReaderExtensions
     {
-        public static string[] ExtractText(this PdfPage page, params Rectangle[] rects)
+        public static string[] ExtractText(this PdfPage page, StreamWriter tw, params Rectangle[] rects)
         {
             var textEventListener = new LocationTextExtractionStrategy();
-            PdfTextExtractor.GetTextFromPage(page, textEventListener);
+            var prueba = PdfTextExtractor.GetTextFromPage(page, textEventListener);
             string[] result = new string[rects.Length];
             for (int i = 0; i < result.Length; i++)
             {
-                result[i] = textEventListener.GetResultantText(rects[i]);
+                result[i] = textEventListener.GetResultantText(tw, rects[i]);
             }
             return result;
         }
 
-        public static String GetResultantText(this LocationTextExtractionStrategy strategy, Rectangle rect)
+        public static String lala(this float lele)
+        {
+            return lele.ToString("0000.0000");
+        }
+
+        public static String GetResultantText(this LocationTextExtractionStrategy strategy, StreamWriter tw, Rectangle rect)
         {
             IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
             List<TextChunk> nonMatching = new List<TextChunk>();
@@ -183,6 +196,20 @@ namespace Auditur.Presentacion
                 ITextChunkLocation location = chunk.GetLocation();
                 Vector start = location.GetStartLocation();
                 Vector end = location.GetEndLocation();
+
+                tw.WriteLine(start.Get(Vector.I1).lala() + "|" + start.Get(Vector.I2).lala() + "|" +
+                             end.Get(Vector.I1).lala() + "|" +
+                             end.Get(Vector.I2).lala() + "|" + chunk.GetText());
+
+                ReaderObject ro = new ReaderObject()
+                {
+                    Text = chunk.GetText(),
+                    StartX = start.Get(Vector.I1),
+                    StartY = start.Get(Vector.I2),
+                    EndX = end.Get(Vector.I1),
+                    EndY = end.Get(Vector.I2)
+                };
+
                 if (!rect.IntersectsLine(start.Get(Vector.I1), start.Get(Vector.I2), end.Get(Vector.I1), end.Get(Vector.I2)))
                 {
                     nonMatching.Add(chunk);
