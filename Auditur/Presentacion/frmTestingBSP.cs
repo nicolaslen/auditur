@@ -69,9 +69,16 @@ namespace Auditur.Presentacion
             int page = 0, index = 0;
             string currentText = "";
             string testingpath = Path.Combine(Path.GetDirectoryName(fileName), "text.txt");
+            bool encontreCIA = false;
+            bool encontreCompania = false;
+            int codCompania;
+            string nombreCompania;
+            bool encontreLlave = false;
+            string llave = "";
 
             if (!File.Exists(testingpath))
                 File.Create(testingpath);
+            File.WriteAllText(testingpath, string.Empty);
 
             try
             {
@@ -79,22 +86,88 @@ namespace Auditur.Presentacion
                 {
                     PdfReader pdfReader = new PdfReader(fileName);
                     PdfDocument pdfDoc = new PdfDocument(pdfReader);
-
-                    for (page = 2; page <= pdfDoc.GetNumberOfPages(); page++)
+                    List<PdfChunks> pdfChunks = new List<PdfChunks>();
+                    
+                    for (page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
                         var pdfPage = pdfDoc.GetPage(page);
 
-                        var probando = pdfPage.ExtractText2();
+                        var pageChunks = pdfPage.ExtractChunks();
+                        var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(x => x.Key).ToList();
 
-                        using (var tw = new StreamWriter(testingpath, true))
+                        if (!pageChunks.Any())
+                            continue;
+
+                        float alturaCIA = 0;
+
+                        foreach (var line in pageLines)
                         {
-                            tw.Flush();
-                            foreach (var linea in probando)
-                            {
-                                tw.WriteLine(linea.StartX.ToString("0000.0000") + "|" + linea.StartY.ToString("0000.0000") + "|" + linea.EndX.ToString("0000.0000") + "|" + linea.EndY.ToString("0000.0000") + "|" + linea.Text);
+                            if (!encontreCIA)
+                            { 
+                                var chunk = line.First();
+                                if (chunk.Text != "CIA")
+                                    continue;
+
+                                encontreCIA = true;
+                                alturaCIA = chunk.Y - 20;
                             }
+
+                            if (line.Key <= alturaCIA)
+                                continue;
+
+                            if (!line.Any())
+                                continue;
+
+                            if (!encontreCompania)
+                            {
+                                string posibleCompania = line.First().Text;
+                                if (posibleCompania.Length != 3 ||
+                                    !int.TryParse(posibleCompania, out codCompania))
+                                    continue;
+                                
+                                encontreCompania = true;
+                                nombreCompania = line.ElementAt(2).Text;
+                                continue;
+                            }
+
+                            if (!encontreLlave)
+                            {
+                                string posibleLlave = line.First().Text;
+                                if (posibleLlave.Substring(0, 3) != "***")
+                                    continue;
+
+                                encontreLlave = true;
+                                llave = posibleLlave.Substring(5);
+                                continue;
+                            }
+
+                            if (line.First().Text == llave + " TOTAL")
+                            {
+                                encontreLlave = false;
+                                continue;
+                            }
+                            
+
+                            
+
+                            
+
+                            foreach (var chunk in line)
+                            {
+                                
+                            }
+
                         }
-                        break;
+
+                        //using (var tw = new StreamWriter(testingpath, true))
+                        //{
+                        //    foreach (var chunk in chunks)
+                        //    {
+                        //        tw.WriteLine(chunk.StartX.ToString("0000.0000") + "|" + chunk.Y.ToString("0000.0000") + "|" + chunk.EndX.ToString("0000.0000") + "|" + chunk.EndY.ToString("0000.0000") + "|" + chunk.Text);
+                        //    }
+                        //}
+
+                        pdfChunks.Add(new PdfChunks { Chunks = pageChunks, Page = page });
 
                         /*currentText = "";
                         currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
@@ -164,28 +237,31 @@ namespace Auditur.Presentacion
         }
     }
 
-    public class ReaderObject
+    public class PageChunks
     {
         public string Text { get; set; }
         public float StartX { get; set; }
-        public float StartY { get; set; }
+        public float Y { get; set; }
+        public float RelativeY => 595.5f - Y;
         public float EndX { get; set; }
         public float EndY { get; set; }
     }
 
+    public class PdfChunks
+    {
+        public List<PageChunks> Chunks { get; set; }
+        public int Page { get; set; }
+    }
+
     public static class ReaderExtensions
     {
-        public static List<ReaderObject> ExtractText2(this PdfPage page)
+        public static List<PageChunks> ExtractChunks(this PdfPage page)
         {
             var textEventListener = new LocationTextExtractionStrategy();
             PdfTextExtractor.GetTextFromPage(page, textEventListener);
-            return textEventListener.GetResultantText2();
-        }
 
-        public static List<ReaderObject> GetResultantText2(this LocationTextExtractionStrategy strategy)
-        {
-            IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
-            List<ReaderObject> readerObjects = new List<ReaderObject>();
+            IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(textEventListener);
+            List<PageChunks> pageChunks = new List<PageChunks>();
 
             foreach (TextChunk chunk in locationalResult)
             {
@@ -193,77 +269,95 @@ namespace Auditur.Presentacion
                 Vector start = location.GetStartLocation();
                 Vector end = location.GetEndLocation();
                 
-                ReaderObject ro = new ReaderObject()
+                PageChunks ro = new PageChunks()
                 {
-                    Text = chunk.GetText(),
+                    Text = chunk.GetText().Trim(),
                     StartX = start.Get(Vector.I1),
-                    StartY = start.Get(Vector.I2),
+                    Y = start.Get(Vector.I2),
                     EndX = end.Get(Vector.I1),
                     EndY = end.Get(Vector.I2)
                 };
-                readerObjects.Add(ro);
+                pageChunks.Add(ro);
             }
 
-            return readerObjects;
-        }
-
-        public static string[] ExtractText(this PdfPage page, StreamWriter tw, params Rectangle[] rects)
-        {
-            var textEventListener = new LocationTextExtractionStrategy();
-            var prueba = PdfTextExtractor.GetTextFromPage(page, textEventListener);
-            string[] result = new string[rects.Length];
-            for (int i = 0; i < result.Length; i++)
+            pageChunks = pageChunks.OrderByDescending(x => x.Y).ThenBy(x => x.StartX).ToList();
+            if (pageChunks.Any())
             {
-                result[i] = textEventListener.GetResultantText(tw, rects[i]);
-            }
-            return result;
-        }
-
-        public static String lala(this float lele)
-        {
-            return lele.ToString("0000.0000");
-        }
-
-        public static String GetResultantText(this LocationTextExtractionStrategy strategy, StreamWriter tw, Rectangle rect)
-        {
-            IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
-            List<TextChunk> nonMatching = new List<TextChunk>();
-            List<ReaderObject> readerObjects = new List<ReaderObject>();
-            foreach (TextChunk chunk in locationalResult)
-            {
-                ITextChunkLocation location = chunk.GetLocation();
-                Vector start = location.GetStartLocation();
-                Vector end = location.GetEndLocation();
-
-                tw.WriteLine(start.Get(Vector.I1).lala() + "|" + start.Get(Vector.I2).lala() + "|" +
-                             end.Get(Vector.I1).lala() + "|" +
-                             end.Get(Vector.I2).lala() + "|" + chunk.GetText());
-
-                ReaderObject ro = new ReaderObject()
+                var chunkToCompare = pageChunks.First();
+                foreach (var chunk in pageChunks)
                 {
-                    Text = chunk.GetText(),
-                    StartX = start.Get(Vector.I1),
-                    StartY = start.Get(Vector.I2),
-                    EndX = end.Get(Vector.I1),
-                    EndY = end.Get(Vector.I2)
-                };
-                readerObjects.Add(ro);
-
-                if (!rect.IntersectsLine(start.Get(Vector.I1), start.Get(Vector.I2), end.Get(Vector.I1), end.Get(Vector.I2)))
-                {
-                    nonMatching.Add(chunk);
+                    if (Math.Abs(chunk.Y - chunkToCompare.Y) <= 1)
+                    {
+                        chunk.Y = chunkToCompare.Y;
+                    }
+                    else
+                    {
+                        chunkToCompare = chunk;
+                    }
                 }
+                pageChunks = pageChunks.OrderByDescending(x => x.Y).ThenBy(x => x.StartX).ToList();
             }
-            nonMatching.ForEach(c => locationalResult.Remove(c));
-            try
-            {
-                return strategy.GetResultantText();
-            }
-            finally
-            {
-                nonMatching.ForEach(c => locationalResult.Add(c));
-            }
+
+            return pageChunks;
         }
+
+        //public static string[] ExtractText(this PdfPage page, StreamWriter tw, params Rectangle[] rects)
+        //{
+        //    var textEventListener = new LocationTextExtractionStrategy();
+        //    var prueba = PdfTextExtractor.GetTextFromPage(page, textEventListener);
+        //    string[] result = new string[rects.Length];
+        //    for (int i = 0; i < result.Length; i++)
+        //    {
+        //        result[i] = textEventListener.GetResultantText(tw, rects[i]);
+        //    }
+        //    return result;
+        //}
+
+        //public static String lala(this float lele)
+        //{
+        //    return lele.ToString("0000.0000");
+        //}
+
+        //public static String GetResultantText(this LocationTextExtractionStrategy strategy, StreamWriter tw, Rectangle rect)
+        //{
+        //    IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
+        //    List<TextChunk> nonMatching = new List<TextChunk>();
+        //    List<PageChunks> readerObjects = new List<PageChunks>();
+        //    foreach (TextChunk chunk in locationalResult)
+        //    {
+        //        ITextChunkLocation location = chunk.GetLocation();
+        //        Vector start = location.GetStartLocation();
+        //        Vector end = location.GetEndLocation();
+
+        //        tw.WriteLine(start.Get(Vector.I1).lala() + "|" + start.Get(Vector.I2).lala() + "|" +
+        //                     end.Get(Vector.I1).lala() + "|" +
+        //                     end.Get(Vector.I2).lala() + "|" + chunk.GetText());
+
+        //        PageChunks ro = new PageChunks()
+        //        {
+        //            Text = chunk.GetText(),
+        //            StartX = start.Get(Vector.I1),
+        //            Y = start.Get(Vector.I2),
+        //            EndX = end.Get(Vector.I1),
+        //            EndY = end.Get(Vector.I2)
+        //        };
+        //        readerObjects.Add(ro);
+
+        //        if (!rect.IntersectsLine(start.Get(Vector.I1), start.Get(Vector.I2), end.Get(Vector.I1), end.Get(Vector.I2)))
+        //        {
+        //            nonMatching.Add(chunk);
+        //        }
+        //    }
+        //    nonMatching.ForEach(c => locationalResult.Remove(c));
+        //    try
+        //    {
+        //        return strategy.GetResultantText();
+        //    }
+        //    finally
+        //    {
+        //        nonMatching.ForEach(c => locationalResult.Add(c));
+        //    }
+        //}
 
         static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);
     }
