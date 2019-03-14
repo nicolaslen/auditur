@@ -36,14 +36,6 @@
             this.lblProgressStatus = new System.Windows.Forms.Label();
             this.grbProceso = new System.Windows.Forms.GroupBox();
             this.btnReadFile = new System.Windows.Forms.Button();
-            this.txtX = new System.Windows.Forms.TextBox();
-            this.txtY = new System.Windows.Forms.TextBox();
-            this.txtWidth = new System.Windows.Forms.TextBox();
-            this.txtHeight = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.grbFileImport_BSP.SuspendLayout();
             this.grbProceso.SuspendLayout();
             this.SuspendLayout();
@@ -114,7 +106,7 @@
             // 
             this.grbProceso.Controls.Add(this.lblProgressStatus);
             this.grbProceso.Controls.Add(this.progressBar1);
-            this.grbProceso.Location = new System.Drawing.Point(4, 232);
+            this.grbProceso.Location = new System.Drawing.Point(4, 92);
             this.grbProceso.Margin = new System.Windows.Forms.Padding(4);
             this.grbProceso.Name = "grbProceso";
             this.grbProceso.Padding = new System.Windows.Forms.Padding(4);
@@ -126,7 +118,7 @@
             // btnReadFile
             // 
             this.btnReadFile.Enabled = false;
-            this.btnReadFile.Location = new System.Drawing.Point(249, 335);
+            this.btnReadFile.Location = new System.Drawing.Point(249, 195);
             this.btnReadFile.Margin = new System.Windows.Forms.Padding(4);
             this.btnReadFile.Name = "btnReadFile";
             this.btnReadFile.Size = new System.Drawing.Size(237, 41);
@@ -135,87 +127,11 @@
             this.btnReadFile.UseVisualStyleBackColor = true;
             this.btnReadFile.Click += new System.EventHandler(this.btnReadFile_Click);
             // 
-            // txtX
-            // 
-            this.txtX.Location = new System.Drawing.Point(72, 112);
-            this.txtX.Name = "txtX";
-            this.txtX.Size = new System.Drawing.Size(100, 31);
-            this.txtX.TabIndex = 1;
-            this.txtX.Text = "X";
-            // 
-            // txtY
-            // 
-            this.txtY.Location = new System.Drawing.Point(258, 112);
-            this.txtY.Name = "txtY";
-            this.txtY.Size = new System.Drawing.Size(100, 31);
-            this.txtY.TabIndex = 2;
-            this.txtY.Text = "Y";
-            // 
-            // txtWidth
-            // 
-            this.txtWidth.Location = new System.Drawing.Point(72, 149);
-            this.txtWidth.Name = "txtWidth";
-            this.txtWidth.Size = new System.Drawing.Size(100, 31);
-            this.txtWidth.TabIndex = 3;
-            this.txtWidth.Text = "W";
-            // 
-            // txtHeight
-            // 
-            this.txtHeight.Location = new System.Drawing.Point(258, 149);
-            this.txtHeight.Name = "txtHeight";
-            this.txtHeight.Size = new System.Drawing.Size(100, 31);
-            this.txtHeight.TabIndex = 4;
-            this.txtHeight.Text = "H";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 115);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(20, 23);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "X";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(196, 115);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(19, 23);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Y";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 152);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(27, 23);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "W";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(196, 152);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(22, 23);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "H";
-            // 
             // frmTestingBSP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtHeight);
-            this.Controls.Add(this.txtWidth);
-            this.Controls.Add(this.txtY);
-            this.Controls.Add(this.txtX);
             this.Controls.Add(this.btnReadFile);
             this.Controls.Add(this.grbProceso);
             this.Controls.Add(this.grbFileImport_BSP);
@@ -228,7 +144,6 @@
             this.grbProceso.ResumeLayout(false);
             this.grbProceso.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -242,13 +157,5 @@
         private System.Windows.Forms.Label lblProgressStatus;
         private System.Windows.Forms.GroupBox grbProceso;
         private System.Windows.Forms.Button btnReadFile;
-        private System.Windows.Forms.TextBox txtX;
-        private System.Windows.Forms.TextBox txtY;
-        private System.Windows.Forms.TextBox txtWidth;
-        private System.Windows.Forms.TextBox txtHeight;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
     }
 }
