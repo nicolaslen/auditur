@@ -83,11 +83,16 @@ namespace Auditur.Presentacion
                     for (page = 2; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
                         var pdfPage = pdfDoc.GetPage(page);
-                        
+
+                        var probando = pdfPage.ExtractText2();
+
                         using (var tw = new StreamWriter(testingpath, true))
                         {
-                            var probando = pdfPage.ExtractText(tw, new Rectangle(int.Parse(txtX.Text), int.Parse(txtY.Text), int.Parse(txtWidth.Text), int.Parse(txtHeight.Text)));
-                            //tw.WriteLine(probando[0]);
+                            tw.Flush();
+                            foreach (var linea in probando)
+                            {
+                                tw.WriteLine(linea.StartX.ToString("0000.0000") + "|" + linea.StartY.ToString("0000.0000") + "|" + linea.EndX.ToString("0000.0000") + "|" + linea.EndY.ToString("0000.0000") + "|" + linea.Text);
+                            }
                         }
                         break;
 
@@ -170,6 +175,38 @@ namespace Auditur.Presentacion
 
     public static class ReaderExtensions
     {
+        public static List<ReaderObject> ExtractText2(this PdfPage page)
+        {
+            var textEventListener = new LocationTextExtractionStrategy();
+            PdfTextExtractor.GetTextFromPage(page, textEventListener);
+            return textEventListener.GetResultantText2();
+        }
+
+        public static List<ReaderObject> GetResultantText2(this LocationTextExtractionStrategy strategy)
+        {
+            IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
+            List<ReaderObject> readerObjects = new List<ReaderObject>();
+
+            foreach (TextChunk chunk in locationalResult)
+            {
+                ITextChunkLocation location = chunk.GetLocation();
+                Vector start = location.GetStartLocation();
+                Vector end = location.GetEndLocation();
+                
+                ReaderObject ro = new ReaderObject()
+                {
+                    Text = chunk.GetText(),
+                    StartX = start.Get(Vector.I1),
+                    StartY = start.Get(Vector.I2),
+                    EndX = end.Get(Vector.I1),
+                    EndY = end.Get(Vector.I2)
+                };
+                readerObjects.Add(ro);
+            }
+
+            return readerObjects;
+        }
+
         public static string[] ExtractText(this PdfPage page, StreamWriter tw, params Rectangle[] rects)
         {
             var textEventListener = new LocationTextExtractionStrategy();
@@ -191,6 +228,7 @@ namespace Auditur.Presentacion
         {
             IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
             List<TextChunk> nonMatching = new List<TextChunk>();
+            List<ReaderObject> readerObjects = new List<ReaderObject>();
             foreach (TextChunk chunk in locationalResult)
             {
                 ITextChunkLocation location = chunk.GetLocation();
@@ -209,6 +247,7 @@ namespace Auditur.Presentacion
                     EndX = end.Get(Vector.I1),
                     EndY = end.Get(Vector.I2)
                 };
+                readerObjects.Add(ro);
 
                 if (!rect.IntersectsLine(start.Get(Vector.I1), start.Get(Vector.I2), end.Get(Vector.I1), end.Get(Vector.I2)))
                 {
