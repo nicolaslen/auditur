@@ -31,5 +31,6 @@ namespace Auditur.Negocio
         public Moneda? Moneda { get; set; }
 
         public List<BSP_Ticket_Detalle> Detalle { get; set; }
+        public string CPN { get; set; }
     }
 }

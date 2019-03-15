@@ -69,12 +69,13 @@ namespace Auditur.Presentacion
             int page = 0, index = 0;
             string currentText = "";
             string testingpath = Path.Combine(Path.GetDirectoryName(fileName), "text.txt");
-            bool encontreCIA = false;
-            bool encontreCompania = false;
-            int codCompania;
+
+            Compania compania = null;
+            int ticketCodCompania = 0;
             string nombreCompania;
             bool encontreLlave = false;
             string llave = "";
+            BSP_Ticket bspTicket = null;
 
             if (!File.Exists(testingpath))
                 File.Create(testingpath);
@@ -87,52 +88,47 @@ namespace Auditur.Presentacion
                     PdfReader pdfReader = new PdfReader(fileName);
                     PdfDocument pdfDoc = new PdfDocument(pdfReader);
                     List<PdfChunks> pdfChunks = new List<PdfChunks>();
-                    
+
                     for (page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
                         var pdfPage = pdfDoc.GetPage(page);
 
                         var pageChunks = pdfPage.ExtractChunks();
-                        var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(x => x.Key).ToList();
+                        var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(y => y.Key).ToList();
 
-                        if (!pageChunks.Any())
+                        if (pageChunks.Any() || pageChunks.All(x => x.Text != "CIA"))
                             continue;
 
-                        float alturaCIA = 0;
+                        //float alturaCIA = 0;
 
-                        foreach (var line in pageLines)
+                        var filteredPageLines = pageLines.Where(x =>
+                            x.Any() &&
+                            x.Where(y => y.Text == "CIA").Select(y => y.Y).FirstOrDefault() > x.Key &&
+                            x.Key > x.Select(y => y.Y).Min()); //Filtro desde el encabezado para arriba, y la última línea con la fecha
+
+                        foreach (var line in filteredPageLines)
                         {
-                            if (!encontreCIA)
-                            { 
-                                var chunk = line.First();
-                                if (chunk.Text != "CIA")
-                                    continue;
+                            var orderedLine = line.OrderBy(x => x.StartX).ToList();
 
-                                encontreCIA = true;
-                                alturaCIA = chunk.Y - 20;
-                            }
-
-                            if (line.Key <= alturaCIA)
-                                continue;
-
-                            if (!line.Any())
-                                continue;
-
-                            if (!encontreCompania)
+                            if (compania == null)
                             {
-                                string posibleCompania = line.First().Text;
+                                string posibleCompania = orderedLine.First().Text;
                                 if (posibleCompania.Length != 3 ||
-                                    !int.TryParse(posibleCompania, out codCompania))
-                                    continue;
-                                
-                                encontreCompania = true;
-                                nombreCompania = line.ElementAt(2).Text;
+                                    !int.TryParse(posibleCompania, out int codCompania))
+                                    break; //Si la primer línea que le sigue al encabezado, no empieza con un número de compañía, salteo la página
+
+                                compania = new Compania
+                                {
+                                    Codigo = codCompania.ToString(), //TODO: SACAR EL TOSTRING
+                                    Nombre = orderedLine.ElementAt(2).Text
+                                };
+
                                 continue;
                             }
 
                             if (!encontreLlave)
                             {
-                                string posibleLlave = line.First().Text;
+                                string posibleLlave = orderedLine.First().Text;
                                 if (posibleLlave.Substring(0, 3) != "***")
                                     continue;
 
@@ -141,21 +137,48 @@ namespace Auditur.Presentacion
                                 continue;
                             }
 
-                            if (line.First().Text == llave + " TOTAL")
+                            if (orderedLine.First().Text == llave + " TOTAL")
                             {
                                 encontreLlave = false;
                                 continue;
                             }
-                            
 
-                            
+                            var posibleTicket = orderedLine.GetChunkBetween(22, 24, 31, 34);
+                            if (posibleTicket == null || !int.TryParse(posibleTicket.Text, out ticketCodCompania))
+                                continue;
 
-                            
+                            if (compania.Codigo != ticketCodCompania.ToString())//TODO: SACAR EL TOSTRING
+                                throw new Exception("Se llegó a otra compañía sin darnos cuenta");
 
-                            foreach (var chunk in line)
+                            if (bspTicket == null)
                             {
-                                
+                                bspTicket = new BSP_Ticket();
+                                bspTicket.Billete = Convert.ToInt64(orderedLine.GetChunkBetween(65, 67, 95, 96).Text);
+                                bspTicket.FechaVenta =
+                                    Convert.ToDateTime(orderedLine.GetChunkBetween(113, 115, 137, 138)
+                                        .Text); //TODO: Ver si interpreta la fecha
+                                bspTicket.CPN = orderedLine.GetChunkBetween(149, 151, 163, 165).Text;
+                                bspTicket.Stat = orderedLine.GetChunkBetween(203, 205, 205, 206).Text;
+                                bspTicket.Fop = orderedLine.GetChunkBetween(221, 223, 229, 230).Text;
+
+                                bspTicket.ValorTransaccion = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ValorTarifa = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ImpuestoValor = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ImpuestoCodigo = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ImpuestoTyC = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ImpuestoPen = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ImpuestoCobl = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ComisionStdPorcentaje = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ComisionStdValor = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ComisionSuppPorcentaje = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ComisionSuppValor = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.ImpuestoSinComision = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
+                                bspTicket.NetoAPagar = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
                             }
+
+
+
+
 
                         }
 
@@ -193,6 +216,7 @@ namespace Auditur.Presentacion
                 MessageBox.Show("Error: " + Exception1.Message + "\nfileName: " + fileName + "\npage: " + page + "\nline: " + index, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         #endregion
         private void btnReadFile_Click(object sender, EventArgs e)
         {
@@ -268,7 +292,7 @@ namespace Auditur.Presentacion
                 ITextChunkLocation location = chunk.GetLocation();
                 Vector start = location.GetStartLocation();
                 Vector end = location.GetEndLocation();
-                
+
                 PageChunks ro = new PageChunks()
                 {
                     Text = chunk.GetText().Trim(),
@@ -301,63 +325,10 @@ namespace Auditur.Presentacion
             return pageChunks;
         }
 
-        //public static string[] ExtractText(this PdfPage page, StreamWriter tw, params Rectangle[] rects)
-        //{
-        //    var textEventListener = new LocationTextExtractionStrategy();
-        //    var prueba = PdfTextExtractor.GetTextFromPage(page, textEventListener);
-        //    string[] result = new string[rects.Length];
-        //    for (int i = 0; i < result.Length; i++)
-        //    {
-        //        result[i] = textEventListener.GetResultantText(tw, rects[i]);
-        //    }
-        //    return result;
-        //}
-
-        //public static String lala(this float lele)
-        //{
-        //    return lele.ToString("0000.0000");
-        //}
-
-        //public static String GetResultantText(this LocationTextExtractionStrategy strategy, StreamWriter tw, Rectangle rect)
-        //{
-        //    IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(strategy);
-        //    List<TextChunk> nonMatching = new List<TextChunk>();
-        //    List<PageChunks> readerObjects = new List<PageChunks>();
-        //    foreach (TextChunk chunk in locationalResult)
-        //    {
-        //        ITextChunkLocation location = chunk.GetLocation();
-        //        Vector start = location.GetStartLocation();
-        //        Vector end = location.GetEndLocation();
-
-        //        tw.WriteLine(start.Get(Vector.I1).lala() + "|" + start.Get(Vector.I2).lala() + "|" +
-        //                     end.Get(Vector.I1).lala() + "|" +
-        //                     end.Get(Vector.I2).lala() + "|" + chunk.GetText());
-
-        //        PageChunks ro = new PageChunks()
-        //        {
-        //            Text = chunk.GetText(),
-        //            StartX = start.Get(Vector.I1),
-        //            Y = start.Get(Vector.I2),
-        //            EndX = end.Get(Vector.I1),
-        //            EndY = end.Get(Vector.I2)
-        //        };
-        //        readerObjects.Add(ro);
-
-        //        if (!rect.IntersectsLine(start.Get(Vector.I1), start.Get(Vector.I2), end.Get(Vector.I1), end.Get(Vector.I2)))
-        //        {
-        //            nonMatching.Add(chunk);
-        //        }
-        //    }
-        //    nonMatching.ForEach(c => locationalResult.Remove(c));
-        //    try
-        //    {
-        //        return strategy.GetResultantText();
-        //    }
-        //    finally
-        //    {
-        //        nonMatching.ForEach(c => locationalResult.Add(c));
-        //    }
-        //}
+        public static PageChunks GetChunkBetween(this List<PageChunks> pageChunks, int startA, int startB, int endA, int endB)
+        {
+            return pageChunks.FirstOrDefault(x => startA <= x.StartX && x.StartX <= startB && endA <= x.EndX && x.EndX <= endB);
+        }
 
         static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);
     }
