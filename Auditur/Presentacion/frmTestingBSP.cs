@@ -70,9 +70,8 @@ namespace Auditur.Presentacion
             string currentText = "";
             string testingpath = Path.Combine(Path.GetDirectoryName(fileName), "text.txt");
 
+            List<BSP_Ticket> tickets = new List<BSP_Ticket>();
             Compania compania = null;
-            int ticketCodCompania = 0;
-            string nombreCompania;
             bool encontreLlave = false;
             string llave = "";
             BSP_Ticket bspTicket = null;
@@ -87,7 +86,6 @@ namespace Auditur.Presentacion
                 {
                     PdfReader pdfReader = new PdfReader(fileName);
                     PdfDocument pdfDoc = new PdfDocument(pdfReader);
-                    List<PdfChunks> pdfChunks = new List<PdfChunks>();
 
                     for (page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
@@ -96,15 +94,17 @@ namespace Auditur.Presentacion
                         var pageChunks = pdfPage.ExtractChunks();
                         var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(y => y.Key).ToList();
 
-                        if (pageChunks.Any() || pageChunks.All(x => x.Text != "CIA"))
+                        if (!pageChunks.Any() || pageChunks.All(x => x.Text != "CIA"))
                             continue;
 
-                        //float alturaCIA = 0;
+                        float alturaCIA = pageChunks.Where(y => y.Text == "CIA").Select(y => y.Y).FirstOrDefault();
+                        float alturaUltimoElemento = pageChunks.Min(x => x.Y);
 
                         var filteredPageLines = pageLines.Where(x =>
                             x.Any() &&
-                            x.Where(y => y.Text == "CIA").Select(y => y.Y).FirstOrDefault() > x.Key &&
-                            x.Key > x.Select(y => y.Y).Min()); //Filtro desde el encabezado para arriba, y la última línea con la fecha
+                            alturaCIA > x.Key && x.Key > alturaUltimoElemento); //Filtro desde el encabezado para arriba, y la última línea con la fecha
+
+                        compania = null;
 
                         foreach (var line in filteredPageLines)
                         {
@@ -120,7 +120,7 @@ namespace Auditur.Presentacion
                                 compania = new Compania
                                 {
                                     Codigo = codCompania.ToString(), //TODO: SACAR EL TOSTRING
-                                    Nombre = orderedLine.ElementAt(2).Text
+                                    Nombre = orderedLine.ElementAt(1).Text
                                 };
 
                                 continue;
@@ -133,79 +133,107 @@ namespace Auditur.Presentacion
                                     continue;
 
                                 encontreLlave = true;
-                                llave = posibleLlave.Substring(5);
+                                llave = posibleLlave.Substring(4);
                                 continue;
                             }
 
                             if (orderedLine.First().Text == llave + " TOTAL")
                             {
+                                llave = "";
                                 encontreLlave = false;
                                 continue;
                             }
 
-                            var posibleTicket = orderedLine.GetChunkBetween(22, 24, 31, 34);
-                            if (posibleTicket == null || !int.TryParse(posibleTicket.Text, out ticketCodCompania))
+                            var posibleTicket = orderedLine.GetChunkTextBetween(22, 24, 31, 34);
+                            if (posibleTicket == null || !int.TryParse(posibleTicket, out int ticketCodCompania))
+                            {
+                                if (bspTicket == null) continue;
+                            }
+                            else
+                            {
+                                if (compania.Codigo != ticketCodCompania.ToString())//TODO: SACAR EL TOSTRING
+                                    throw new Exception("Se llegó a otra compañía sin darnos cuenta");
+
+                                if (bspTicket != null)
+                                    tickets.Add(bspTicket);
+
+                                bspTicket = new BSP_Ticket();
+
+                                bspTicket.Llave = llave;
+                                bspTicket.TRNC = orderedLine.GetChunkTextBetween(37, 44, 50, 58);
+                                bspTicket.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(65, 67, 95, 96));
+                                bspTicket.FechaVenta = DateTime.TryParse(orderedLine.GetChunkTextBetween(113, 115, 137, 138),
+                                    out var fechaVenta) ? (DateTime?)fechaVenta : null;
+                                bspTicket.CPN = orderedLine.GetChunkTextBetween(149, 151, 163, 165);
+                                bspTicket.Stat = orderedLine.GetChunkTextBetween(203, 205, 205, 206);
+                                bspTicket.Fop = orderedLine.GetChunkTextBetween(221, 223, 229, 230);
+                                bspTicket.ValorTransaccion =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(260, 264, 287, 289));
+                                bspTicket.ValorTarifa =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(316, 318, 341, 343));
+                                bspTicket.ImpuestoValor =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 386, 388));
+                                bspTicket.ImpuestoCodigo = orderedLine.GetChunkTextBetween(389, 390, 396, 399);
+                                bspTicket.ImpuestoTyCValor =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 439, 442));
+                                bspTicket.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(443, 445, 450, 452);
+                                bspTicket.ImpuestoPenValor =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 490, 496));
+                                bspTicket.ImpuestoPenCodigo =
+                                    orderedLine.GetChunkTextBetween(497, 499, 504, 506);
+                                bspTicket.ImpuestoCobl =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 557, 559));
+                                bspTicket.ComisionStdPorcentaje =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(570, 572, 581, 583));
+                                bspTicket.ComisionStdValor =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 635, 637));
+                                bspTicket.ComisionSuppPorcentaje =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(640, 644, 653, 655));
+                                bspTicket.ComisionSuppValor =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 707, 709));
+                                bspTicket.ImpuestoSinComision =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(743, 754, 759, 764));
+                                bspTicket.NetoAPagar =
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(789, 806, 809, 818));
+                                
+                                continue;
+                            }
+
+                            if (orderedLine.First().Text.Substring(0, 4) == "TOUR")
                                 continue;
 
-                            if (compania.Codigo != ticketCodCompania.ToString())//TODO: SACAR EL TOSTRING
-                                throw new Exception("Se llegó a otra compañía sin darnos cuenta");
+                            var detalle = new BSP_Ticket_Detalle();
+                            detalle.TRNC = orderedLine.GetChunkTextBetween(37, 44, 50, 58);
+                            detalle.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(65, 67, 95, 96));
+                            detalle.FechaVenta = DateTime.TryParse(orderedLine.GetChunkTextBetween(113, 115, 137, 138),
+                                out var fechaVentaDetalle) ? (DateTime?)fechaVentaDetalle : null;
+                            detalle.CPN = orderedLine.GetChunkTextBetween(149, 151, 163, 165);
+                            detalle.Stat = orderedLine.GetChunkTextBetween(203, 205, 205, 206);
+                            detalle.Fop = orderedLine.GetChunkTextBetween(221, 223, 229, 230);
+                            detalle.ValorTransaccion = Convert.ToDecimal(orderedLine.GetChunkTextBetween(260, 264, 287, 289));
+                            detalle.ValorTarifa = Convert.ToDecimal(orderedLine.GetChunkTextBetween(316, 318, 341, 343));
+                            detalle.ImpuestoValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 386, 388));
+                            detalle.ImpuestoCodigo = orderedLine.GetChunkTextBetween(389, 390, 396, 399);
+                            detalle.ImpuestoTyCValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 439, 442));
+                            detalle.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(443, 445, 450, 452);
+                            detalle.ImpuestoPenValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 490, 496));
+                            detalle.ImpuestoPenCodigo = orderedLine.GetChunkTextBetween(497, 499, 504, 506);
+                            detalle.ImpuestoCobl = Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 557, 559));
+                            detalle.ComisionStdPorcentaje = Convert.ToDecimal(orderedLine.GetChunkTextBetween(570, 572, 581, 583));
+                            detalle.ComisionStdValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 635, 637));
+                            detalle.ComisionSuppPorcentaje = Convert.ToDecimal(orderedLine.GetChunkTextBetween(640, 644, 653, 655));
+                            detalle.ComisionSuppValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 707, 709));
+                            detalle.ImpuestoSinComision = Convert.ToDecimal(orderedLine.GetChunkTextBetween(743, 754, 759, 764));
+                            detalle.NetoAPagar = Convert.ToDecimal(orderedLine.GetChunkTextBetween(789, 806, 809, 818));
 
-                            if (bspTicket == null)
-                            {
-                                bspTicket = new BSP_Ticket();
-                                bspTicket.Billete = Convert.ToInt64(orderedLine.GetChunkBetween(65, 67, 95, 96).Text);
-                                bspTicket.FechaVenta =
-                                    Convert.ToDateTime(orderedLine.GetChunkBetween(113, 115, 137, 138)
-                                        .Text); //TODO: Ver si interpreta la fecha
-                                bspTicket.CPN = orderedLine.GetChunkBetween(149, 151, 163, 165).Text;
-                                bspTicket.Stat = orderedLine.GetChunkBetween(203, 205, 205, 206).Text;
-                                bspTicket.Fop = orderedLine.GetChunkBetween(221, 223, 229, 230).Text;
-
-                                bspTicket.ValorTransaccion = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ValorTarifa = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ImpuestoValor = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ImpuestoCodigo = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ImpuestoTyC = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ImpuestoPen = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ImpuestoCobl = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ComisionStdPorcentaje = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ComisionStdValor = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ComisionSuppPorcentaje = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ComisionSuppValor = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.ImpuestoSinComision = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                                bspTicket.NetoAPagar = orderedLine.GetChunkBetween(113, 115, 137, 138).Text;
-                            }
-
-
-
-
-
+                            bspTicket.Detalle.Add(detalle);
                         }
-
-                        //using (var tw = new StreamWriter(testingpath, true))
-                        //{
-                        //    foreach (var chunk in chunks)
-                        //    {
-                        //        tw.WriteLine(chunk.StartX.ToString("0000.0000") + "|" + chunk.Y.ToString("0000.0000") + "|" + chunk.EndX.ToString("0000.0000") + "|" + chunk.EndY.ToString("0000.0000") + "|" + chunk.Text);
-                        //    }
-                        //}
-
-                        pdfChunks.Add(new PdfChunks { Chunks = pageChunks, Page = page });
-
-                        /*currentText = "";
-                        currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
-                        currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
-
-                        string[] arrLineas = currentText.Split(new char[] { '\n' });
-
-                        using (var tw = new StreamWriter(testingpath, true))
-                        {
-                            foreach (var linea in arrLineas)
-                            {
-                                tw.WriteLine(linea);
-                            }
-                        }*/
                     }
+                    if (bspTicket != null)
+                    {
+                        tickets.Add(bspTicket);
+                    }
+
                     pdfDoc.Close();
                     pdfReader.Close();
                 }
@@ -271,12 +299,6 @@ namespace Auditur.Presentacion
         public float EndY { get; set; }
     }
 
-    public class PdfChunks
-    {
-        public List<PageChunks> Chunks { get; set; }
-        public int Page { get; set; }
-    }
-
     public static class ReaderExtensions
     {
         public static List<PageChunks> ExtractChunks(this PdfPage page)
@@ -325,9 +347,9 @@ namespace Auditur.Presentacion
             return pageChunks;
         }
 
-        public static PageChunks GetChunkBetween(this List<PageChunks> pageChunks, int startA, int startB, int endA, int endB)
+        public static string GetChunkTextBetween(this List<PageChunks> pageChunks, int startA, int startB, int endA, int endB)
         {
-            return pageChunks.FirstOrDefault(x => startA <= x.StartX && x.StartX <= startB && endA <= x.EndX && x.EndX <= endB);
+            return pageChunks.Where(x => startA <= x.StartX && x.StartX <= startB && endA <= x.EndX && x.EndX <= endB).Select(x => x.Text).FirstOrDefault();
         }
 
         static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);

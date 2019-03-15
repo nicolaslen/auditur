@@ -31,6 +31,26 @@ namespace Auditur.Negocio
         public Moneda? Moneda { get; set; }
 
         public List<BSP_Ticket_Detalle> Detalle { get; set; }
+
+        public string TRNC { get; set; }
         public string CPN { get; set; }
+        public string Stat { get; set; }
+        public string Fop { get; set; }
+        public decimal ValorTransaccion { get; set; }
+        public decimal ValorTarifa { get; set; }
+        public decimal ImpuestoValor { get; set; }
+        public string ImpuestoCodigo { get; set; }
+        public decimal ImpuestoTyCValor { get; set; }
+        public string ImpuestoTyCCodigo { get; set; }
+        public decimal ImpuestoPenValor { get; set; }
+        public string ImpuestoPenCodigo { get; set; }
+        public decimal ImpuestoCobl { get; set; }
+        public decimal ComisionStdPorcentaje { get; set; }
+        public decimal ComisionStdValor { get; set; }
+        public decimal ComisionSuppPorcentaje { get; set; }
+        public decimal ComisionSuppValor { get; set; }
+        public decimal ImpuestoSinComision { get; set; }
+        public decimal NetoAPagar { get; set; }
+        public string Llave { get; set; }
     }
 }
