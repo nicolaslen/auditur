@@ -170,7 +170,7 @@ namespace Auditur.Presentacion
                                 bspTicket.ValorTransaccion =
                                     Convert.ToDecimal(orderedLine.GetChunkTextBetween(260, 264, 287, 289));
                                 bspTicket.ValorTarifa =
-                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(316, 318, 341, 343));
+                                    Convert.ToDecimal(orderedLine.GetChunkTextBetween(315, 333, 339, 343));
                                 bspTicket.ImpuestoValor =
                                     Convert.ToDecimal(orderedLine.GetChunkTextBetween(1, 1000, 386, 388));
                                 bspTicket.ImpuestoCodigo = orderedLine.GetChunkTextBetween(389, 390, 396, 399);
@@ -195,6 +195,7 @@ namespace Auditur.Presentacion
                                     Convert.ToDecimal(orderedLine.GetChunkTextBetween(743, 754, 759, 764));
                                 bspTicket.NetoAPagar =
                                     Convert.ToDecimal(orderedLine.GetChunkTextBetween(789, 806, 809, 818));
+                                bspTicket.Compania = compania;
                                 
                                 continue;
                             }
