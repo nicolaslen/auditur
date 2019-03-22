@@ -36,5 +36,6 @@ namespace Auditur.Negocio
         public decimal ComisionSuppValor { get; set; }
         public decimal ImpuestoSinComision { get; set; }
         public decimal NetoAPagar { get; set; }
+        public string NR { get; set; }
     }
 }
