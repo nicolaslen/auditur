@@ -15,7 +15,7 @@ namespace Auditur.Negocio
         public long ID { get; set; }
         public long Billete { get; set; }
         public string Tipo { get; set; }
-        public DateTime? FechaVenta { get; set; }
+        public DateTime? FechaEmision { get; set; }
         public decimal TarContado { get; set; }
         public decimal TarCredito { get; set; }
         public decimal IVA105 { get; set; }

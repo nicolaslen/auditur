@@ -64,7 +64,7 @@ namespace Auditur.Negocio.Reportes
             Over oOver = new Over();
 
             oOver.Boleto = oBSP_Ticket != null ? oBSP_Ticket.Billete.ToString() : oBO_Ticket.Billete.ToString();
-            oOver.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaVenta : oBO_Ticket.Fecha);
+            oOver.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
             oOver.Tr = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
             oOver.Observaciones = "";
 

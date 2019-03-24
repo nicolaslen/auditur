@@ -46,7 +46,7 @@ namespace Auditur.Negocio.Reportes
             oDebito.Impuestos = oBSP_Ticket.Detalle.Sum(x => x.ImpContado + x.ImpCredito);
             oDebito.IVA = oBSP_Ticket.IVA105;
             oDebito.Comision = (oBSP_Ticket.ComValor + oBSP_Ticket.ComOver);
-            oDebito.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaVenta);
+            oDebito.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oDebito.Importe = oBSP_Ticket.Total;
             oDebito.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
             oDebito.Observaciones = oBSP_Ticket.Detalle[0].Observaciones.Replace("|", "\n");

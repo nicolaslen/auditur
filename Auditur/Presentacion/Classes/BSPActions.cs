@@ -44,7 +44,7 @@ namespace Auditur.Presentacion.Classes
                 oBSP_Ticket.Tipo = Linea.Substring(13, 4).ToUpper();
                 string FechaVenta = Linea.Substring(19, 5).Trim() + "/" + Year.ToString();
                 if (Validators.IsDateTime(FechaVenta))
-                    oBSP_Ticket.FechaVenta = Convert.ToDateTime(FechaVenta);
+                    oBSP_Ticket.FechaEmision = Convert.ToDateTime(FechaVenta);
                 oBSP_Ticket.TarContado = GetTicket_ObtenerDecimal(GetStringByIndex(Linea, 25, 10));
                 oBSP_Ticket.TarCredito = GetTicket_ObtenerDecimal(GetStringByIndex(Linea, 35, 12));
 

@@ -39,7 +39,7 @@ namespace Auditur.Negocio.Reportes
             oReembolso.BoletoNro = oBSP_Ticket.Detalle.Find(x => x.Observaciones.Substring(0, 2) == "RF").Observaciones.Substring(5, 10);
             oReembolso.Rg = oBSP_Ticket.Rg == BSP_Rg.Internacional ? "IR" : "CR";
             oReembolso.Tr = oBSP_Ticket.Compania.Codigo;
-            oReembolso.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaVenta);
+            oReembolso.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oReembolso.Tarifa = (oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito);
             oReembolso.Contado = oBSP_Ticket.TarContado;
             oReembolso.Credito = oBSP_Ticket.TarCredito;

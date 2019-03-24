@@ -54,7 +54,7 @@ namespace Auditur.Negocio.Reportes
                     oControlIVA.TrBSP = oBSP_Ticket.Compania.Codigo;
                     oControlIVA.Tr2BSP = (oBSP_Ticket.Concepto.Tipo.Equals('R') ? "R" : (oBSP_Ticket.Tipo.Contains('F') && !oBSP_Ticket.Detalle.Any(x => x.Observaciones.Trim() == "CNJ") ? "B" : "V"));
                     oControlIVA.MonedaBSP = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-                    oControlIVA.FechaBSP = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaVenta);
+                    oControlIVA.FechaBSP = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
 
                     if (bo_ticket != null)
                     {

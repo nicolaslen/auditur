@@ -99,6 +99,8 @@ namespace Auditur.Presentacion
 
                         float alturaCIA = pageChunks.Where(y => y.Text == "CIA").Select(y => y.Y).FirstOrDefault();
                         float alturaUltimoElemento = pageChunks.Min(x => x.Y);
+                        //float alturaTickets = alturaCIA - 43;
+                        bool saltearDireccion = false;
 
                         var filteredPageLines = pageLines.Where(x =>
                             x.Any() &&
@@ -122,14 +124,25 @@ namespace Auditur.Presentacion
                                     Codigo = codCompania.ToString(), //TODO: SACAR EL TOSTRING
                                     Nombre = orderedLine.ElementAt(1).Text
                                 };
+                                saltearDireccion = true;
 
                                 continue;
                             }
 
+                            if (saltearDireccion)
+                            {
+                                saltearDireccion = false;
+                                continue;
+                            }
+                            
+
+                            /*if (line.Key > alturaTickets)
+                                continue;*/
+
                             if (!encontreLlave)
                             {
                                 string posibleLlave = orderedLine.First().Text;
-                                if (posibleLlave.Substring(0, 3) != "***")
+                                if (posibleLlave.Length < 3 || posibleLlave.Substring(0, 3) != "***")
                                     continue;
 
                                 encontreLlave = true;
@@ -137,7 +150,7 @@ namespace Auditur.Presentacion
                                 continue;
                             }
 
-                            if (orderedLine.First().Text == llave + " TOTAL")
+                            if (encontreLlave && orderedLine.First().Text == llave + " TOTAL")
                             {
                                 llave = "";
                                 encontreLlave = false;
@@ -162,32 +175,32 @@ namespace Auditur.Presentacion
                                 bspTicket.Llave = llave;
                                 bspTicket.TRNC = orderedLine.GetChunkTextBetween(37, 60);
                                 bspTicket.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
-                                bspTicket.FechaVenta = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140), out var fechaVenta) ? (DateTime?)fechaVenta : null;
+                                bspTicket.FechaEmision = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140), out var fechaVenta) ? (DateTime?)fechaVenta : null;
                                 bspTicket.CPN = orderedLine.GetChunkTextBetween(143, 168);
                                 bspTicket.NR = orderedLine.GetChunkTextBetween(169, 192);
                                 bspTicket.Stat = orderedLine.GetChunkTextBetween(200, 211);
                                 bspTicket.Fop = orderedLine.GetChunkTextBetween(218, 235);
-                                bspTicket.ValorTransaccion = Convert.ToDecimal(orderedLine.GetChunkTextBetween(242, 292));
-                                bspTicket.ValorTarifa = Convert.ToDecimal(orderedLine.GetChunkTextBetween(306, 346));
-                                bspTicket.ImpuestoValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(355, 388));
+                                bspTicket.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();
+                                bspTicket.ValorTarifa = orderedLine.GetChunkTextBetween(306, 346).ToDecimal();
+                                bspTicket.ImpuestoValor = orderedLine.GetChunkTextBetween(355, 388).ToDecimal();
                                 bspTicket.ImpuestoCodigo = orderedLine.GetChunkTextBetween(388, 400);
-                                bspTicket.ImpuestoTyCValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(406, 442));
+                                bspTicket.ImpuestoTyCValor = orderedLine.GetChunkTextBetween(406, 442).ToDecimal();
                                 bspTicket.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(442, 453);
-                                bspTicket.ImpuestoPenValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(461, 496));
+                                bspTicket.ImpuestoPenValor = orderedLine.GetChunkTextBetween(461, 496).ToDecimal();
                                 bspTicket.ImpuestoPenCodigo = orderedLine.GetChunkTextBetween(496, 507);
-                                bspTicket.ImpuestoCobl = Convert.ToDecimal(orderedLine.GetChunkTextBetween(520, 562));
-                                bspTicket.ComisionStdPorcentaje = Convert.ToDecimal(orderedLine.GetChunkTextBetween(562, 585));
-                                bspTicket.ComisionStdValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(594, 639));
-                                bspTicket.ComisionSuppPorcentaje = Convert.ToDecimal(orderedLine.GetChunkTextBetween(638, 657));
-                                bspTicket.ComisionSuppValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(670, 711));
-                                bspTicket.ImpuestoSinComision = Convert.ToDecimal(orderedLine.GetChunkTextBetween(730, 764));
-                                bspTicket.NetoAPagar = Convert.ToDecimal(orderedLine.GetChunkTextBetween(780, 818));
+                                bspTicket.ImpuestoCobl = orderedLine.GetChunkTextBetween(520, 562).ToDecimal();
+                                bspTicket.ComisionStdPorcentaje = orderedLine.GetChunkTextBetween(562, 585).ToDecimal();
+                                bspTicket.ComisionStdValor = orderedLine.GetChunkTextBetween(594, 639).ToDecimal();
+                                bspTicket.ComisionSuppPorcentaje = orderedLine.GetChunkTextBetween(638, 657).ToDecimal();
+                                bspTicket.ComisionSuppValor = orderedLine.GetChunkTextBetween(670, 711).ToDecimal();
+                                bspTicket.ImpuestoSinComision = orderedLine.GetChunkTextBetween(730, 764).ToDecimal();
+                                bspTicket.NetoAPagar = orderedLine.GetChunkTextBetween(780, 818).ToDecimal();
                                 bspTicket.Compania = compania;
 
                                 continue;
                             }
 
-                            if (orderedLine.First().Text.Substring(0, 4) == "TOUR")
+                            if (orderedLine.First().Text.Length >= 4 && new []{ "TOUR", "ESAC" }.Contains(orderedLine.First().Text.Substring(0, 4)))
                                 continue;
 
                             var detalle = new BSP_Ticket_Detalle();
@@ -199,21 +212,21 @@ namespace Auditur.Presentacion
                             detalle.NR = orderedLine.GetChunkTextBetween(169, 192);
                             detalle.Stat = orderedLine.GetChunkTextBetween(200, 211);
                             detalle.Fop = orderedLine.GetChunkTextBetween(218, 235);
-                            detalle.ValorTransaccion = Convert.ToDecimal(orderedLine.GetChunkTextBetween(242, 292));
-                            detalle.ValorTarifa = Convert.ToDecimal(orderedLine.GetChunkTextBetween(306, 346));
-                            detalle.ImpuestoValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(355, 388));
+                            detalle.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();
+                            detalle.ValorTarifa = orderedLine.GetChunkTextBetween(306, 346).ToDecimal();
+                            detalle.ImpuestoValor = orderedLine.GetChunkTextBetween(355, 388).ToDecimal();
                             detalle.ImpuestoCodigo = orderedLine.GetChunkTextBetween(388, 400);
-                            detalle.ImpuestoTyCValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(406, 442));
+                            detalle.ImpuestoTyCValor = orderedLine.GetChunkTextBetween(406, 442).ToDecimal();
                             detalle.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(442, 453);
-                            detalle.ImpuestoPenValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(461, 496));
+                            detalle.ImpuestoPenValor = orderedLine.GetChunkTextBetween(461, 496).ToDecimal();
                             detalle.ImpuestoPenCodigo = orderedLine.GetChunkTextBetween(496, 507);
-                            detalle.ImpuestoCobl = Convert.ToDecimal(orderedLine.GetChunkTextBetween(520, 562));
-                            detalle.ComisionStdPorcentaje = Convert.ToDecimal(orderedLine.GetChunkTextBetween(562, 585));
-                            detalle.ComisionStdValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(594, 639));
-                            detalle.ComisionSuppPorcentaje = Convert.ToDecimal(orderedLine.GetChunkTextBetween(638, 657));
-                            detalle.ComisionSuppValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(670, 711));
-                            detalle.ImpuestoSinComision = Convert.ToDecimal(orderedLine.GetChunkTextBetween(730, 764));
-                            detalle.NetoAPagar = Convert.ToDecimal(orderedLine.GetChunkTextBetween(780, 818));
+                            detalle.ImpuestoCobl = orderedLine.GetChunkTextBetween(520, 562).ToDecimal();
+                            detalle.ComisionStdPorcentaje = orderedLine.GetChunkTextBetween(562, 585).ToDecimal();
+                            detalle.ComisionStdValor = orderedLine.GetChunkTextBetween(594, 639).ToDecimal();
+                            detalle.ComisionSuppPorcentaje = orderedLine.GetChunkTextBetween(638, 657).ToDecimal();
+                            detalle.ComisionSuppValor = orderedLine.GetChunkTextBetween(670, 711).ToDecimal();
+                            detalle.ImpuestoSinComision = orderedLine.GetChunkTextBetween(730, 764).ToDecimal();
+                            detalle.NetoAPagar = orderedLine.GetChunkTextBetween(780, 818).ToDecimal();
 
                             bspTicket.Detalle.Add(detalle);
                         }
@@ -321,7 +334,7 @@ namespace Auditur.Presentacion
                 var chunkToCompare = pageChunks.First();
                 foreach (var chunk in pageChunks)
                 {
-                    if (Math.Abs(chunk.Y - chunkToCompare.Y) <= 1)
+                    if (Math.Abs(chunk.Y - chunkToCompare.Y) <= 4)
                     {
                         chunk.Y = chunkToCompare.Y;
                     }
@@ -339,6 +352,11 @@ namespace Auditur.Presentacion
         public static string GetChunkTextBetween(this List<PageChunks> pageChunks, int start, int end)
         {
             return pageChunks.Where(x => start <= x.StartX && x.EndX <= end).Select(x => x.Text).FirstOrDefault();
+        }
+
+        public static decimal ToDecimal(this string value)
+        {
+            return Convert.ToDecimal(value?.Replace("*", ""));
         }
 
         static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);

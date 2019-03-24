@@ -45,7 +45,7 @@ namespace Auditur.Negocio
             List<SqlCeParameter> lstParameters = new List<SqlCeParameter>();
             lstParameters.Add(new SqlCeParameter("p1", oBSP_Ticket.Billete));
             lstParameters.Add(new SqlCeParameter("p2", oBSP_Ticket.Tipo));
-            lstParameters.Add(new SqlCeParameter("p3", oBSP_Ticket.FechaVenta));
+            lstParameters.Add(new SqlCeParameter("p3", oBSP_Ticket.FechaEmision));
             lstParameters.Add(new SqlCeParameter("p4", oBSP_Ticket.TarContado));
             lstParameters.Add(new SqlCeParameter("p5", oBSP_Ticket.TarCredito));
             lstParameters.Add(new SqlCeParameter("p6", oBSP_Ticket.IVA105));
@@ -111,7 +111,7 @@ namespace Auditur.Negocio
             oBSP_Ticket.Billete = rdrLector.GetInt64(rdrLector.GetOrdinal("Billete"));
             oBSP_Ticket.Tipo = rdrLector.GetString(rdrLector.GetOrdinal("Tipo"));
             if (!rdrLector.IsDBNull(rdrLector.GetOrdinal("FechaVenta")))
-                oBSP_Ticket.FechaVenta = rdrLector.GetDateTime(rdrLector.GetOrdinal("FechaVenta"));
+                oBSP_Ticket.FechaEmision = rdrLector.GetDateTime(rdrLector.GetOrdinal("FechaVenta"));
             oBSP_Ticket.TarContado = rdrLector.GetDecimal(rdrLector.GetOrdinal("TarContado"));
             oBSP_Ticket.TarCredito = rdrLector.GetDecimal(rdrLector.GetOrdinal("TarCredito"));
             oBSP_Ticket.IVA105 = rdrLector.GetDecimal(rdrLector.GetOrdinal("IVA105"));

@@ -38,7 +38,7 @@ namespace Auditur.Negocio.Reportes
                     oSituacionBSP.Rg = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "CT" : "IT";
                     oSituacionBSP.Tr = oBSP_Ticket.Compania.Codigo;
                     oSituacionBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-                    oSituacionBSP.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaVenta);
+                    oSituacionBSP.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                     oSituacionBSP.Observaciones = "No figura en su BO";
 
                     lstSituacionBSP.Add(oSituacionBSP);

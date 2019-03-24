@@ -28,7 +28,7 @@ namespace Auditur.Negocio.Reportes
                 oFacturacion.Tipo = (oBSP_Ticket.Concepto.Tipo.Equals('R') ? "R" : (oBSP_Ticket.Tipo.Contains('F') && !oBSP_Ticket.Detalle.Any(x => x.Observaciones.Trim() == "CNJ") ? "B" : "V"));
                 oFacturacion.BoletoNro = !oBSP_Ticket.Concepto.Tipo.Equals('R') ? oBSP_Ticket.Billete.ToString() : oBSP_Ticket.Detalle.Find(x => x.Observaciones.Substring(0, 2) == "RF").Observaciones.Substring(5, 10);
                 oFacturacion.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-                oFacturacion.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaVenta);
+                oFacturacion.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oFacturacion.Tarifa = oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito;
                 oFacturacion.QN = oBSP_Ticket.Detalle.Where(x => x.ISO == "QN").Sum(x => x.ImpContado + x.ImpCredito);
                 oFacturacion.Impuestos = oBSP_Ticket.Detalle.Where(x => x.ISO != "QN").Sum(x => x.ImpContado + x.ImpCredito);
