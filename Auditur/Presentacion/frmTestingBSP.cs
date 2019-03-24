@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Auditur.Negocio;
+﻿using Auditur.Negocio;
 using Auditur.Presentacion.Classes;
 using Helpers;
-using System.ComponentModel;
-using System.Globalization;
-using System.Reflection;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
-using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Forms;
 using Path = System.IO.Path;
 
 namespace Auditur.Presentacion
@@ -28,7 +25,7 @@ namespace Auditur.Presentacion
         }
 
         private BSPActions BSPActions { get; set; }
-        int pageStart { get; set; }
+        private int pageStart { get; set; }
 
         private void btnExaminar_BSP_Click(object sender, EventArgs e)
         {
@@ -46,6 +43,7 @@ namespace Auditur.Presentacion
         }
 
         #region BSP
+
         public void BSP_ReadPdfFile_Cabecera(string fileName)
         {
             int page = 0, index = 0;
@@ -134,7 +132,6 @@ namespace Auditur.Presentacion
                                 saltearDireccion = false;
                                 continue;
                             }
-                            
 
                             /*if (line.Key > alturaTickets)
                                 continue;*/
@@ -200,7 +197,7 @@ namespace Auditur.Presentacion
                                 continue;
                             }
 
-                            if (orderedLine.First().Text.Length >= 4 && new []{ "TOUR", "ESAC" }.Contains(orderedLine.First().Text.Substring(0, 4)))
+                            if (orderedLine.First().Text.Length >= 4 && new[] { "TOUR", "ESAC" }.Contains(orderedLine.First().Text.Substring(0, 4)))
                                 continue;
 
                             var detalle = new BSP_Ticket_Detalle();
@@ -247,7 +244,8 @@ namespace Auditur.Presentacion
             }
         }
 
-        #endregion
+        #endregion BSP
+
         private void btnReadFile_Click(object sender, EventArgs e)
         {
             backgroundWorker1.RunWorkerAsync(true);
@@ -359,8 +357,6 @@ namespace Auditur.Presentacion
             return Convert.ToDecimal(value?.Replace("*", ""));
         }
 
-        static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 }
-
-
