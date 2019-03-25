@@ -27,7 +27,7 @@ namespace Auditur.Presentacion
         private Semana semanaToImport { get; set; }
         private List<ACM> listACM { get; set; }
         private List<ADM> listADM { get; set; }
-        int pageStart { get; set; }
+        //int pageStart { get; set; }
 
         private void btnExaminar_BSP_Click(object sender, EventArgs e)
         {
@@ -88,7 +88,7 @@ namespace Auditur.Presentacion
             Semana oSemanaAux = null;
             try
             {
-                pageStart = 0;
+                //pageStart = 0;
                 semanaToImport = null;
                 if (File.Exists(fileName))
                 {
@@ -169,32 +169,28 @@ namespace Auditur.Presentacion
 
             //Semana actual: Semana del archivo seleccionado.
             semanaToImport = oSemanaAux;
-            pageStart = paginaInicial;
+            //pageStart = paginaInicial;
         }
 
         public void BSP_ReadPdfFile(string fileName)
         {
             int page = 0, index = 0;
-            string currentText = "";
 
             BSP_Ticket oBSP_Ticket = null;
             BSP_Ticket_Detalle oBSP_Ticket_Detalle = null;
 
             Companias companias = new Companias();
             List<Compania> lstCompanias = companias.GetAll();
-            Compania oCompaniaActual = null;
-            string strFinCompania = "";
             List<Compania> lstNuevasCompanias = new List<Compania>();
 
             Conceptos conceptos = new Conceptos();
             List<Concepto> lstConceptos = conceptos.GetAll();
-            Concepto oConceptoActual = null;
             string strFinConcepto = "";
+            List<Concepto> lstNuevosConceptos = new List<Concepto>(); //TODO: agregarlos a la base (creo que no hace falta)
+            Concepto concepto = null;
 
             BSP_Rg Tipo = BSP_Rg.Ambas;
-            int CompaniaID = 0;
 
-            string Linea = "";
             try
             {
                 if (File.Exists(fileName))
@@ -204,117 +200,138 @@ namespace Auditur.Presentacion
                     PdfReader pdfReader = new PdfReader(fileName);
                     PdfDocument pdfDoc = new PdfDocument(pdfReader);
 
-                    for (page = pageStart; page <= pdfDoc.GetNumberOfPages(); page++)
+                    for (page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
                     {
                         var pdfPage = pdfDoc.GetPage(page);
-                        currentText = "";
-                        currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
-                        currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
 
-                        string[] arrLineas = currentText.Split(new char[] { '\n' });
-                        if (BSPActions.EsAnalisisDeVenta(ref arrLineas))
+                        var pageChunks = pdfPage.ExtractChunks();
+                        var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(y => y.Key).ToList();
+
+                        if (!pageChunks.Any() || pageChunks.All(x => x.Text != "CIA"))
+                            continue;
+
+                        float alturaCIA = pageChunks.Where(y => y.Text == "CIA").Select(y => y.Y).FirstOrDefault();
+                        float alturaUltimoElemento = pageChunks.Min(x => x.Y);
+                        bool saltearDireccion = false;
+
+                        var filteredPageLines = pageLines.Where(x =>
+                            x.Any() &&
+                            alturaCIA > x.Key &&
+                            x.Key >
+                            alturaUltimoElemento); //Filtro desde el encabezado para arriba, y la última línea con la fecha
+
+                        Compania compania = null;
+
+                        foreach (var line in filteredPageLines)
                         {
-                            string strTipo = arrLineas[3].Substring(21, 30).Trim();
-                            Tipo = BSP_Rg.Ambas;
-                            if (strTipo == "DOMESTICO")
-                                Tipo = BSP_Rg.Doméstico;
-                            else if (strTipo == "INTERNACIONAL")
-                                Tipo = BSP_Rg.Internacional;
+                            var orderedLine = line.OrderBy(x => x.StartX).ToList();
 
-                            if (Tipo != BSP_Rg.Ambas) //Si no estoy en el resumen final
+                            if (compania == null)
                             {
-                                for (index = 10; index < arrLineas.Length; index++) //10: Salteo cabecera
+                                string posibleCompania = orderedLine.First().Text;
+                                if (posibleCompania.Length != 3 ||
+                                    !int.TryParse(posibleCompania, out int codCompania))
+                                    break; //Si la primer línea que le sigue al encabezado, no empieza con un número de compañía, salteo la página
+
+                                compania = lstCompanias.Find(x => x.ID == codCompania);
+                                if (compania == null)
                                 {
-                                    Linea = arrLineas[index];
-                                    if (Linea.Trim() != "")
-                                    {
-                                        if (oCompaniaActual == null && index == 10 && Linea.Length >= 3 && int.TryParse(Linea.Substring(0, 3), out CompaniaID)) //Si no estoy dentro de una compañía aerea...
-                                        {
-                                            oCompaniaActual = lstCompanias.Find(x => x.ID == CompaniaID);
-                                            if (oCompaniaActual == null)
-                                            {
-                                                oCompaniaActual = new Compania() { ID = CompaniaID, Nombre = Linea.Substring(4).Trim() };
-                                                companias.Insertar(oCompaniaActual);
-                                                lstCompanias.Add(oCompaniaActual);
-                                                lstNuevasCompanias.Add(oCompaniaActual);
-                                            }
-                                            strFinCompania = "TOT " + Linea.Substring(4).Trim();
-                                        }
-                                        else if (Linea.Length >= strFinCompania.Length && Linea.Substring(0, strFinCompania.Length) == strFinCompania) //Si estoy en el cierre de la compañía aerea...
-                                        {
-                                            oCompaniaActual = null;
-                                        }
-                                        else if (oConceptoActual == null) //Si estoy en la compañía aerea y no estoy dentro de un concepto...
-                                        {
-                                            oConceptoActual = lstConceptos.Find(x => x.Nombre.Length <= Linea.Length && x.Nombre.ToUpper() == Linea.Substring(0, x.Nombre.Length));
-                                            if (oConceptoActual != null)
-                                                strFinConcepto = "TOT " + (oConceptoActual.Nombre.Length >= 21 ? oConceptoActual.Nombre.Substring(0, 21) : oConceptoActual.Nombre).Trim().ToUpper();
-                                        }
-                                        else if (Linea.Length >= strFinConcepto.Length && Linea.Substring(0, strFinConcepto.Length) == strFinConcepto) //Si estoy en la compañía aerea y estoy en el cierre de un concepto
-                                        {
-                                            oConceptoActual = null;
-                                        }
-                                        else if (BSPActions.EsNuevoTicket(Linea)) //Si estoy en la compañía aerea y estoy en el concepto, y si los primeros 10 caracteres son long...
-                                        {
-                                            if (oBSP_Ticket != null)
-                                            {
-                                                semanaToImport.TicketsBSP.Add(oBSP_Ticket);
-                                                oBSP_Ticket = null;
-                                            }
-                                            oBSP_Ticket = BSPActions.GetTicket(Linea, semanaToImport.Periodo.Year);
-                                            oBSP_Ticket.Concepto = oConceptoActual;
-                                            oBSP_Ticket.Compania = oCompaniaActual;
-                                            oBSP_Ticket.Rg = Tipo;
-
-                                            oBSP_Ticket_Detalle = BSPActions.GetTicketDetalle(Linea);
-
-                                            //ACM y ADM
-                                            if (listACM != null && oConceptoActual.Tipo == 'C')
-                                            {
-                                                ACM oACM = listACM.Find(x => x.Billete == oBSP_Ticket.Billete);
-                                                if (oACM != null)
-                                                    oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oACM.Observaciones;
-                                            }
-                                            if (listADM != null && oConceptoActual.Tipo == 'D')
-                                            {
-                                                ADM oADM = listADM.Find(x => x.Billete == oBSP_Ticket.Billete);
-                                                if (oADM != null)
-                                                    oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
-                                            }
-
-                                            oBSP_Ticket.Detalle.Add(oBSP_Ticket_Detalle);
-                                            oBSP_Ticket_Detalle = null;
-                                        }
-                                        else if (oBSP_Ticket != null)
-                                        {
-                                            oBSP_Ticket_Detalle = BSPActions.GetTicketDetalle(Linea);
-                                            oBSP_Ticket.Detalle.Add(oBSP_Ticket_Detalle);
-                                            oBSP_Ticket_Detalle = null;
-                                        }
-                                    }
+                                    compania = new Compania {ID = codCompania, Nombre = orderedLine.ElementAt(1).Text};
+                                    companias.Insertar(compania);
+                                    lstCompanias.Add(compania);
+                                    lstNuevasCompanias.Add(compania);
                                 }
+
+                                saltearDireccion = true;
+
+                                continue;
+                            }
+
+                            if (saltearDireccion)
+                            {
+                                saltearDireccion = false;
+                                continue;
+                            }
+
+                            if (concepto == null)
+                            {
+                                string posibleLlave = orderedLine.First().Text;
+                                if (posibleLlave.Length < 3 || posibleLlave.Substring(0, 3) != "***")
+                                    continue;
+
+                                string llave = posibleLlave.Substring(4);
+                                concepto = lstConceptos.Find(x => x.Nombre == llave);
+                                if (concepto == null)
+                                {
+                                    concepto = new Concepto {Nombre = llave};
+                                    conceptos.Insertar(concepto);
+                                    lstConceptos.Add(concepto);
+                                    lstNuevosConceptos.Add(concepto);
+                                }
+
+                                strFinConcepto = llave + " TOTAL";
+                                continue;
+                            }
+
+                            if (orderedLine.First().Text == strFinConcepto)
+                            {
+                                concepto = null;
+                                continue;
+                            }
+
+                            var posibleTicket = orderedLine.GetChunkTextBetween(22, 34);
+                            if (posibleTicket == null || !int.TryParse(posibleTicket, out int ticketCodCompania))
+                            {
+                                if (oBSP_Ticket == null) continue;
                             }
                             else
                             {
-                                Linea = arrLineas[10];
-                                string strMoneda = Linea.Substring(("MONEDA: ").Length, 3);
-                                Moneda Moneda = strMoneda == "ARS" ? Moneda.Peso : Moneda.Dolar;
-                                foreach (BSP_Ticket bsp_ticket in semanaToImport.TicketsBSP.Where(x => x.Moneda == null))
-                                    bsp_ticket.Moneda = Moneda;
+                                if (compania.ID != ticketCodCompania)
+                                    throw new Exception("Se llegó a otra compañía sin darnos cuenta");
+
                                 if (oBSP_Ticket != null)
-                                    oBSP_Ticket.Moneda = Moneda;
+                                    semanaToImport.TicketsBSP.Add(oBSP_Ticket);
+
+                                oBSP_Ticket = orderedLine.ObtenerBSP_Ticket(compania, concepto);
+                                continue;
                             }
+
+                            if (orderedLine.First().Text.Length >= 4 &&
+                                new[] {"TOUR", "ESAC"}.Contains(orderedLine.First().Text.Substring(0, 4)))
+                                continue;
+
+                            var detalle = orderedLine.ObtenerBSP_Ticket_Detalle();
+
+                            //ACM y ADM
+                            if (listACM != null && concepto.Tipo == 'C')
+                            {
+                                ACM oACM = listACM.Find(x => x.Billete == oBSP_Ticket.Billete);
+                                if (oACM != null)
+                                    oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oACM.Observaciones;
+                            }
+                            if (listADM != null && concepto.Tipo == 'D')
+                            {
+                                ADM oADM = listADM.Find(x => x.Billete == oBSP_Ticket.Billete);
+                                if (oADM != null)
+                                    oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
+                            }
+                            
+                            oBSP_Ticket.Detalle.Add(detalle);
                         }
                     }
+
                     if (oBSP_Ticket != null)
                     {
                         semanaToImport.TicketsBSP.Add(oBSP_Ticket);
-                        oBSP_Ticket = null;
                     }
+
                     semanaToImport.TicketsBSP = semanaToImport.TicketsBSP.OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete).ToList();
                     semanaToImport.BSPCargado = true;
+
+                    pdfDoc.Close();
                     pdfReader.Close();
-                    if (lstNuevasCompanias.Count > 0)
+
+                    if (lstNuevasCompanias.Any())
                     {
                         string mensaje = "Se han encontrado Compañías Aéreas que no estaban registradas en el sistema:\n\n";
                         lstNuevasCompanias.ForEach(x => mensaje += "ID: " + x.ID + " | Nombre: " + x.Nombre + "\n");

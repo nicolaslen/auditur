@@ -1,16 +1,12 @@
 ﻿using Auditur.Negocio;
 using Auditur.Presentacion.Classes;
 using Helpers;
-using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Canvas.Parser;
-using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using Path = System.IO.Path;
 
@@ -167,32 +163,7 @@ namespace Auditur.Presentacion
                                 if (bspTicket != null)
                                     tickets.Add(bspTicket);
 
-                                bspTicket = new BSP_Ticket();
-
-                                bspTicket.Llave = llave;
-                                bspTicket.TRNC = orderedLine.GetChunkTextBetween(37, 60);
-                                bspTicket.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
-                                bspTicket.FechaEmision = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140), out var fechaVenta) ? (DateTime?)fechaVenta : null;
-                                bspTicket.CPN = orderedLine.GetChunkTextBetween(143, 168);
-                                bspTicket.NR = orderedLine.GetChunkTextBetween(169, 192);
-                                bspTicket.Stat = orderedLine.GetChunkTextBetween(200, 211);
-                                bspTicket.Fop = orderedLine.GetChunkTextBetween(218, 235);
-                                bspTicket.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();
-                                bspTicket.ValorTarifa = orderedLine.GetChunkTextBetween(306, 346).ToDecimal();
-                                bspTicket.ImpuestoValor = orderedLine.GetChunkTextBetween(355, 388).ToDecimal();
-                                bspTicket.ImpuestoCodigo = orderedLine.GetChunkTextBetween(388, 400);
-                                bspTicket.ImpuestoTyCValor = orderedLine.GetChunkTextBetween(406, 442).ToDecimal();
-                                bspTicket.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(442, 453);
-                                bspTicket.ImpuestoPenValor = orderedLine.GetChunkTextBetween(461, 496).ToDecimal();
-                                bspTicket.ImpuestoPenCodigo = orderedLine.GetChunkTextBetween(496, 507);
-                                bspTicket.ImpuestoCobl = orderedLine.GetChunkTextBetween(520, 562).ToDecimal();
-                                bspTicket.ComisionStdPorcentaje = orderedLine.GetChunkTextBetween(562, 585).ToDecimal();
-                                bspTicket.ComisionStdValor = orderedLine.GetChunkTextBetween(594, 639).ToDecimal();
-                                bspTicket.ComisionSuppPorcentaje = orderedLine.GetChunkTextBetween(638, 657).ToDecimal();
-                                bspTicket.ComisionSuppValor = orderedLine.GetChunkTextBetween(670, 711).ToDecimal();
-                                bspTicket.ImpuestoSinComision = orderedLine.GetChunkTextBetween(730, 764).ToDecimal();
-                                bspTicket.NetoAPagar = orderedLine.GetChunkTextBetween(780, 818).ToDecimal();
-                                bspTicket.Compania = compania;
+                                bspTicket = orderedLine.ObtenerBSP_Ticket(compania, null);
 
                                 continue;
                             }
@@ -200,30 +171,7 @@ namespace Auditur.Presentacion
                             if (orderedLine.First().Text.Length >= 4 && new[] { "TOUR", "ESAC" }.Contains(orderedLine.First().Text.Substring(0, 4)))
                                 continue;
 
-                            var detalle = new BSP_Ticket_Detalle();
-                            detalle.TRNC = orderedLine.GetChunkTextBetween(37, 60);
-                            detalle.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
-                            detalle.FechaVenta = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140),
-                                out var fechaVentaDetalle) ? (DateTime?)fechaVentaDetalle : null;
-                            detalle.CPN = orderedLine.GetChunkTextBetween(143, 168);
-                            detalle.NR = orderedLine.GetChunkTextBetween(169, 192);
-                            detalle.Stat = orderedLine.GetChunkTextBetween(200, 211);
-                            detalle.Fop = orderedLine.GetChunkTextBetween(218, 235);
-                            detalle.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();
-                            detalle.ValorTarifa = orderedLine.GetChunkTextBetween(306, 346).ToDecimal();
-                            detalle.ImpuestoValor = orderedLine.GetChunkTextBetween(355, 388).ToDecimal();
-                            detalle.ImpuestoCodigo = orderedLine.GetChunkTextBetween(388, 400);
-                            detalle.ImpuestoTyCValor = orderedLine.GetChunkTextBetween(406, 442).ToDecimal();
-                            detalle.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(442, 453);
-                            detalle.ImpuestoPenValor = orderedLine.GetChunkTextBetween(461, 496).ToDecimal();
-                            detalle.ImpuestoPenCodigo = orderedLine.GetChunkTextBetween(496, 507);
-                            detalle.ImpuestoCobl = orderedLine.GetChunkTextBetween(520, 562).ToDecimal();
-                            detalle.ComisionStdPorcentaje = orderedLine.GetChunkTextBetween(562, 585).ToDecimal();
-                            detalle.ComisionStdValor = orderedLine.GetChunkTextBetween(594, 639).ToDecimal();
-                            detalle.ComisionSuppPorcentaje = orderedLine.GetChunkTextBetween(638, 657).ToDecimal();
-                            detalle.ComisionSuppValor = orderedLine.GetChunkTextBetween(670, 711).ToDecimal();
-                            detalle.ImpuestoSinComision = orderedLine.GetChunkTextBetween(730, 764).ToDecimal();
-                            detalle.NetoAPagar = orderedLine.GetChunkTextBetween(780, 818).ToDecimal();
+                            var detalle = orderedLine.ObtenerBSP_Ticket_Detalle();
 
                             bspTicket.Detalle.Add(detalle);
                         }
@@ -297,66 +245,5 @@ namespace Auditur.Presentacion
         public float RelativeY => 595.5f - Y;
         public float EndX { get; set; }
         public float EndY { get; set; }
-    }
-
-    public static class ReaderExtensions
-    {
-        public static List<PageChunks> ExtractChunks(this PdfPage page)
-        {
-            var textEventListener = new LocationTextExtractionStrategy();
-            PdfTextExtractor.GetTextFromPage(page, textEventListener);
-
-            IList<TextChunk> locationalResult = (IList<TextChunk>)locationalResultField.GetValue(textEventListener);
-            List<PageChunks> pageChunks = new List<PageChunks>();
-
-            foreach (TextChunk chunk in locationalResult)
-            {
-                ITextChunkLocation location = chunk.GetLocation();
-                Vector start = location.GetStartLocation();
-                Vector end = location.GetEndLocation();
-
-                PageChunks ro = new PageChunks()
-                {
-                    Text = chunk.GetText().Trim(),
-                    StartX = start.Get(Vector.I1),
-                    Y = start.Get(Vector.I2),
-                    EndX = end.Get(Vector.I1),
-                    EndY = end.Get(Vector.I2)
-                };
-                pageChunks.Add(ro);
-            }
-
-            pageChunks = pageChunks.OrderByDescending(x => x.Y).ThenBy(x => x.StartX).ToList();
-            if (pageChunks.Any())
-            {
-                var chunkToCompare = pageChunks.First();
-                foreach (var chunk in pageChunks)
-                {
-                    if (Math.Abs(chunk.Y - chunkToCompare.Y) <= 4)
-                    {
-                        chunk.Y = chunkToCompare.Y;
-                    }
-                    else
-                    {
-                        chunkToCompare = chunk;
-                    }
-                }
-                pageChunks = pageChunks.OrderByDescending(x => x.Y).ThenBy(x => x.StartX).ToList();
-            }
-
-            return pageChunks;
-        }
-
-        public static string GetChunkTextBetween(this List<PageChunks> pageChunks, int start, int end)
-        {
-            return pageChunks.Where(x => start <= x.StartX && x.EndX <= end).Select(x => x.Text).FirstOrDefault();
-        }
-
-        public static decimal ToDecimal(this string value)
-        {
-            return Convert.ToDecimal(value?.Replace("*", ""));
-        }
-
-        private static FieldInfo locationalResultField = typeof(LocationTextExtractionStrategy).GetField("locationalResult", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 }

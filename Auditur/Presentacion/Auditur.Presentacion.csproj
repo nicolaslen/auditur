@@ -121,6 +121,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\BSPExtensions.cs" />
     <Compile Include="Classes\BackUp.cs" />
     <Compile Include="Classes\BOActions.cs" />
     <Compile Include="Classes\BSPActions.cs" />
