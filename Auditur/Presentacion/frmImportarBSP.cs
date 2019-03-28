@@ -80,81 +80,73 @@ namespace Auditur.Presentacion
         #region BSP
         public void BSP_ReadPdfFile_Cabecera(string fileName)
         {
-            int page = 0, index = 0;
-            string currentText = "";
-            int paginaInicial = 0;
-            int IDAgencia = 0;
-            Agencia oAgencia = null;
             Semana oSemanaAux = null;
             try
             {
-                //pageStart = 0;
                 semanaToImport = null;
                 if (File.Exists(fileName))
                 {
                     PdfReader pdfReader = new PdfReader(fileName);
                     PdfDocument pdfDoc = new PdfDocument(pdfReader);
+                    var pdfPage = pdfDoc.GetPage(1);
+
                     Agencias agencias = new Agencias();
-                    for (page = 1; page <= pdfReader.GetFileLength() && paginaInicial == 0; page++)
+
+                    var pageChunks = pdfPage.ExtractChunks();
+                    var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(y => y.Key).ToList();
+
+                    var agencyLine = pageLines.ElementAt(0);
+                    var datesLine = pageLines.ElementAt(1);
+
+                    string strAgencia = agencyLine.ElementAt(2).Text;
+                    var splitAgencia = strAgencia.Split(' ');
+
+                    string dates = datesLine.ElementAt(1).Text;
+                    string periodo = dates.Substring(0, 6);
+                    string fechaDesde = dates.Substring(7, 11);
+                    string fechaHasta = dates.Substring(22, 11);
+
+
+                    if (int.TryParse(splitAgencia[0].Replace("-", "") + splitAgencia[1], out var IDAgencia))
                     {
-                        var pdfPage = pdfDoc.GetPage(page);
-
-                        currentText = "";
-                        currentText = PdfTextExtractor.GetTextFromPage(pdfPage, new SimpleTextExtractionStrategy());
-                        currentText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
-
-                        string[] arrLineas = currentText.Split(new char[] { '\n' });
-                        if (BSPActions.EsAnalisisDeVenta(ref arrLineas))
+                        var oAgencia = agencias.GetByID(IDAgencia);
+                        if (oAgencia == null)
                         {
-                            string Linea4 = arrLineas[4];
-                            string strAgencia = Linea4.Substring(Linea4.IndexOf("LIQUIDACION DE :") + ("LIQUIDACION DE :").Length, 70).Trim();
-                            if (int.TryParse(strAgencia.Substring(0, strAgencia.IndexOf(" ") + 2).Replace(" ", ""), out IDAgencia))
+                            oAgencia = new Agencia { ID = IDAgencia, Nombre = String.Join(" ", splitAgencia.Skip(3)) };
+                            agencias.Insertar(oAgencia);
+                        }
+                        oSemanaAux = new Semana
+                        {
+                            Periodo = new DateTime(int.Parse(DateTime.Now.Year.ToString().Substring(0, 2) + periodo.Substring(0, 2)), int.Parse(periodo.Substring(2, 2)), int.Parse(periodo.Substring(4, 2))),
+                            FechaDesde = Convert.ToDateTime(fechaDesde),
+                            FechaHasta = Convert.ToDateTime(fechaHasta),
+                            Agencia = oAgencia
+                        };
+
+                        if (Publics.Semana != null && Publics.Semana.Agencia.ID == oSemanaAux.Agencia.ID && Publics.Semana.Periodo == oSemanaAux.Periodo)
+                        {
+                            oSemanaAux.ID = Publics.Semana.ID;
+                            oSemanaAux.BSPCargado = Publics.Semana.BSPCargado;
+                            oSemanaAux.BOCargado = Publics.Semana.BOCargado;
+                            oSemanaAux.TicketsBO = Publics.Semana.TicketsBO;
+                        }
+                        else
+                        {
+                            Semanas semanas = new Semanas();
+                            Semana oSemanaVerif = semanas.GetByAgenciaPeriodo(oSemanaAux.Agencia.ID, oSemanaAux.Periodo);
+                            semanas.CloseConnection();
+
+                            if (oSemanaVerif != null)
                             {
-                                oAgencia = agencias.GetByID(IDAgencia);
-                                if (oAgencia == null)
+                                oSemanaAux.ID = oSemanaVerif.ID;
+                                oSemanaAux.BSPCargado = oSemanaVerif.BSPCargado;
+                                if (oSemanaVerif.BOCargado)
                                 {
-                                    oAgencia = new Agencia { ID = IDAgencia, Nombre = strAgencia.Substring(11) };
-                                    agencias.Insertar(oAgencia);
+                                    oSemanaAux.BOCargado = true;
+                                    BO_Tickets BO_Tickets = new BO_Tickets();
+                                    oSemanaAux.TicketsBO = BO_Tickets.ObtenerPorSemana(oSemanaAux.ID);
+                                    BO_Tickets.CloseConnection();
                                 }
-
-                                string Linea2 = arrLineas[2];
-                                string Linea3 = arrLineas[3];
-                                oSemanaAux = new Semana
-                                {
-                                    Periodo = Convert.ToDateTime(Linea2.Substring(Linea2.LastIndexOf("PERIODO: ") + ("PERIODO: ").Length, 10).Trim()),
-                                    FechaDesde = Convert.ToDateTime(Linea3.Substring(Linea3.LastIndexOf("DEL: ") + ("DEL: ").Length, 8).Trim()),
-                                    FechaHasta = Convert.ToDateTime(Linea3.Substring(Linea3.LastIndexOf("AL ") + ("AL ").Length, 8).Trim()),
-                                    Agencia = oAgencia
-                                };
-
-                                if (Publics.Semana != null && Publics.Semana.Agencia.ID == oSemanaAux.Agencia.ID && Publics.Semana.Periodo == oSemanaAux.Periodo)
-                                {
-                                    oSemanaAux.ID = Publics.Semana.ID;
-                                    oSemanaAux.BSPCargado = Publics.Semana.BSPCargado;
-                                    oSemanaAux.BOCargado = Publics.Semana.BOCargado;
-                                    oSemanaAux.TicketsBO = Publics.Semana.TicketsBO;
-                                }
-                                else
-                                {
-                                    Semanas semanas = new Semanas();
-                                    Semana oSemanaVerif = semanas.GetByAgenciaPeriodo(oSemanaAux.Agencia.ID, oSemanaAux.Periodo);
-                                    semanas.CloseConnection();
-
-                                    if (oSemanaVerif != null)
-                                    {
-                                        oSemanaAux.ID = oSemanaVerif.ID;
-                                        oSemanaAux.BSPCargado = oSemanaVerif.BSPCargado;
-                                        if (oSemanaVerif.BOCargado)
-                                        {
-                                            oSemanaAux.BOCargado = true;
-                                            BO_Tickets BO_Tickets = new BO_Tickets();
-                                            oSemanaAux.TicketsBO = BO_Tickets.ObtenerPorSemana(oSemanaAux.ID);
-                                            BO_Tickets.CloseConnection();
-                                        }
-                                    }
-                                }
-
-                                paginaInicial = page;
                             }
                         }
                     }
@@ -164,12 +156,11 @@ namespace Auditur.Presentacion
             catch (Exception Exception1)
             {
                 TextToFile.Errores(TextToFile.Error(Exception1));
-                MessageBox.Show("Error: " + Exception1.Message + "\nfileName: " + fileName + "\npage: " + page + "\nline: " + index, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + Exception1.Message + "\nfileName: " + fileName + "\n", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             //Semana actual: Semana del archivo seleccionado.
             semanaToImport = oSemanaAux;
-            //pageStart = paginaInicial;
         }
 
         public void BSP_ReadPdfFile(string fileName)
@@ -236,7 +227,7 @@ namespace Auditur.Presentacion
                                 compania = lstCompanias.Find(x => x.ID == codCompania);
                                 if (compania == null)
                                 {
-                                    compania = new Compania {ID = codCompania, Nombre = orderedLine.ElementAt(1).Text};
+                                    compania = new Compania { ID = codCompania, Nombre = orderedLine.ElementAt(1).Text };
                                     companias.Insertar(compania);
                                     lstCompanias.Add(compania);
                                     lstNuevasCompanias.Add(compania);
@@ -263,7 +254,7 @@ namespace Auditur.Presentacion
                                 concepto = lstConceptos.Find(x => x.Nombre == llave);
                                 if (concepto == null)
                                 {
-                                    concepto = new Concepto {Nombre = llave};
+                                    concepto = new Concepto { Nombre = llave };
                                     conceptos.Insertar(concepto);
                                     lstConceptos.Add(concepto);
                                     lstNuevosConceptos.Add(concepto);
@@ -309,7 +300,7 @@ namespace Auditur.Presentacion
                                 oBSP_Ticket.Esac = orderedLine.ElementAt(2).Text;
                                 continue;
                             }
-                            
+
                             var detalle = orderedLine.ObtenerBSP_Ticket_Detalle();
 
                             //ACM y ADM
@@ -325,7 +316,7 @@ namespace Auditur.Presentacion
                                 if (oADM != null)
                                     oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
                             }
-                            
+
                             oBSP_Ticket.Detalle.Add(detalle);
                         }
                     }
