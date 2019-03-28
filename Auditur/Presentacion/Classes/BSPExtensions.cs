@@ -70,8 +70,7 @@ namespace Auditur.Presentacion.Classes
 
         public static BSP_Ticket ObtenerBSP_Ticket(this List<PageChunks> orderedLine, Compania compania, Concepto concepto)
         {
-            BSP_Ticket oBSP_Ticket;
-            oBSP_Ticket = new BSP_Ticket();
+            var oBSP_Ticket = new BSP_Ticket();
 
             oBSP_Ticket.Compania = compania;
             oBSP_Ticket.Concepto = concepto;

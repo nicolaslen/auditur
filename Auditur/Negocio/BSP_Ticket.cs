@@ -52,5 +52,7 @@ namespace Auditur.Negocio
         public decimal ImpuestoSinComision { get; set; }
         public decimal NetoAPagar { get; set; }
         public string NR { get; set; }
+        public string Tour { get; set; }
+        public string Esac { get; set; }
     }
 }

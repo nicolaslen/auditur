@@ -18,3 +18,10 @@ david:
 
 
 - YR YQ
+
+
+25/3
+
+LEER ARS o USD del encabezado
+Guardo fecha desde y fecha hasta
+El numero de semana está antes del período (en formato yymmss)

@@ -296,10 +296,20 @@ namespace Auditur.Presentacion
                                 continue;
                             }
 
-                            if (orderedLine.First().Text.Length >= 4 &&
-                                new[] {"TOUR", "ESAC"}.Contains(orderedLine.First().Text.Substring(0, 4)))
+                            if (oBSP_Ticket != null && orderedLine.First().Text.Length >= 4 &&
+                                orderedLine.First().Text.Substring(0, 4) == "TOUR")
+                            {
+                                oBSP_Ticket.Tour = orderedLine.ElementAt(2).Text;
                                 continue;
+                            }
 
+                            if (oBSP_Ticket != null && orderedLine.First().Text.Length >= 4 &&
+                                orderedLine.First().Text.Substring(0, 4) == "ESAC")
+                            {
+                                oBSP_Ticket.Esac = orderedLine.ElementAt(2).Text;
+                                continue;
+                            }
+                            
                             var detalle = orderedLine.ObtenerBSP_Ticket_Detalle();
 
                             //ACM y ADM
