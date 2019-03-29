@@ -74,14 +74,14 @@ namespace Auditur.Presentacion.Classes
 
             oBSP_Ticket.Compania = compania;
             oBSP_Ticket.Concepto = concepto;
-            oBSP_Ticket.TRNC = orderedLine.GetChunkTextBetween(37, 60);
-            oBSP_Ticket.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
+            oBSP_Ticket.Trnc = orderedLine.GetChunkTextBetween(37, 60);
+            oBSP_Ticket.NroDocumento = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
             oBSP_Ticket.FechaEmision =
                 DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140), out var fechaVenta)
                     ? (DateTime?)fechaVenta
                     : null;
-            oBSP_Ticket.CPN = orderedLine.GetChunkTextBetween(143, 168);
-            oBSP_Ticket.NR = orderedLine.GetChunkTextBetween(169, 192);
+            oBSP_Ticket.Cpn = orderedLine.GetChunkTextBetween(143, 168);
+            oBSP_Ticket.Nr = orderedLine.GetChunkTextBetween(169, 192);
             oBSP_Ticket.Stat = orderedLine.GetChunkTextBetween(200, 211);
             oBSP_Ticket.Fop = orderedLine.GetChunkTextBetween(218, 235);
             oBSP_Ticket.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();
@@ -107,14 +107,14 @@ namespace Auditur.Presentacion.Classes
         public static BSP_Ticket_Detalle ObtenerBSP_Ticket_Detalle(this List<PageChunks> orderedLine)
         {
             var detalle = new BSP_Ticket_Detalle();
-            detalle.TRNC = orderedLine.GetChunkTextBetween(37, 60);
-            detalle.Billete = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
-            detalle.FechaVenta = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140),
+            detalle.Trnc = orderedLine.GetChunkTextBetween(37, 60);
+            detalle.NroDocumento = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
+            detalle.FechaEmision = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140),
                 out var fechaVentaDetalle)
                 ? (DateTime?)fechaVentaDetalle
                 : null;
-            detalle.CPN = orderedLine.GetChunkTextBetween(143, 168);
-            detalle.NR = orderedLine.GetChunkTextBetween(169, 192);
+            detalle.Cpn = orderedLine.GetChunkTextBetween(143, 168);
+            detalle.Nr = orderedLine.GetChunkTextBetween(169, 192);
             detalle.Stat = orderedLine.GetChunkTextBetween(200, 211);
             detalle.Fop = orderedLine.GetChunkTextBetween(218, 235);
             detalle.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();

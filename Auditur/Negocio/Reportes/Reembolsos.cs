@@ -12,7 +12,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<Reembolso> lstReembolsos = new List<Reembolso>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo.Equals('R')).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.Billete).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo.Equals('R')).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.NroDocumento).ToList();
 
             List<Reembolso> lstReembolsosPesos = new List<Reembolso>();
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => lstReembolsosPesos.Add(GetReembolso(x)));
@@ -50,7 +50,7 @@ namespace Auditur.Negocio.Reportes
             oReembolso.Comision = (oBSP_Ticket.ComValor + oBSP_Ticket.ComIVA);
             oReembolso.Importe = oBSP_Ticket.Total;
             oReembolso.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-            oReembolso.ReembolsoNro = oBSP_Ticket.Billete.ToString();
+            oReembolso.ReembolsoNro = oBSP_Ticket.NroDocumento.ToString();
             return oReembolso;
         }
     }

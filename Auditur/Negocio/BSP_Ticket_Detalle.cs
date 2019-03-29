@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Auditur.Negocio
 {
     public class BSP_Ticket_Detalle
     {
-        public long ID { get; set; }
-        public string ISO  { get; set; }
+        /*public string ISO  { get; set; }
         public decimal ImpContado { get; set; }
         public decimal ImpCredito { get; set; }
         public decimal IVA21 { get; set; }
-        public string Observaciones { get; set; }
+        public string Observaciones { get; set; }*/
+
         public long TicketID { get; set; }
 
-        public long Billete { get; set; }
-        public DateTime? FechaVenta { get; set; }
-        public string TRNC { get; set; }
-        public string CPN { get; set; }
+        public long ID { get; set; }
+        public long NroDocumento { get; set; }
+        public DateTime? FechaEmision { get; set; }
+        public string Trnc { get; set; }
+        public string Cpn { get; set; }
+        public string Nr { get; set; }
         public string Stat { get; set; }
         public string Fop { get; set; }
         public decimal ValorTransaccion { get; set; }
@@ -36,6 +35,5 @@ namespace Auditur.Negocio
         public decimal ComisionSuppValor { get; set; }
         public decimal ImpuestoSinComision { get; set; }
         public decimal NetoAPagar { get; set; }
-        public string NR { get; set; }
     }
 }

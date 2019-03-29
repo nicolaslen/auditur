@@ -306,13 +306,13 @@ namespace Auditur.Presentacion
                             //ACM y ADM
                             if (listACM != null && concepto.Tipo == 'C')
                             {
-                                ACM oACM = listACM.Find(x => x.Billete == oBSP_Ticket.Billete);
+                                ACM oACM = listACM.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
                                 if (oACM != null)
                                     oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oACM.Observaciones;
                             }
                             if (listADM != null && concepto.Tipo == 'D')
                             {
-                                ADM oADM = listADM.Find(x => x.Billete == oBSP_Ticket.Billete);
+                                ADM oADM = listADM.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
                                 if (oADM != null)
                                     oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
                             }
@@ -326,7 +326,7 @@ namespace Auditur.Presentacion
                         semanaToImport.TicketsBSP.Add(oBSP_Ticket);
                     }
 
-                    semanaToImport.TicketsBSP = semanaToImport.TicketsBSP.OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete).ToList();
+                    semanaToImport.TicketsBSP = semanaToImport.TicketsBSP.OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
                     semanaToImport.BSPCargado = true;
 
                     pdfDoc.Close();

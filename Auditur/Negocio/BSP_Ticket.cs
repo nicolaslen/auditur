@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Auditur.Negocio
 {
@@ -12,10 +10,7 @@ namespace Auditur.Negocio
             Detalle = new List<BSP_Ticket_Detalle>();
         }
 
-        public long ID { get; set; }
-        public long Billete { get; set; }
-        public string Tipo { get; set; }
-        public DateTime? FechaEmision { get; set; }
+        /*public string Tipo { get; set; }
         public decimal TarContado { get; set; }
         public decimal TarCredito { get; set; }
         public decimal IVA105 { get; set; }
@@ -24,16 +19,19 @@ namespace Auditur.Negocio
         public decimal ComOver { get; set; }
         public decimal ComIVA { get; set; }
         public decimal Total { get; set; }
-        public BSP_Rg Rg { get; set; }
+        public BSP_Rg Rg { get; set; }*/
+
         public Concepto Concepto { get; set; }
-        public Compania Compania { get; set; }
         public long SemanaID { get; set; }
         public Moneda? Moneda { get; set; }
 
-        public List<BSP_Ticket_Detalle> Detalle { get; set; }
-
-        public string TRNC { get; set; }
-        public string CPN { get; set; }
+        public long ID { get; set; }
+        public Compania Compania { get; set; }
+        public string Trnc { get; set; }
+        public long NroDocumento { get; set; }
+        public DateTime? FechaEmision { get; set; }
+        public string Cpn { get; set; }
+        public string Nr { get; set; }
         public string Stat { get; set; }
         public string Fop { get; set; }
         public decimal ValorTransaccion { get; set; }
@@ -51,8 +49,9 @@ namespace Auditur.Negocio
         public decimal ComisionSuppValor { get; set; }
         public decimal ImpuestoSinComision { get; set; }
         public decimal NetoAPagar { get; set; }
-        public string NR { get; set; }
         public string Tour { get; set; }
         public string Esac { get; set; }
+
+        public List<BSP_Ticket_Detalle> Detalle { get; set; }
     }
 }

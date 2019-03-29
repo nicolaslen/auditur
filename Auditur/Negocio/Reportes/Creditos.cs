@@ -12,7 +12,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<CreditoObj> lstCredito = new List<CreditoObj>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'C').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.Billete).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'C').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.NroDocumento).ToList();
 
             List<CreditoObj> lstCreditoPesos = new List<CreditoObj>();
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => lstCreditoPesos.Add(GetCredito(x)));
@@ -37,7 +37,7 @@ namespace Auditur.Negocio.Reportes
         {
             CreditoObj oCredito = new CreditoObj();
 
-            oCredito.Nro = oBSP_Ticket.Billete.ToString();
+            oCredito.Nro = oBSP_Ticket.NroDocumento.ToString();
             oCredito.Rg = oBSP_Ticket.Rg == BSP_Rg.Internacional ? "IC" : "CC";
             oCredito.Tr = oBSP_Ticket.Compania.Codigo;
             oCredito.Tarifa = oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito;

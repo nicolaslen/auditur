@@ -18,14 +18,14 @@ namespace Auditur.Negocio.Reportes
             List<Compania> companias = Companias.GetAll();
             Companias.CloseConnection();
 
-            List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'B').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete).ToList();
+            List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'B').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
             foreach (Compania compania in companias.OrderBy(x => x.Codigo))
             {
                 lstOverCompania = new List<Over>();
 
                 foreach (BSP_Ticket oBSP_Ticket in lstTicketsBSP.Where(x => x.Compania.ID == compania.ID))
                 {
-                    BO_Ticket oBO_Ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.Billete && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
+                    BO_Ticket oBO_Ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
 
                     if (oBSP_Ticket.ComOver != 0 || (oBO_Ticket != null && oBO_Ticket.ComOver != 0))
                     {
@@ -33,7 +33,7 @@ namespace Auditur.Negocio.Reportes
                     }
                 }
 
-                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.Billete == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComOver != 0).OrderBy(x => x.Billete))
+                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComOver != 0).OrderBy(x => x.Billete))
                 {
                     lstOverCompania.Add(GetOver(null, bo_ticketFaltante));
                 }
@@ -63,7 +63,7 @@ namespace Auditur.Negocio.Reportes
         {
             Over oOver = new Over();
 
-            oOver.Boleto = oBSP_Ticket != null ? oBSP_Ticket.Billete.ToString() : oBO_Ticket.Billete.ToString();
+            oOver.Boleto = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
             oOver.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
             oOver.Tr = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
             oOver.Observaciones = "";

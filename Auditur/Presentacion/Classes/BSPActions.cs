@@ -40,7 +40,7 @@ namespace Auditur.Presentacion.Classes
             try
             {
                 oBSP_Ticket = new BSP_Ticket();
-                oBSP_Ticket.Billete = Convert.ToInt64(Linea.Substring(0, 10).Trim());
+                oBSP_Ticket.NroDocumento = Convert.ToInt64(Linea.Substring(0, 10).Trim());
                 oBSP_Ticket.Tipo = Linea.Substring(13, 4).ToUpper();
                 string FechaVenta = Linea.Substring(19, 5).Trim() + "/" + Year.ToString();
                 if (Validators.IsDateTime(FechaVenta))

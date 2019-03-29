@@ -22,10 +22,10 @@ namespace Auditur.Negocio.Reportes
 
             //List<BO_Ticket> lstTicketsCargados = new List<BO_Ticket>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => lstTipoConceptoPermitidos.Contains(x.Concepto.Tipo) && x.Rg == BSP_Rg.Doméstico).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => lstTipoConceptoPermitidos.Contains(x.Concepto.Tipo) && x.Rg == BSP_Rg.Doméstico).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
-                BO_Ticket bo_ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.Billete && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
+                BO_Ticket bo_ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
 
                 oControlIVA = new ControlIVA();
 
@@ -49,7 +49,7 @@ namespace Auditur.Negocio.Reportes
 
                 if (Math.Abs(oControlIVA.TarifaDif) > DiferenciaMinima || Math.Abs(oControlIVA.IVATarifaDif) > DiferenciaMinima || Math.Abs(oControlIVA.ComisionDif) > DiferenciaMinima || Math.Abs(oControlIVA.IVAComisionDif) > DiferenciaMinima)
                 {
-                    oControlIVA.BoletoNroBSP = oBSP_Ticket.Billete.ToString();
+                    oControlIVA.BoletoNroBSP = oBSP_Ticket.NroDocumento.ToString();
                     oControlIVA.RgBSP = "C";
                     oControlIVA.TrBSP = oBSP_Ticket.Compania.Codigo;
                     oControlIVA.Tr2BSP = (oBSP_Ticket.Concepto.Tipo.Equals('R') ? "R" : (oBSP_Ticket.Tipo.Contains('F') && !oBSP_Ticket.Detalle.Any(x => x.Observaciones.Trim() == "CNJ") ? "B" : "V"));

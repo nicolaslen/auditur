@@ -13,12 +13,12 @@ namespace Auditur.Negocio.Reportes
         public List<Diferencia> Generar(Semana oSemana)
         {
             List<Diferencia> lstDiferencia = new List<Diferencia>();
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'B').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'B').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
             Diferencia oDiferencia = null;
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
-                BO_Ticket bo_ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.Billete && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
+                BO_Ticket bo_ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
                 if (bo_ticket != null)
                 {
                     decimal ImpuestosBSP = Math.Round(oBSP_Ticket.Detalle.Sum(x => x.ImpContado + x.ImpCredito) + oBSP_Ticket.IVA105, 2);
@@ -33,7 +33,7 @@ namespace Auditur.Negocio.Reportes
                     {
                         oDiferencia = new Diferencia();
 
-                        oDiferencia.BoletoNroBSP = oBSP_Ticket.Billete.ToString();
+                        oDiferencia.BoletoNroBSP = oBSP_Ticket.NroDocumento.ToString();
                         oDiferencia.RgBSP = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "C" : "I";
                         oDiferencia.TrBSP = oBSP_Ticket.Compania.Codigo;
                         oDiferencia.TarifaBSP = (oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito);

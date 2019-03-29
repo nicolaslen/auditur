@@ -14,10 +14,10 @@ namespace Auditur.Negocio.Reportes
 
             List<BO_Ticket> lstTickets = 
                 oSemana.TicketsBO
-                    .Where(bo => (!oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.Billete && 
+                    .Where(bo => (!oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento && 
                                 bo.Compania.Codigo == bsp.Compania.Codigo))
                                 ||
-                                (oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.Billete &&
+                                (oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento &&
                                 bo.Compania.Codigo == bsp.Compania.Codigo &&
                                 bo.Tarifa != bsp.TarContado + bsp.TarCredito &&
                                 ((bo.TarContado != 0 && bsp.TarContado == 0) ||

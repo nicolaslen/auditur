@@ -16,9 +16,9 @@ namespace Auditur.Negocio.Reportes
             List<BSP_Ticket> lstTickets = oSemana.TicketsBSP
                 .Where(bspT => bspT.Concepto.Tipo == 'B' && 
                     bspT.Tipo != "VVVV" && 
-                    !oSemana.TicketsBO.Any(boT => boT.Billete == bspT.Billete && 
+                    !oSemana.TicketsBO.Any(boT => boT.Billete == bspT.NroDocumento && 
                         boT.Compania.Codigo == bspT.Compania.Codigo))
-                .OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete)
+                .OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento)
                 .ToList();
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
@@ -34,7 +34,7 @@ namespace Auditur.Negocio.Reportes
                 { 
                     oSituacionBSP.Contado = oBSP_Ticket.TarContado;
                     oSituacionBSP.Credito = oBSP_Ticket.TarCredito;
-                    oSituacionBSP.BoletoNro = oBSP_Ticket.Billete.ToString();
+                    oSituacionBSP.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
                     oSituacionBSP.Rg = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "CT" : "IT";
                     oSituacionBSP.Tr = oBSP_Ticket.Compania.Codigo;
                     oSituacionBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
