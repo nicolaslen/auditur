@@ -39,7 +39,7 @@
             this.btnReembolsos = new System.Windows.Forms.Button();
             this.btnCreditos = new System.Windows.Forms.Button();
             this.btnControlIVAs = new System.Windows.Forms.Button();
-            this.btnBSPNroOPs = new System.Windows.Forms.Button();
+            this.btnBSPMasBackOffices = new System.Windows.Forms.Button();
             this.grbFileImport = new System.Windows.Forms.GroupBox();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnExaminar = new System.Windows.Forms.Button();
@@ -66,7 +66,7 @@
             this.grbReportes.Controls.Add(this.btnReembolsos);
             this.grbReportes.Controls.Add(this.btnCreditos);
             this.grbReportes.Controls.Add(this.btnControlIVAs);
-            this.grbReportes.Controls.Add(this.btnBSPNroOPs);
+            this.grbReportes.Controls.Add(this.btnBSPMasBackOffices);
             this.grbReportes.Enabled = false;
             this.grbReportes.Location = new System.Drawing.Point(4, 230);
             this.grbReportes.Margin = new System.Windows.Forms.Padding(4);
@@ -209,16 +209,16 @@
             // 
             // btnBSPNroOPs
             // 
-            this.btnBSPNroOPs.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnBSPNroOPs.Font = new System.Drawing.Font("Calibri", 14.25F);
-            this.btnBSPNroOPs.Location = new System.Drawing.Point(39, 45);
-            this.btnBSPNroOPs.Margin = new System.Windows.Forms.Padding(4);
-            this.btnBSPNroOPs.Name = "btnBSPNroOPs";
-            this.btnBSPNroOPs.Size = new System.Drawing.Size(140, 33);
-            this.btnBSPNroOPs.TabIndex = 4;
-            this.btnBSPNroOPs.Text = "BSP + Nro OPs";
-            this.btnBSPNroOPs.UseVisualStyleBackColor = true;
-            this.btnBSPNroOPs.Click += new System.EventHandler(this.btnBSPNroOPs_Click);
+            this.btnBSPMasBackOffices.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnBSPMasBackOffices.Font = new System.Drawing.Font("Calibri", 14.25F);
+            this.btnBSPMasBackOffices.Location = new System.Drawing.Point(39, 45);
+            this.btnBSPMasBackOffices.Margin = new System.Windows.Forms.Padding(4);
+            this.btnBSPMasBackOffices.Name = "btnBSPMasBackOffices";
+            this.btnBSPMasBackOffices.Size = new System.Drawing.Size(140, 33);
+            this.btnBSPMasBackOffices.TabIndex = 4;
+            this.btnBSPMasBackOffices.Text = "BSP + BackOffice";
+            this.btnBSPMasBackOffices.UseVisualStyleBackColor = true;
+            this.btnBSPMasBackOffices.Click += new System.EventHandler(this.btnBSPNroOPs_Click);
             // 
             // grbFileImport
             // 
@@ -340,7 +340,7 @@
 
         private frmCurrents frmCurrents1;
         private System.Windows.Forms.GroupBox grbReportes;
-        private System.Windows.Forms.Button btnBSPNroOPs;
+        private System.Windows.Forms.Button btnBSPMasBackOffices;
         private System.Windows.Forms.Button btnSituacionBOs;
         private System.Windows.Forms.Button btnOvers;
         private System.Windows.Forms.Button btnDiferencias;

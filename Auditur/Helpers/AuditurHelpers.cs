@@ -42,7 +42,7 @@ namespace Helpers
 
         public static string GetDateTimeString(DateTime? dateTime)
         {
-            return dateTime != null ? dateTime.Value.ToShortDateString() : "";
+            return dateTime?.ToShortDateString() ?? "";
         }
 
         public static string QueryDeleteByParameters(string[] Columns, string TableName)

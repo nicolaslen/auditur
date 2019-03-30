@@ -61,7 +61,6 @@
     <Compile Include="ABM.cs" />
     <Compile Include="AccesoDatos.cs" />
     <Compile Include="AuditurHelpers.cs" />
-    <Compile Include="CreateExcelFileOLD.cs" />
     <Compile Include="CreateExcelFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextToFile.cs" />

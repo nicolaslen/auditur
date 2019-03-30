@@ -23,7 +23,8 @@ namespace Auditur.Negocio
 
         public Concepto Concepto { get; set; }
         public long SemanaID { get; set; }
-        public Moneda? Moneda { get; set; }
+        public Moneda Moneda { get; set; }
+        public BSP_Rg Rg { get; set; }
 
         public long ID { get; set; }
         public Compania Compania { get; set; }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.SqlServerCe;
 using Helpers;
 using System.Data;
+using System.Reflection;
 
 namespace Auditur.Negocio
 {

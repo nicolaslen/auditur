@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Helpers;
 
 namespace Auditur.Negocio.Reportes
 {

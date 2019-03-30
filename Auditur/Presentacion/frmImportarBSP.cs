@@ -27,7 +27,6 @@ namespace Auditur.Presentacion
         private Semana semanaToImport { get; set; }
         private List<ACM> listACM { get; set; }
         private List<ADM> listADM { get; set; }
-        //int pageStart { get; set; }
 
         private void btnExaminar_BSP_Click(object sender, EventArgs e)
         {
@@ -177,10 +176,11 @@ namespace Auditur.Presentacion
             Conceptos conceptos = new Conceptos();
             List<Concepto> lstConceptos = conceptos.GetAll();
             string strFinConcepto = "";
-            List<Concepto> lstNuevosConceptos = new List<Concepto>(); //TODO: agregarlos a la base (creo que no hace falta)
+            List<Concepto> lstNuevosConceptos = new List<Concepto>();
             Concepto concepto = null;
 
-            BSP_Rg Tipo = BSP_Rg.Ambas;
+            BSP_Rg? rg = null;
+            Moneda? moneda = null;
 
             try
             {
@@ -197,6 +197,22 @@ namespace Auditur.Presentacion
 
                         var pageChunks = pdfPage.ExtractChunks();
                         var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(y => y.Key).ToList();
+
+                        var lineOfRg = pageLines.Where(x => x.Any(y => y.Text == "SCOPE")).FirstOrDefault();
+                        if (lineOfRg != null)
+                        {
+                            rg = lineOfRg.ElementAt(1).Text == "INTERNATIONAL"
+                                ? BSP_Rg.Internacional
+                                : BSP_Rg.Doméstico;
+                        }
+
+                        var lineOfMoneda = pageLines.Where(x => x.Any(y => y.Text == "ARS" || y.Text == "USD")).FirstOrDefault();
+                        if (lineOfMoneda != null)
+                        {
+                            moneda = lineOfMoneda.ElementAt(1).Text == "ARS"
+                                ? Moneda.Peso
+                                : Moneda.Dolar;
+                        }
 
                         if (!pageChunks.Any() || pageChunks.All(x => x.Text != "CIA"))
                             continue;
@@ -283,7 +299,7 @@ namespace Auditur.Presentacion
                                 if (oBSP_Ticket != null)
                                     semanaToImport.TicketsBSP.Add(oBSP_Ticket);
 
-                                oBSP_Ticket = orderedLine.ObtenerBSP_Ticket(compania, concepto);
+                                oBSP_Ticket = orderedLine.ObtenerBSP_Ticket(compania, concepto, moneda.Value, rg.Value);
                                 continue;
                             }
 

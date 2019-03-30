@@ -194,16 +194,16 @@ namespace Auditur.Presentacion
             return blnReturn;
         }
 
-        private bool GenerarBSPNroOPs()
+        private bool GenerarBSPMasBackoffices()
         {
-            string Reporte = "BSP-Op.Nro";
+            string Reporte = "BSP+BackOffice";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
             {
-                BSPNroOPs BSPNroOPs = new BSPNroOPs();
-                List<BSPNroOP> lstReporte = BSPNroOPs.Generar(semanaToReport);
-                List<string> header = GetHeader(semanaToReport, "BSP + Nro OP");
+                BSPMasBackOffices bspMasBackOffices = new BSPMasBackOffices();
+                List<BSPMasBackOffice> lstReporte = bspMasBackOffices.Generar(semanaToReport);
+                List<string> header = GetHeader(semanaToReport, "BSP + BackOffice");
                 string footer = lstReporte.Count.ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
@@ -396,7 +396,7 @@ namespace Auditur.Presentacion
             int Opcion = ((int)e.Argument);
 
             int ReportesGenerados = 0;
-            if ((Opcion == 1 || Opcion == 0) && GenerarBSPNroOPs()) ReportesGenerados++;
+            if ((Opcion == 1 || Opcion == 0) && GenerarBSPMasBackoffices()) ReportesGenerados++;
             if ((Opcion == 2 || Opcion == 0) && GenerarControlIVAs()) ReportesGenerados++;
             if ((Opcion == 3 || Opcion == 0) && GenerarCreditos()) ReportesGenerados++;
             if ((Opcion == 4 || Opcion == 0) && GenerarDebitos()) ReportesGenerados++;

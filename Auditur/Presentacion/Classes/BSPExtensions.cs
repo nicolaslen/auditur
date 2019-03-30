@@ -68,12 +68,14 @@ namespace Auditur.Presentacion.Classes
             return Convert.ToDecimal(value?.Replace("*", ""));
         }
 
-        public static BSP_Ticket ObtenerBSP_Ticket(this List<PageChunks> orderedLine, Compania compania, Concepto concepto)
+        public static BSP_Ticket ObtenerBSP_Ticket(this List<PageChunks> orderedLine, Compania compania, Concepto concepto, Moneda moneda, BSP_Rg rg)
         {
             var oBSP_Ticket = new BSP_Ticket();
 
             oBSP_Ticket.Compania = compania;
             oBSP_Ticket.Concepto = concepto;
+            oBSP_Ticket.Moneda = moneda;
+            oBSP_Ticket.Rg = rg;
             oBSP_Ticket.Trnc = orderedLine.GetChunkTextBetween(37, 60);
             oBSP_Ticket.NroDocumento = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
             oBSP_Ticket.FechaEmision =

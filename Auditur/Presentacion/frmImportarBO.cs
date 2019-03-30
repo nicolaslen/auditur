@@ -81,8 +81,8 @@ namespace Auditur.Presentacion
             Agencia oAgencia = null;
             DateTime? Periodo = null;
 
-            DateTime? FechaDesde = null;
-            DateTime? FechaHasta = null;
+            DateTime? fechaDesde = null;
+            DateTime? fechaHasta = null;
 
             if (cboAgencia.SelectedIndex > 0)
                 oAgencia = (Agencia)cboAgencia.SelectedItem;
@@ -90,8 +90,8 @@ namespace Auditur.Presentacion
             if (Validators.IsNumeric(txtPeriodoS.Text) && Validators.IsNumeric(txtPeriodoM.Text) && Validators.IsNumeric(txtPeriodoA.Text))
                 Periodo = new DateTime(Convert.ToInt32(txtPeriodoA.Text), Convert.ToInt32(txtPeriodoM.Text), Convert.ToInt32(txtPeriodoS.Text));
 
-            FechaDesde = dtpFechaDesde.Value;
-            FechaHasta = dtpFechaHasta.Value;
+            fechaDesde = dtpFechaDesde.Value;
+            fechaHasta = dtpFechaHasta.Value;
 
             if (oAgencia == null)
             {
@@ -105,44 +105,18 @@ namespace Auditur.Presentacion
                 return false;
             }
 
-            if (FechaDesde == null)
-            {
-                MessageBox.Show("Seleccione una Fecha Desde.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            if (FechaHasta == null)
-            {
-                MessageBox.Show("Seleccione una Fecha Hasta.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            if (FechaDesde >= FechaHasta)
+            if (fechaDesde >= fechaHasta)
             {
                 MessageBox.Show("La Fecha Hasta debe ser posterior a la Fecha Desde.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            /*if (Periodo.Value.Month != FechaDesde.Value.Month || (Periodo.Value.Year != FechaDesde.Value.Year))
-            {
-                MessageBox.Show("El período no coincide con la Fecha Desde.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            if (Periodo.Value.Month != FechaHasta.Value.Month || (Periodo.Value.Year != FechaHasta.Value.Year))
-            {
-                MessageBox.Show("El período no coincide con la Fecha Hasta.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }*/
-
-
-
             oSemanaAux = new Semana()
             {
                 Agencia = oAgencia,
                 Periodo = Periodo.Value,
-                FechaDesde = FechaDesde.Value,
-                FechaHasta = FechaHasta.Value,
+                FechaDesde = fechaDesde.Value,
+                FechaHasta = fechaHasta.Value,
             };
 
             if (Publics.Semana != null && Publics.Semana.Agencia.ID == oSemanaAux.Agencia.ID && Publics.Semana.Periodo == oSemanaAux.Periodo)

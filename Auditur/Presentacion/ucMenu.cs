@@ -62,6 +62,7 @@ namespace Auditur.Presentacion
         {
             MostrarForm(new frmElegirSemana());
         }
+
         private void smnCargarBD_Click(object sender, EventArgs e)
         {
             BackUp oBackup = new BackUp();
