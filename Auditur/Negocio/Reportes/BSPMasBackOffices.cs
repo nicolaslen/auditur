@@ -21,24 +21,24 @@ namespace Auditur.Negocio.Reportes
 
                 BSPMasBackOffice oBspMasBackOffice = new BSPMasBackOffice();
 
-                oBspMasBackOffice.Cia = oBSP_Ticket.Compania.Codigo;
+                oBspMasBackOffice.Cia = oBSP_Ticket.Compania.ID.ToString();
                 oBspMasBackOffice.Tipo = oBSP_Ticket.Trnc;
-                oBspMasBackOffice.Ref = "FALTA";
+                oBspMasBackOffice.Ref = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString()).FirstOrDefault();
                 oBspMasBackOffice.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
                 oBspMasBackOffice.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oBspMasBackOffice.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
                 oBspMasBackOffice.TourCode = oBSP_Ticket.Tour;
                 oBspMasBackOffice.CodNr = oBSP_Ticket.Nr;
                 oBspMasBackOffice.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
-                oBspMasBackOffice.FopCC = oBSP_Ticket.Fop;
-                oBspMasBackOffice.FopCC = oBSP_Ticket.Fop;
+                oBspMasBackOffice.FopCA = oBSP_Ticket.Fop == "CA" ? "X" : "";
+                oBspMasBackOffice.FopCC = oBSP_Ticket.Fop == "CC" ? "X" : "";
                 oBspMasBackOffice.TotalTransac = oBSP_Ticket.ValorTransaccion;
                 oBspMasBackOffice.ValorTarifa = oBSP_Ticket.ValorTarifa;
                 oBspMasBackOffice.Imp = oBSP_Ticket.ImpuestoValor;
                 oBspMasBackOffice.TyC = oBSP_Ticket.ImpuestoTyCValor;
                 oBspMasBackOffice.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
                                       oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
-                                          .Select(x => x.ImpuestoValor).Sum();
+                                          .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.Pen = oBSP_Ticket.ImpuestoPenValor;
                 oBspMasBackOffice.Cobl = oBSP_Ticket.ImpuestoCobl;
                 oBspMasBackOffice.ComStd = oBSP_Ticket.ComisionStdValor;
