@@ -9,7 +9,7 @@ namespace Auditur.Negocio.Reportes
     public class SituacionBSP
     {
         [Display(Name = "Boleto Nro")]
-        public string BoletoNro { get; set; }
+        public string NroDocumento { get; set; }
         [Display(Name = "Rg")]
         public string Rg { get; set; }
         [Display(Name = "Tr")]
@@ -29,7 +29,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
         [Display(Name = "Fecha")]
-        public string Fecha { get; set; }
+        public string FechaEmision { get; set; }
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }
     }
