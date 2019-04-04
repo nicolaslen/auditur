@@ -8,7 +8,7 @@ namespace Auditur.Negocio.Reportes
 {
     public class SituacionBO
     {
-        [Display(Name = "Boleto Nro")]
+        [Display(Name = "NroDocumento Nro")]
         public string BoletoNro { get; set; }
         public string Tr { get; set; }
         public decimal Tarifa { get; set; }

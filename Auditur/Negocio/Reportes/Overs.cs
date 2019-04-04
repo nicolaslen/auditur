@@ -15,7 +15,7 @@ namespace Auditur.Negocio.Reportes
             List<Compania> companias = Companias.GetAll();
             Companias.CloseConnection();
 
-            List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Tipo == 'B').OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
             foreach (Compania compania in companias.OrderBy(x => x.Codigo))
             {
                 lstOverCompania = new List<Over>();
@@ -24,7 +24,10 @@ namespace Auditur.Negocio.Reportes
                 {
                     BO_Ticket oBO_Ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
 
-                    if (oBSP_Ticket.ComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComOver != 0))
+                    var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
+                                                 oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty()
+                                                     .Sum();
+                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComOver != 0))
                     {
                         lstOverCompania.Add(GetOver(oBSP_Ticket, oBO_Ticket));
                     }
@@ -40,8 +43,7 @@ namespace Auditur.Negocio.Reportes
                     lstOver.AddRange(lstOverCompania);
 
                     var oOverTotal = new Over();
-                    oOverTotal.Boleto = "TOTAL";
-                    oOverTotal.Tr = compania.Codigo;
+                    oOverTotal.NroDocumento = "TOTAL";
                     oOverTotal.OverRecPesos = lstOverCompania.Select(x => x.OverRecPesos).Sum();
                     oOverTotal.OverPedPesos = lstOverCompania.Select(x => x.OverPedPesos).Sum();
                     oOverTotal.OverRecDolares = lstOverCompania.Select(x => x.OverRecDolares).Sum();
@@ -60,17 +62,20 @@ namespace Auditur.Negocio.Reportes
         {
             Over oOver = new Over();
 
-            oOver.Boleto = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
+            oOver.NroDocumento = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
             oOver.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
             oOver.Tr = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
             oOver.Observaciones = "";
 
             if (oBSP_Ticket != null)
             {
+                var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
+                                              oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0)
+                                                  .Sum();
                 if (oBSP_Ticket.Moneda == Moneda.Peso)
-                    oOver.OverRecPesos = -oBSP_Ticket.ComisionSuppValor;
+                    oOver.OverRecPesos = -totalComisionSuppValor;
                 else
-                    oOver.OverRecDolares = -oBSP_Ticket.ComisionSuppValor;
+                    oOver.OverRecDolares = -totalComisionSuppValor;
             }
 
             if (oBO_Ticket != null)

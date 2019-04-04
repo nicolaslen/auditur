@@ -16,7 +16,7 @@ namespace Auditur.Negocio.Reportes
         public string Rg { get; set; }
         [Display(Name = "Tipo")]
         public string Tipo { get; set; }
-        [Display(Name = "Boleto Nro")]
+        [Display(Name = "NroDocumento Nro")]
         public string BoletoNro { get; set; }
         [Display(Name = "Moneda")]
         public string Moneda { get; set; }

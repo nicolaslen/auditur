@@ -13,7 +13,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Ref")]
         public string Ref { get; set; }
 
-        [Display(Name = "Boleto Nro")]
+        [Display(Name = "NroDocumento Nro")]
         public string BoletoNro { get; set; }
 
         [Display(Name = "Fecha Emisión")]
@@ -32,13 +32,13 @@ namespace Auditur.Negocio.Reportes
         public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
-        public string FopCA { get; set; }
+        public decimal FopCA { get; set; }
 
         [Display(Name = "Fop CC")]
-        public string FopCC { get; set; }
+        public decimal FopCC { get; set; }
 
         [Display(Name = "Total Transacción")]
-        public decimal TotalTransac { get; set; }
+        public decimal TotalTransaccion { get; set; }
 
         [Display(Name = "Valor Tarifa")]
         public decimal ValorTarifa { get; set; }
@@ -52,20 +52,20 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "IVA Tarifa")]
         public decimal IVATarifa { get; set; }
 
-        [Display(Name = "Pen")]
-        public decimal Pen { get; set; }
+        [Display(Name = "Penalidad")]
+        public decimal Penalidad { get; set; }
 
         [Display(Name = "Cobl")]
         public decimal Cobl { get; set; }
 
-        [Display(Name = "ComStd")]
-        public decimal ComStd { get; set; }
+        [Display(Name = "ComStdValor")]
+        public decimal ComStdValor { get; set; }
 
-        [Display(Name = "ComSupl")]
-        public decimal ComSupl { get; set; }
+        [Display(Name = "ComSuppValor")]
+        public decimal ComSuppValor { get; set; }
 
         [Display(Name = "IVA Com")]
-        public decimal IVAComisiones { get; set; }
+        public decimal IVASinComision { get; set; }
 
         [Display(Name = "NetoAPagar")]
         public decimal NetoAPagar { get; set; }

@@ -4,7 +4,7 @@ namespace Auditur.Negocio.Reportes
 {
     public class Over
     {
-        public string Boleto { get; set; }
+        public string NroDocumento { get; set; }
         public string Fecha { get; set; }
         public string Tr { get; set; }
 

@@ -8,7 +8,7 @@ namespace Auditur.Negocio.Reportes
 {
     public class SituacionBSP
     {
-        [Display(Name = "Boleto Nro")]
+        [Display(Name = "NroDocumento Nro")]
         public string NroDocumento { get; set; }
         [Display(Name = "Rg")]
         public string Rg { get; set; }

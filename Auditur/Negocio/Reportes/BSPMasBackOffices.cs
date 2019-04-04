@@ -13,7 +13,7 @@ namespace Auditur.Negocio.Reportes
             lstTipoConceptoPermitidos.Add('B'); //Billetes
             lstTipoConceptoPermitidos.Add('R'); //Reembolsos
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => lstTipoConceptoPermitidos.Contains(x.Concepto.Tipo)).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && x.Trnc == "TKTT").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
@@ -30,22 +30,22 @@ namespace Auditur.Negocio.Reportes
                 oBspMasBackOffice.TourCode = oBSP_Ticket.Tour;
                 oBspMasBackOffice.CodNr = oBSP_Ticket.Nr;
                 oBspMasBackOffice.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
-                oBspMasBackOffice.FopCA = oBSP_Ticket.Fop == "CA" ? "X" : "";
-                oBspMasBackOffice.FopCC = oBSP_Ticket.Fop == "CC" ? "X" : "";
-                oBspMasBackOffice.TotalTransac = oBSP_Ticket.ValorTransaccion;
-                oBspMasBackOffice.ValorTarifa = oBSP_Ticket.ValorTarifa;
-                oBspMasBackOffice.Imp = oBSP_Ticket.ImpuestoValor;
-                oBspMasBackOffice.TyC = oBSP_Ticket.ImpuestoTyCValor;
+                oBspMasBackOffice.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.TotalTransaccion = oBSP_Ticket.ValorTransaccion + oBSP_Ticket.Detalle.Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.ValorTarifa = oBSP_Ticket.ValorTarifa + oBSP_Ticket.Detalle.Select(x => x.ValorTarifa).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.Imp = oBSP_Ticket.ImpuestoValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.TyC = oBSP_Ticket.ImpuestoTyCValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
                                       oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
                                           .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                oBspMasBackOffice.Pen = oBSP_Ticket.ImpuestoPenValor;
-                oBspMasBackOffice.Cobl = oBSP_Ticket.ImpuestoCobl;
-                oBspMasBackOffice.ComStd = oBSP_Ticket.ComisionStdValor;
-                oBspMasBackOffice.ComSupl = oBSP_Ticket.ComisionSuppValor;
-                oBspMasBackOffice.IVAComisiones = oBSP_Ticket.ImpuestoSinComision;
-                oBspMasBackOffice.NetoAPagar = oBSP_Ticket.NetoAPagar;
-
+                oBspMasBackOffice.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.Cobl = oBSP_Ticket.ImpuestoCobl + oBSP_Ticket.Detalle.Select(x => x.ImpuestoCobl).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.ComStdValor = oBSP_Ticket.ComisionStdValor + oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
+                
                 if (bo_ticket != null)
                 {
                     oBspMasBackOffice.Operacion = bo_ticket.Expediente;

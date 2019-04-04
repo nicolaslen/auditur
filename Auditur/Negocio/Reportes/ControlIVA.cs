@@ -8,7 +8,7 @@ namespace Auditur.Negocio.Reportes
 {
     public class ControlIVA
     {
-        [Display(Name = "Boleto Nro")]
+        [Display(Name = "NroDocumento Nro")]
         public string BoletoNroBSP { get; set; }
         [Display(Name = "Rg")]
         public string RgBSP { get; set; }

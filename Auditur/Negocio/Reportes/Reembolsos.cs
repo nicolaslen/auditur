@@ -18,7 +18,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => lstReembolsosPesos.Add(GetReembolso(x)));
             if (lstReembolsosPesos.Count > 0)
             {
-                lstReembolsosPesos.Add(new Reembolso { RfndNro = "TOTAL", NetoAPagar = lstReembolsosPesos.Sum(x => x.NetoAPagar), Contado = lstReembolsosPesos.Sum(x => x.Contado), Credito = lstReembolsosPesos.Sum(x => x.Credito), ImpContado = lstReembolsosPesos.Sum(x => x.ImpContado), ImpCredito = lstReembolsosPesos.Sum(x => x.ImpCredito), CC = lstReembolsosPesos.Sum(x => x.CC), Importe = lstReembolsosPesos.Sum(x => x.Importe), Comision = lstReembolsosPesos.Sum(x => x.Comision), Moneda = "$", IVA = lstReembolsosPesos.Sum(x => x.IVA) });
+                lstReembolsosPesos.Add(new Reembolso { RfndNro = "TOTAL", NetoAPagar = lstReembolsosPesos.Sum(x => x.NetoAPagar) });
                 lstReembolsos.AddRange(lstReembolsosPesos);
             }
 
@@ -26,7 +26,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => lstReembolsosDolares.Add(GetReembolso(x)));
             if (lstReembolsosDolares.Count > 0)
             {
-                lstReembolsosDolares.Add(new Reembolso { RfndNro = "TOTAL", NetoAPagar = lstReembolsosDolares.Sum(x => x.NetoAPagar), Contado = lstReembolsosDolares.Sum(x => x.Contado), Credito = lstReembolsosDolares.Sum(x => x.Credito), ImpContado = lstReembolsosDolares.Sum(x => x.ImpContado), ImpCredito = lstReembolsosDolares.Sum(x => x.ImpCredito), CC = lstReembolsosDolares.Sum(x => x.CC), Importe = lstReembolsosDolares.Sum(x => x.Importe), Comision = lstReembolsosDolares.Sum(x => x.Comision), Moneda = "D", IVA = lstReembolsosDolares.Sum(x => x.IVA) });
+                lstReembolsosDolares.Add(new Reembolso { RfndNro = "TOTAL", NetoAPagar = lstReembolsosPesos.Sum(x => x.NetoAPagar) });
                 lstReembolsos.AddRange(lstReembolsosDolares);
             }
 
@@ -44,18 +44,18 @@ namespace Auditur.Negocio.Reportes
             oReembolso.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
             oReembolso.FopCA = oBSP_Ticket.Fop == "CA" ? "X" : "";
             oReembolso.FopCC = oBSP_Ticket.Fop == "CC" ? "X" : "";
-            oReembolso.TotalTransaccion = oBSP_Ticket.ValorTransaccion;
-            oReembolso.ValorTarifa = oBSP_Ticket.ValorTarifa;
-            oReembolso.Imp = oBSP_Ticket.ImpuestoValor;
-            oReembolso.TyC = oBSP_Ticket.ImpuestoTyCValor;
+            oReembolso.TotalTransaccion = oBSP_Ticket.ValorTransaccion + oBSP_Ticket.Detalle.Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+            oReembolso.ValorTarifa = oBSP_Ticket.ValorTarifa + oBSP_Ticket.Detalle.Select(x => x.ValorTarifa).DefaultIfEmpty(0).Sum();
+            oReembolso.Imp = oBSP_Ticket.ImpuestoValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oReembolso.TyC = oBSP_Ticket.ImpuestoTyCValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
             oReembolso.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) + 
                                     oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor)
                                        .DefaultIfEmpty(0).Sum();
-            oReembolso.Penalidad = oBSP_Ticket.ImpuestoPenValor;
-            oReembolso.ComStdValor = oBSP_Ticket.ComisionStdValor;
-            oReembolso.ComSuppValor = oBSP_Ticket.ComisionSuppValor;
-            oReembolso.IVASinComision = oBSP_Ticket.ImpuestoSinComision;
-            oReembolso.NetoAPagar = oBSP_Ticket.NetoAPagar;
+            oReembolso.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
+            oReembolso.ComStdValor = oBSP_Ticket.ComisionStdValor + oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();
+            oReembolso.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
+            oReembolso.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
+            oReembolso.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
             oReembolso.Observaciones = "FALTA";
             return oReembolso;
         }

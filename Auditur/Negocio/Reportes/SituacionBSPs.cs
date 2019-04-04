@@ -36,18 +36,18 @@ namespace Auditur.Negocio.Reportes
                 oSituacionBSP.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                 oSituacionBSP.FopCA = oBSP_Ticket.Fop == "CA" ? "X" : "";
                 oSituacionBSP.FopCC = oBSP_Ticket.Fop == "CC" ? "X" : "";
-                oSituacionBSP.TotalTransac = oBSP_Ticket.ValorTransaccion;
+                oSituacionBSP.TotalTransaccion = oBSP_Ticket.ValorTransaccion;
                 oSituacionBSP.ValorTarifa = oBSP_Ticket.ValorTarifa;
                 oSituacionBSP.Imp = oBSP_Ticket.ImpuestoValor;
                 oSituacionBSP.TyC = oBSP_Ticket.ImpuestoTyCValor;
                 oSituacionBSP.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
                                 oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
                                 .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                oSituacionBSP.Pen = oBSP_Ticket.ImpuestoPenValor;
+                oSituacionBSP.Penalidad = oBSP_Ticket.ImpuestoPenValor;
                 oSituacionBSP.Cobl = oBSP_Ticket.ImpuestoCobl;
-                oSituacionBSP.ComStd = oBSP_Ticket.ComisionStdValor;
-                oSituacionBSP.ComSupl = oBSP_Ticket.ComisionSuppValor;
-                oSituacionBSP.IVAComisiones = oBSP_Ticket.ImpuestoSinComision;
+                oSituacionBSP.ComStdValor = oBSP_Ticket.ComisionStdValor;
+                oSituacionBSP.ComSuppValor = oBSP_Ticket.ComisionSuppValor;
+                oSituacionBSP.IVASinComision = oBSP_Ticket.ImpuestoSinComision;
                 oSituacionBSP.NetoAPagar = oBSP_Ticket.NetoAPagar;
                 */
 
