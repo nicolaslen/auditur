@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Helpers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Helpers;
 using System.Data;
+using System.Linq;
 
 namespace Auditur.Negocio.Reportes
 {
@@ -13,9 +11,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<SituacionBSP> lstSituacionBSP = new List<SituacionBSP>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP
-                .Where(bspT => bspT.Concepto.Tipo == 'B' &&
-                    bspT.Tipo != "VVVV" &&
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(bspT => bspT.Concepto.Nombre == "ISSUES" && bspT.Trnc == "TKTT" &&
                     !oSemana.TicketsBO.Any(boT => boT.Billete == bspT.NroDocumento &&
                         boT.Compania.Codigo == bspT.Compania.Codigo))
                 .OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento)
@@ -25,50 +21,33 @@ namespace Auditur.Negocio.Reportes
             {
                 SituacionBSP oSituacionBSP = new SituacionBSP();
 
-                /*oSituacionBSP.Cia = oBSP_Ticket.Compania.ID.ToString();
+                oSituacionBSP.Cia = oBSP_Ticket.Compania.ID.ToString();
                 oSituacionBSP.Tipo = oBSP_Ticket.Trnc;
                 oSituacionBSP.Ref = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString()).FirstOrDefault();
-                oSituacionBSP.NroDocumento = oBSP_Ticket.NroDocumento;
+                oSituacionBSP.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
                 oSituacionBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oSituacionBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
                 oSituacionBSP.TourCode = oBSP_Ticket.Tour;
                 oSituacionBSP.CodNr = oBSP_Ticket.Nr;
                 oSituacionBSP.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
-                oSituacionBSP.FopCA = oBSP_Ticket.Fop == "CA" ? "X" : "";
-                oSituacionBSP.FopCC = oBSP_Ticket.Fop == "CC" ? "X" : "";
-                oSituacionBSP.TotalTransaccion = oBSP_Ticket.ValorTransaccion;
-                oSituacionBSP.ValorTarifa = oBSP_Ticket.ValorTarifa;
-                oSituacionBSP.Imp = oBSP_Ticket.ImpuestoValor;
-                oSituacionBSP.TyC = oBSP_Ticket.ImpuestoTyCValor;
+                oSituacionBSP.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.TotalTransaccion = oBSP_Ticket.ValorTransaccion + oBSP_Ticket.Detalle.Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.ValorTarifa = oBSP_Ticket.ValorTarifa + oBSP_Ticket.Detalle.Select(x => x.ValorTarifa).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.Imp = oBSP_Ticket.ImpuestoValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.TyC = oBSP_Ticket.ImpuestoTyCValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
                 oSituacionBSP.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
-                                oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
-                                .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                oSituacionBSP.Penalidad = oBSP_Ticket.ImpuestoPenValor;
-                oSituacionBSP.Cobl = oBSP_Ticket.ImpuestoCobl;
-                oSituacionBSP.ComStdValor = oBSP_Ticket.ComisionStdValor;
-                oSituacionBSP.ComSuppValor = oBSP_Ticket.ComisionSuppValor;
-                oSituacionBSP.IVASinComision = oBSP_Ticket.ImpuestoSinComision;
-                oSituacionBSP.NetoAPagar = oBSP_Ticket.NetoAPagar;
-                */
+                                      oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
+                                          .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.Cobl = oBSP_Ticket.ImpuestoCobl + oBSP_Ticket.Detalle.Select(x => x.ImpuestoCobl).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.ComStdValor = oBSP_Ticket.ComisionStdValor + oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
+                oSituacionBSP.Observaciones = "No figura en su BO";
 
-                oSituacionBSP.Tarifa = (oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito);
-                oSituacionBSP.Impuestos = (oBSP_Ticket.Detalle.Sum(x => x.ImpContado + x.ImpCredito) + oBSP_Ticket.IVA105);
-                oSituacionBSP.Comision = (oBSP_Ticket.ComValor + oBSP_Ticket.ComIVA);
-                oSituacionBSP.Importe = oBSP_Ticket.Total;
-
-                if (oSituacionBSP.Tarifa != 0 || oSituacionBSP.Impuestos != 0 || oSituacionBSP.Comision != 0 || oSituacionBSP.Importe != 0)
-                {
-                    oSituacionBSP.Contado = oBSP_Ticket.TarContado;
-                    oSituacionBSP.Credito = oBSP_Ticket.TarCredito;
-                    oSituacionBSP.NroDocumento = oBSP_Ticket.NroDocumento.ToString();
-                    oSituacionBSP.Rg = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "CT" : "IT";
-                    oSituacionBSP.Tr = oBSP_Ticket.Compania.Codigo;
-                    oSituacionBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-                    oSituacionBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
-                    oSituacionBSP.Observaciones = "No figura en su BO";
-
-                    lstSituacionBSP.Add(oSituacionBSP);
-                }
+                lstSituacionBSP.Add(oSituacionBSP);
             }
 
             return lstSituacionBSP;

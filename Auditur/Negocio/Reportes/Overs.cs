@@ -15,7 +15,7 @@ namespace Auditur.Negocio.Reportes
             List<Compania> companias = Companias.GetAll();
             Companias.CloseConnection();
 
-            List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && x.Trnc == "TKTT").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
             foreach (Compania compania in companias.OrderBy(x => x.Codigo))
             {
                 lstOverCompania = new List<Over>();

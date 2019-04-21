@@ -56,7 +56,7 @@ namespace Auditur.Negocio.Reportes
             oReembolso.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
             oReembolso.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
             oReembolso.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
-            oReembolso.Observaciones = "FALTA";
+            oReembolso.Observaciones = "";
             return oReembolso;
         }
     }

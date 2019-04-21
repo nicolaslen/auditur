@@ -81,7 +81,7 @@ namespace Auditur.Negocio
             lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.NetoAPagar));
             lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.Tour));
             lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.Esac));
-            lstParameters.Add(new SqlCeParameter("p" + p++, (uint)oBSP_Ticket.Moneda.Value));
+            lstParameters.Add(new SqlCeParameter("p" + p++, (uint)oBSP_Ticket.Moneda));
 
             if (oBSP_Ticket.Concepto != null)
                 lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.Concepto.ID));
