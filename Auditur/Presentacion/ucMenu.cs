@@ -101,10 +101,5 @@ namespace Auditur.Presentacion
         {
             MostrarForm(new frmABMCompanias());
         }
-
-        private void smiTestingBSP_Click(object sender, EventArgs e)
-        {
-            MostrarForm(new frmTestingBSP());
-        }
     }
 }

@@ -21,7 +21,7 @@ namespace Auditur.Negocio.Reportes
                 BO_Ticket bo_ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
                 if (bo_ticket != null)
                 {
-                    decimal ImpuestosBSP = Math.Round(oBSP_Ticket.Detalle.Sum(x => x.ImpContado + x.ImpCredito) + oBSP_Ticket.IVA105, 2);
+                    /*decimal ImpuestosBSP = Math.Round(oBSP_Ticket.Detalle.Sum(x => x.ImpContado + x.ImpCredito) + oBSP_Ticket.IVA105, 2);
 
                     decimal TarifaDif = Math.Round((oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito) - (bo_ticket.Tarifa), 2);
                     decimal ContadoDif = Math.Round((oBSP_Ticket.TarContado) - (bo_ticket.TarContado), 2);
@@ -62,7 +62,7 @@ namespace Auditur.Negocio.Reportes
                         oDiferencia.ComisionDif = ComisionDif;
 
                         lstDiferencia.Add(oDiferencia);
-                    }
+                    }*/
                 }
             }
 

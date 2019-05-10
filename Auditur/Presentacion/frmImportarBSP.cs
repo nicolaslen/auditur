@@ -167,7 +167,7 @@ namespace Auditur.Presentacion
             int page = 0, index = 0;
 
             BSP_Ticket oBSP_Ticket = null;
-            BSP_Ticket_Detalle oBSP_Ticket_Detalle = null;
+            //BSP_Ticket_Detalle oBSP_Ticket_Detalle = null;
 
             Companias companias = new Companias();
             List<Compania> lstCompanias = companias.GetAll();
@@ -306,21 +306,22 @@ namespace Auditur.Presentacion
                             if (oBSP_Ticket != null && orderedLine.First().Text.Length >= 4 &&
                                 orderedLine.First().Text.Substring(0, 4) == "TOUR")
                             {
-                                oBSP_Ticket.Tour = orderedLine.ElementAt(2).Text;
+                                oBSP_Ticket.Tour = orderedLine.First().Text.Substring(5);
                                 continue;
                             }
 
                             if (oBSP_Ticket != null && orderedLine.First().Text.Length >= 4 &&
                                 orderedLine.First().Text.Substring(0, 4) == "ESAC")
                             {
-                                oBSP_Ticket.Esac = orderedLine.ElementAt(2).Text;
+                                oBSP_Ticket.Esac = orderedLine.First().Text.Substring(5);
                                 continue;
                             }
 
                             var detalle = orderedLine.ObtenerBSP_Ticket_Detalle();
 
                             //ACM y ADM
-                            if (listACM != null && concepto.Tipo == 'C')
+                            //TODO: ACM y ADM
+                            /*if (listACM != null && concepto.Tipo == 'C')
                             {
                                 ACM oACM = listACM.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
                                 if (oACM != null)
@@ -331,7 +332,7 @@ namespace Auditur.Presentacion
                                 ADM oADM = listADM.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
                                 if (oADM != null)
                                     oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
-                            }
+                            }*/
 
                             oBSP_Ticket.Detalle.Add(detalle);
                         }

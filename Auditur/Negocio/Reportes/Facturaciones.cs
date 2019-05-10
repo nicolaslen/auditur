@@ -23,7 +23,7 @@ namespace Auditur.Negocio.Reportes
 
                 Facturacion oFacturacion = new Facturacion();
 
-                oFacturacion.Cia = oBSP_Ticket.Compania.Codigo;
+                /*oFacturacion.Cia = oBSP_Ticket.Compania.Codigo;
                 oFacturacion.Rg = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "C" : "I";
                 oFacturacion.Tipo = (oBSP_Ticket.Concepto.Tipo.Equals('R') ? "R" : (oBSP_Ticket.Tipo.Contains('F') && !oBSP_Ticket.Detalle.Any(x => x.Observaciones.Trim() == "CNJ") ? "B" : "V"));
                 oFacturacion.BoletoNro = !oBSP_Ticket.Concepto.Tipo.Equals('R') ? oBSP_Ticket.NroDocumento.ToString() : oBSP_Ticket.Detalle.Find(x => x.Observaciones.Substring(0, 2) == "RF").Observaciones.Substring(5, 10);
@@ -40,7 +40,7 @@ namespace Auditur.Negocio.Reportes
                 oFacturacion.IVAComisiones = oBSP_Ticket.ComIVA;
                 oFacturacion.TotalFinal = oBSP_Ticket.Total;
                 oBSP_Ticket.Detalle.ForEach(x => oFacturacion.Observaciones += x.Observaciones + " ");
-                oFacturacion.Observaciones = oFacturacion.Observaciones.Trim();
+                oFacturacion.Observaciones = oFacturacion.Observaciones.Trim();*/
 
                 if (bo_ticket != null)
                 {

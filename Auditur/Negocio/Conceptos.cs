@@ -46,8 +46,7 @@ namespace Auditur.Negocio
         public override List<Concepto> GetAll()
         {
             List<Concepto> listadoConceptos = base.GetAll();
-            listadoConceptos.OrderBy(x => x.Nombre);
-            return listadoConceptos;
+            return listadoConceptos.OrderBy(x => x.Nombre).ToList();
         }
 
         private static Concepto DataReaderAObjeto(SqlCeDataReader rdrLector)
@@ -55,7 +54,7 @@ namespace Auditur.Negocio
             Concepto oConcepto = new Concepto();
             oConcepto.ID = rdrLector.GetInt64(rdrLector.GetOrdinal("ID"));
             oConcepto.Nombre = rdrLector.GetString(rdrLector.GetOrdinal("Nombre"));
-            oConcepto.Tipo = rdrLector.GetString(rdrLector.GetOrdinal("Tipo"))[0];
+            //oConcepto.Tipo = rdrLector.GetString(rdrLector.GetOrdinal("Tipo"))[0];
             return oConcepto;
         }
     }

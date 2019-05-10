@@ -303,7 +303,7 @@ namespace Auditur.Presentacion
                 Reembolsos Reembolsos = new Reembolsos();
                 List<Reembolso> lstReporte = Reembolsos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Reembolsos en BSP");
-                string footer = lstReporte.Count(x => x.BoletoNro != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.RfndNro != "TOTAL").ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }

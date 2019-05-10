@@ -37,7 +37,7 @@ namespace Auditur.Negocio.Reportes
         {
             Debito oDebito = new Debito();
 
-            oDebito.Nro = oBSP_Ticket.NroDocumento.ToString();
+            /*oDebito.Nro = oBSP_Ticket.NroDocumento.ToString();
             oDebito.Rg = oBSP_Ticket.Rg == BSP_Rg.Internacional ? "ID" : "CD";
             oDebito.Tr = oBSP_Ticket.Compania.Codigo;
             oDebito.Tarifa = oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito;
@@ -49,7 +49,7 @@ namespace Auditur.Negocio.Reportes
             oDebito.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oDebito.Importe = oBSP_Ticket.Total;
             oDebito.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-            oDebito.Observaciones = oBSP_Ticket.Detalle[0].Observaciones.Replace("|", "\n");
+            oDebito.Observaciones = oBSP_Ticket.Detalle[0].Observaciones.Replace("|", "\n");*/
 
             return oDebito;
         }

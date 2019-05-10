@@ -41,7 +41,6 @@
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smnCargarBD = new System.Windows.Forms.ToolStripMenuItem();
             this.smnBackUp = new System.Windows.Forms.ToolStripMenuItem();
-            this.smiTestingBSP = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuGeneral.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,8 +65,7 @@
             // 
             this.importarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smiImportarBSP,
-            this.smiImportarBO,
-            this.smiTestingBSP});
+            this.smiImportarBO});
             this.importarToolStripMenuItem.Name = "importarToolStripMenuItem";
             this.importarToolStripMenuItem.Size = new System.Drawing.Size(92, 27);
             this.importarToolStripMenuItem.Text = "Importar";
@@ -155,13 +153,6 @@
             this.smnBackUp.Text = "Importar base de datos";
             this.smnBackUp.Click += new System.EventHandler(this.smnCargarBD_Click);
             // 
-            // smiTestingBSP
-            // 
-            this.smiTestingBSP.Name = "smiTestingBSP";
-            this.smiTestingBSP.Size = new System.Drawing.Size(239, 28);
-            this.smiTestingBSP.Text = "TESTING";
-            this.smiTestingBSP.Click += new System.EventHandler(this.smiTestingBSP_Click);
-            // 
             // ucMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -194,6 +185,5 @@
         private System.Windows.Forms.ToolStripMenuItem smiAgencias;
         private System.Windows.Forms.ToolStripMenuItem smiConceptos;
         private System.Windows.Forms.ToolStripMenuItem smiCompanias;
-        private System.Windows.Forms.ToolStripMenuItem smiTestingBSP;
     }
 }

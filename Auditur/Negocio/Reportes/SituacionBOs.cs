@@ -12,7 +12,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<SituacionBO> lstSituacionBO = new List<SituacionBO>();
 
-            List<BO_Ticket> lstTickets = 
+            /*List<BO_Ticket> lstTickets = 
                 oSemana.TicketsBO
                     .Where(bo => (!oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento && 
                                 bo.Compania.Codigo == bsp.Compania.Codigo))
@@ -50,7 +50,7 @@ namespace Auditur.Negocio.Reportes
 
                     lstSituacionBO.Add(oSituacionBO);
                 }
-            }
+            }*/
 
             return lstSituacionBO;
         }

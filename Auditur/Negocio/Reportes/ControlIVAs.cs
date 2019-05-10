@@ -14,7 +14,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<ControlIVA> lstControlIVA = new List<ControlIVA>();
             
-            List<char> lstTipoConceptoPermitidos = new List<char>();
+            /*List<char> lstTipoConceptoPermitidos = new List<char>();
             lstTipoConceptoPermitidos.Add('B'); //Billetes
             lstTipoConceptoPermitidos.Add('R'); //Reembolsos
             
@@ -67,7 +67,7 @@ namespace Auditur.Negocio.Reportes
 
                     lstControlIVA.Add(oControlIVA);
                 }
-            }
+            }*/
 
             return lstControlIVA;
         }
