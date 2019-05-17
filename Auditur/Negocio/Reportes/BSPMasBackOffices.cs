@@ -13,7 +13,7 @@ namespace Auditur.Negocio.Reportes
             lstTipoConceptoPermitidos.Add('B'); //Billetes
             lstTipoConceptoPermitidos.Add('R'); //Reembolsos
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && x.Trnc == "TKTT").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA")).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
@@ -21,10 +21,13 @@ namespace Auditur.Negocio.Reportes
 
                 BSPMasBackOffice oBspMasBackOffice = new BSPMasBackOffice();
 
-                oBspMasBackOffice.Cia = oBSP_Ticket.Compania.ID.ToString();
+                oBspMasBackOffice.Cia = oBSP_Ticket.Compania.Codigo;
                 oBspMasBackOffice.Tipo = oBSP_Ticket.Trnc;
-                oBspMasBackOffice.Ref = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString()).FirstOrDefault();
-                oBspMasBackOffice.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
+                oBspMasBackOffice.RTDN = ConcatNumbers(oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).FirstOrDefault(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).Skip(1).ToList());
+                if (oBSP_Ticket.Detalle.Any(x => x.Trnc == "+RTDN:" && x.Fop == "EX"))
+                    oBspMasBackOffice.RTDN += " (EX)";
+                
+                oBspMasBackOffice.BoletoNro = ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
                 oBspMasBackOffice.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oBspMasBackOffice.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
                 oBspMasBackOffice.TourCode = oBSP_Ticket.Tour;
@@ -32,7 +35,7 @@ namespace Auditur.Negocio.Reportes
                 oBspMasBackOffice.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                 oBspMasBackOffice.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
-                oBspMasBackOffice.TotalTransaccion = oBSP_Ticket.ValorTransaccion + oBSP_Ticket.Detalle.Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                oBspMasBackOffice.TotalTransaccion = (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC" || x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.ValorTarifa = oBSP_Ticket.ValorTarifa + oBSP_Ticket.Detalle.Select(x => x.ValorTarifa).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.Imp = oBSP_Ticket.ImpuestoValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.TyC = oBSP_Ticket.ImpuestoTyCValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
@@ -45,7 +48,7 @@ namespace Auditur.Negocio.Reportes
                 oBspMasBackOffice.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
                 oBspMasBackOffice.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
-                
+
                 if (bo_ticket != null)
                 {
                     oBspMasBackOffice.Operacion = bo_ticket.Expediente;
@@ -56,6 +59,27 @@ namespace Auditur.Negocio.Reportes
                 lstBSPNroOP.Add(oBspMasBackOffice);
             }
             return lstBSPNroOP;
+        }
+
+        private static string ConcatNumbers(string initValue, List<string> nextValues)
+        {
+            if (!string.IsNullOrWhiteSpace(initValue) && nextValues.Any())
+            {
+                var currentValue = initValue;
+                foreach (var value in nextValues)
+                {
+                    int i = 1;
+                    while (currentValue[currentValue.Length - i] == '9')
+                    {
+                        i++;
+                    }
+
+                    initValue += "/" + value.Substring(value.Length - i, i);
+                    currentValue = value;
+                }
+            }
+
+            return initValue;
         }
     }
 }

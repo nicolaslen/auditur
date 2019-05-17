@@ -36,7 +36,7 @@ namespace Auditur.Negocio.Reportes
         private Reembolso GetReembolso(BSP_Ticket oBSP_Ticket)
         {
             Reembolso oReembolso = new Reembolso();
-            oReembolso.Cia = oBSP_Ticket.Compania.ID.ToString();
+            oReembolso.Cia = oBSP_Ticket.Compania.Codigo;
             oReembolso.RfndNro = oBSP_Ticket.NroDocumento.ToString();
             oReembolso.RtdnNro = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString())
                 .FirstOrDefault();

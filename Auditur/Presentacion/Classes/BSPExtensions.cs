@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Auditur.Negocio;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
@@ -109,13 +110,27 @@ namespace Auditur.Presentacion.Classes
         public static BSP_Ticket_Detalle ObtenerBSP_Ticket_Detalle(this List<PageChunks> orderedLine)
         {
             var detalle = new BSP_Ticket_Detalle();
-            detalle.Trnc = orderedLine.GetChunkTextBetween(37, 60);
-            detalle.NroDocumento = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
+
+            var possibleRTDN = orderedLine.GetChunkTextBetween(22, 160);
+            if (possibleRTDN != null && possibleRTDN.Length >= 5 && possibleRTDN.Substring(0, 5) == "+RTDN")
+            {
+                possibleRTDN = Regex.Replace(possibleRTDN, @"\s+", " ");
+                var splitedRtdn = possibleRTDN.Split(' ');
+                detalle.Trnc = splitedRtdn[0];
+                detalle.NroDocumento = Convert.ToInt64(splitedRtdn[1]);
+                detalle.Cpn = splitedRtdn[2];
+            }
+            else
+            {
+                detalle.Trnc = orderedLine.GetChunkTextBetween(37, 60);
+                detalle.NroDocumento = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
+                detalle.Cpn = orderedLine.GetChunkTextBetween(143, 168);
+            }
+
             detalle.FechaEmision = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140),
                 out var fechaVentaDetalle)
                 ? (DateTime?)fechaVentaDetalle
                 : null;
-            detalle.Cpn = orderedLine.GetChunkTextBetween(143, 168);
             detalle.Nr = orderedLine.GetChunkTextBetween(169, 192);
             detalle.Stat = orderedLine.GetChunkTextBetween(200, 211);
             detalle.Fop = orderedLine.GetChunkTextBetween(218, 235);

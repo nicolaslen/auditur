@@ -14,7 +14,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Tipo")]
         public string Tipo { get; set; }
 
-        [Display(Name = "Ref")]
+        [Display(Name = "RTDN")]
         public string Ref { get; set; }
 
         [Display(Name = "NroDocumento Nro")]

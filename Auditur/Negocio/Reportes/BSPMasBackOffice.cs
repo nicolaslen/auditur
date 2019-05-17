@@ -10,8 +10,8 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Tipo")]
         public string Tipo { get; set; }
 
-        [Display(Name = "Ref")]
-        public string Ref { get; set; }
+        [Display(Name = "RTDN")]
+        public string RTDN { get; set; }
 
         [Display(Name = "Documento Nro")]
         public string BoletoNro { get; set; }

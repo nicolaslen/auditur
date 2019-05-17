@@ -21,7 +21,7 @@ namespace Auditur.Negocio.Reportes
             {
                 SituacionBSP oSituacionBSP = new SituacionBSP();
 
-                oSituacionBSP.Cia = oBSP_Ticket.Compania.ID.ToString();
+                oSituacionBSP.Cia = oBSP_Ticket.Compania.Codigo;
                 oSituacionBSP.Tipo = oBSP_Ticket.Trnc;
                 oSituacionBSP.Ref = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString()).FirstOrDefault();
                 oSituacionBSP.BoletoNro = oBSP_Ticket.NroDocumento.ToString();

@@ -41,7 +41,7 @@ namespace Auditur.Negocio.Reportes
         public decimal ComisionBO { get; set; }
         [Display(Name = "IVA Comis ")]
         public decimal IVAComisionBO { get; set; }
-        [Display(Name = "Ref.")]
+        [Display(Name = "RTDN.")]
         public string Referencia { get; set; }
         [Display(Name = "Factura")]
         public string Factura { get; set; }
