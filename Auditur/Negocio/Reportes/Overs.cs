@@ -43,7 +43,7 @@ namespace Auditur.Negocio.Reportes
                     lstOver.AddRange(lstOverCompania);
 
                     var oOverTotal = new Over();
-                    oOverTotal.NroDocumento = "TOTAL";
+                    oOverTotal.BoletoNro = "TOTAL";
                     oOverTotal.OverRecPesos = lstOverCompania.Select(x => x.OverRecPesos).Sum();
                     oOverTotal.OverPedPesos = lstOverCompania.Select(x => x.OverPedPesos).Sum();
                     oOverTotal.OverRecDolares = lstOverCompania.Select(x => x.OverRecDolares).Sum();
@@ -62,9 +62,11 @@ namespace Auditur.Negocio.Reportes
         {
             Over oOver = new Over();
 
-            oOver.NroDocumento = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
-            oOver.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
-            oOver.Tr = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
+            oOver.Cia = oBSP_Ticket.Compania.Codigo;
+            oOver.BoletoNro = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
+            oOver.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
+            oOver.NetRemit = oBSP_Ticket != null ? oBSP_Ticket.Nr : "";
+            oOver.TourCode = oBSP_Ticket != null ? oBSP_Ticket.Tour : "";
             oOver.Observaciones = "";
 
             if (oBSP_Ticket != null)

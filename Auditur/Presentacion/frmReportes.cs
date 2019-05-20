@@ -238,7 +238,7 @@ namespace Auditur.Presentacion
                 Creditos Creditos = new Creditos();
                 List<CreditoObj> lstReporte = Creditos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Notas de Crédito en BSP");
-                string footer = lstReporte.Count(x => x.Nro != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.RTDN != "TOTAL").ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -255,7 +255,7 @@ namespace Auditur.Presentacion
                 Debitos Debitos = new Debitos();
                 List<Debito> lstReporte = Debitos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Notas de Débito en BSP");
-                string footer = lstReporte.Count(x => x.Nro != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.RTDN != "TOTAL").ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -287,7 +287,7 @@ namespace Auditur.Presentacion
                 Overs Overs = new Overs();
                 List<Over> lstReporte = Overs.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Análisis de Over");
-                string footer = lstReporte.Count(x => x.NroDocumento != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.BoletoNro != "TOTAL") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -303,7 +303,7 @@ namespace Auditur.Presentacion
                 Reembolsos Reembolsos = new Reembolsos();
                 List<Reembolso> lstReporte = Reembolsos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Reembolsos en BSP");
-                string footer = lstReporte.Count(x => x.RfndNro != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.RTDN != "TOTAL").ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }

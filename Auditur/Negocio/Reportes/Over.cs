@@ -4,9 +4,20 @@ namespace Auditur.Negocio.Reportes
 {
     public class Over
     {
-        public string NroDocumento { get; set; }
-        public string Fecha { get; set; }
-        public string Tr { get; set; }
+        [Display(Name = "Cia")]
+        public string Cia { get; set; }
+
+        [Display(Name = "Documento Nro")]
+        public string BoletoNro { get; set; }
+
+        [Display(Name = "Fecha Emisión")]
+        public string FechaEmision { get; set; }
+
+        [Display(Name = "NET REMIT")]
+        public string NetRemit { get; set; }
+
+        [Display(Name = "TOUR CODE")]
+        public string TourCode { get; set; }
 
         [Display(Name = "Over Ped. $")]
         public decimal OverPedPesos { get; set; }
@@ -26,11 +37,14 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Diferencias u$s")]
         public decimal DiferenciasDolares { get; set; }
 
-        public string Factura { get; set; }
-        public string Pasajero { get; set; }
-        public string Observaciones { get; set; }
-
         [Display(Name = "Op. Nº")]
         public string Operacion { get; set; }
+        [Display(Name = "Factura Nº")]
+        public string Factura { get; set; }
+        public string Pasajero { get; set; }
+
+        public string Observaciones { get; set; }
+
+
     }
 }

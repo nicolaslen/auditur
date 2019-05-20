@@ -10,13 +10,13 @@ BSP+BackOffice
 	Si dice EX en la linea de +RTDN agregarlo al lado de la linea, el ejemplo anterior quedaria 2697862376/7 (EX) LISTO
 	
 Over
-	Revisarlo porque quedó con el formato del sistema anterior
+	Revisarlo porque quedó con el formato del sistema anterior LISTO
 	
 	
 	
 	
 En reembolsos, creditos y debitos hago exactamente el mismo formato que en bsp+backoffice con la diferencia de que agarra los que están dentro de 
-CREDIT MEMOS y DEBIT MEMOS respectivamente
+CREDIT MEMOS y DEBIT MEMOS respectivamente LISTO
 Agregando un campo de Observaciones en creditos y debitos que agregue lo que haya en los txt ACM y ADM que se agrega al importar el bsp, como estaba en el sistema viejo.
 
 

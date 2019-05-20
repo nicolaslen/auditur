@@ -17,7 +17,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "RTDN")]
         public string Ref { get; set; }
 
-        [Display(Name = "NroDocumento Nro")]
+        [Display(Name = "Documento Nro")]
         public string BoletoNro { get; set; }
 
         [Display(Name = "Fecha Emisión")]

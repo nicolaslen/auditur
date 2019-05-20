@@ -6,37 +6,68 @@ namespace Auditur.Negocio.Reportes
     {
         [Display(Name = "Cia")]
         public string Cia { get; set; }
-        [Display(Name = "RFND Nro")]
-        public string RfndNro { get; set; }
-        [Display(Name = "RTDN Nro")]
-        public string RtdnNro { get; set; }
-        [Display(Name = "Fecha emisión")]
-        public string Fecha { get; set; }
-        [Display(Name = "$/D")]
+
+        [Display(Name = "Tipo")]
+        public string Tipo { get; set; }
+
+        [Display(Name = "RTDN")]
+        public string RTDN { get; set; }
+
+        [Display(Name = "Documento Nro")]
+        public string BoletoNro { get; set; }
+
+        [Display(Name = "Fecha Emisión")]
+        public string FechaEmision { get; set; }
+
+        [Display(Name = "Moneda")]
         public string Moneda { get; set; }
-        [Display(Name = "FOP CA")]
-        public string FopCA;
-        [Display(Name = "FOP CC")]
-        public string FopCC;
-        [Display(Name = "Total Transaccion")]
+
+        [Display(Name = "Tour Code")]
+        public string TourCode { get; set; }
+
+        [Display(Name = "Cod Nr")]
+        public string CodNr { get; set; }
+
+        [Display(Name = "Stat")]
+        public string Stat { get; set; }
+
+        [Display(Name = "Fop CA")]
+        public decimal FopCA { get; set; }
+
+        [Display(Name = "Fop CC")]
+        public decimal FopCC { get; set; }
+
+        [Display(Name = "Total Transacción")]
         public decimal TotalTransaccion { get; set; }
+
         [Display(Name = "Valor Tarifa")]
         public decimal ValorTarifa { get; set; }
+
         [Display(Name = "Imp")]
         public decimal Imp { get; set; }
+
         [Display(Name = "T&C")]
         public decimal TyC { get; set; }
+
         [Display(Name = "IVA Tarifa")]
         public decimal IVATarifa { get; set; }
+
         [Display(Name = "Penalidad")]
         public decimal Penalidad { get; set; }
-        [Display(Name = "Com STD Valor")]
+
+        [Display(Name = "Cobl")]
+        public decimal Cobl { get; set; }
+
+        [Display(Name = "ComStdValor")]
         public decimal ComStdValor { get; set; }
-        [Display(Name = "Com SUPP Valor")]
+
+        [Display(Name = "ComSuppValor")]
         public decimal ComSuppValor { get; set; }
-        [Display(Name = "IVA S/Com")]
+
+        [Display(Name = "IVA Com")]
         public decimal IVASinComision { get; set; }
-        [Display(Name = "Neto A Pagar")]
+
+        [Display(Name = "NetoAPagar")]
         public decimal NetoAPagar { get; set; }
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }

@@ -91,28 +91,31 @@ namespace Helpers
         }
 
         #region validateCUIT
-        public static bool validateCUIT(string Cuit) {
+        public static bool validateCUIT(string Cuit)
+        {
             Regex rg = new Regex("[A-Z_a-z]");
             Cuit = Cuit.Replace("-", "");
-            if ( rg.IsMatch(Cuit) )
+            if (rg.IsMatch(Cuit))
                 return false;
-            if ( Cuit.Length != 11 )
+            if (Cuit.Length != 11)
                 return false;
             char[] cuitArray = Cuit.ToCharArray();
             double sum = 0;
             int bint = 0;
             int j = 7;
-            for ( int i = 5, c = 0; c != 10; i--, c++ ) {
-                if ( i >= 2 )
-                    sum += ( Char.GetNumericValue(cuitArray[c]) * i );
+            for (int i = 5, c = 0; c != 10; i--, c++)
+            {
+                if (i >= 2)
+                    sum += (Char.GetNumericValue(cuitArray[c]) * i);
                 else
                     bint = 1;
-                if ( bint == 1 && j >= 2 ) {
-                    sum += ( Char.GetNumericValue(cuitArray[c]) * j );
+                if (bint == 1 && j >= 2)
+                {
+                    sum += (Char.GetNumericValue(cuitArray[c]) * j);
                     j--;
                 }
             }
-            if ( ( cuitArray.Length - ( sum % 11 ) ) == Char.GetNumericValue(cuitArray[cuitArray.Length - 1]) )
+            if ((cuitArray.Length - (sum % 11)) == Char.GetNumericValue(cuitArray[cuitArray.Length - 1]))
                 return true;
             return false;
         }
@@ -181,6 +184,27 @@ namespace Helpers
                 default:
                     return "";
             }
+        }
+
+        public static string ConcatNumbers(string initValue, List<string> nextValues)
+        {
+            if (!string.IsNullOrWhiteSpace(initValue) && nextValues.Any())
+            {
+                var currentValue = initValue;
+                foreach (var value in nextValues)
+                {
+                    int i = 1;
+                    while (currentValue[currentValue.Length - i] == '9')
+                    {
+                        i++;
+                    }
+
+                    initValue += "/" + value.Substring(value.Length - i, i);
+                    currentValue = value;
+                }
+            }
+
+            return initValue;
         }
     }
 }

@@ -198,7 +198,7 @@ namespace Auditur.Presentacion
                         var pageChunks = pdfPage.ExtractChunks();
                         var pageLines = pageChunks.GroupBy(x => x.Y).OrderByDescending(y => y.Key).ToList();
 
-                        var lineOfRg = pageLines.Where(x => x.Any(y => y.Text == "SCOPE")).FirstOrDefault();
+                        var lineOfRg = pageLines.FirstOrDefault(x => x.Any(y => y.Text == "SCOPE"));
                         if (lineOfRg != null)
                         {
                             rg = lineOfRg.ElementAt(1).Text == "INTERNATIONAL"
@@ -206,7 +206,7 @@ namespace Auditur.Presentacion
                                 : BSP_Rg.Doméstico;
                         }
 
-                        var lineOfMoneda = pageLines.Where(x => x.Any(y => y.Text == "ARS" || y.Text == "USD")).FirstOrDefault();
+                        var lineOfMoneda = pageLines.FirstOrDefault(x => x.Any(y => y.Text == "ARS" || y.Text == "USD"));
                         if (lineOfMoneda != null)
                         {
                             moneda = lineOfMoneda.ElementAt(1).Text == "ARS"
@@ -320,19 +320,18 @@ namespace Auditur.Presentacion
                             var detalle = orderedLine.ObtenerBSP_Ticket_Detalle();
 
                             //ACM y ADM
-                            //TODO: ACM y ADM
-                            /*if (listACM != null && concepto.Tipo == 'C')
+                            if (listACM != null && concepto.Nombre == "CREDIT MEMOS")
                             {
                                 ACM oACM = listACM.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
                                 if (oACM != null)
-                                    oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oACM.Observaciones;
+                                    detalle.Observaciones += (string.IsNullOrEmpty(detalle.Observaciones) ? "" : "|") + oACM.Observaciones;
                             }
-                            if (listADM != null && concepto.Tipo == 'D')
+                            if (listADM != null && concepto.Nombre == "DEBIT MEMOS")
                             {
                                 ADM oADM = listADM.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
                                 if (oADM != null)
-                                    oBSP_Ticket_Detalle.Observaciones += (string.IsNullOrEmpty(oBSP_Ticket_Detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
-                            }*/
+                                    detalle.Observaciones += (string.IsNullOrEmpty(detalle.Observaciones) ? "" : "|") + oADM.Observaciones;
+                            }
 
                             oBSP_Ticket.Detalle.Add(detalle);
                         }

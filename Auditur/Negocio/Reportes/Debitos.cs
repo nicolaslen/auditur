@@ -18,7 +18,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => lstDebitoPesos.Add(GetDebito(x)));
             if (lstDebitoPesos.Count > 0)
             {
-                lstDebitoPesos.Add(new Debito { Nro = "TOTAL", Tarifa = lstDebitoPesos.Sum(x => x.Tarifa), Contado = lstDebitoPesos.Sum(x => x.Contado), Credito = lstDebitoPesos.Sum(x => x.Credito), Importe = lstDebitoPesos.Sum(x => x.Importe), Comision = lstDebitoPesos.Sum(x => x.Comision), Moneda = "$", IVA = lstDebitoPesos.Sum(x => x.IVA), Impuestos = lstDebitoPesos.Sum(x => x.Impuestos) });
+                lstDebitoPesos.Add(new Debito { RTDN = "TOTAL", NetoAPagar = lstDebitoPesos.Sum(x => x.NetoAPagar) });
                 lstDebito.AddRange(lstDebitoPesos);
             }
 
@@ -26,7 +26,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => lstDebitoDolares.Add(GetDebito(x)));
             if (lstDebitoDolares.Count > 0)
             {
-                lstDebitoDolares.Add(new Debito { Nro = "TOTAL", Tarifa = lstDebitoDolares.Sum(x => x.Tarifa), Contado = lstDebitoDolares.Sum(x => x.Contado), Credito = lstDebitoDolares.Sum(x => x.Credito), Importe = lstDebitoDolares.Sum(x => x.Importe), Comision = lstDebitoDolares.Sum(x => x.Comision), Moneda = "D", IVA = lstDebitoDolares.Sum(x => x.IVA), Impuestos = lstDebitoDolares.Sum(x => x.Impuestos) });
+                lstDebitoDolares.Add(new Debito { RTDN = "TOTAL", NetoAPagar = lstDebitoDolares.Sum(x => x.NetoAPagar) });
                 lstDebito.AddRange(lstDebitoDolares);
             }
 
@@ -37,19 +37,34 @@ namespace Auditur.Negocio.Reportes
         {
             Debito oDebito = new Debito();
 
-            /*oDebito.Nro = oBSP_Ticket.NroDocumento.ToString();
-            oDebito.Rg = oBSP_Ticket.Rg == BSP_Rg.Internacional ? "ID" : "CD";
-            oDebito.Tr = oBSP_Ticket.Compania.Codigo;
-            oDebito.Tarifa = oBSP_Ticket.TarContado + oBSP_Ticket.TarCredito;
-            oDebito.Contado = oBSP_Ticket.TarContado;
-            oDebito.Credito = oBSP_Ticket.TarCredito;
-            oDebito.Impuestos = oBSP_Ticket.Detalle.Sum(x => x.ImpContado + x.ImpCredito);
-            oDebito.IVA = oBSP_Ticket.IVA105;
-            oDebito.Comision = (oBSP_Ticket.ComValor + oBSP_Ticket.ComOver);
-            oDebito.Fecha = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
-            oDebito.Importe = oBSP_Ticket.Total;
+            oDebito.Cia = oBSP_Ticket.Compania.Codigo;
+            oDebito.Tipo = oBSP_Ticket.Trnc;
+            oDebito.RTDN = Validators.ConcatNumbers(oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).FirstOrDefault(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).Skip(1).ToList());
+            if (oBSP_Ticket.Detalle.Any(x => x.Trnc == "+RTDN:" && x.Fop == "EX"))
+                oDebito.RTDN += " (EX)";
+
+            oDebito.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
+            oDebito.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oDebito.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-            oDebito.Observaciones = oBSP_Ticket.Detalle[0].Observaciones.Replace("|", "\n");*/
+            oDebito.TourCode = oBSP_Ticket.Tour;
+            oDebito.CodNr = oBSP_Ticket.Nr;
+            oDebito.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
+            oDebito.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+            oDebito.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+            oDebito.TotalTransaccion = (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC" || x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+            oDebito.ValorTarifa = oBSP_Ticket.ValorTarifa + oBSP_Ticket.Detalle.Select(x => x.ValorTarifa).DefaultIfEmpty(0).Sum();
+            oDebito.Imp = oBSP_Ticket.ImpuestoValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oDebito.TyC = oBSP_Ticket.ImpuestoTyCValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
+            oDebito.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
+                                  oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
+                                      .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oDebito.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
+            oDebito.Cobl = oBSP_Ticket.ImpuestoCobl + oBSP_Ticket.Detalle.Select(x => x.ImpuestoCobl).DefaultIfEmpty(0).Sum();
+            oDebito.ComStdValor = oBSP_Ticket.ComisionStdValor + oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();
+            oDebito.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
+            oDebito.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
+            oDebito.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
+
 
             return oDebito;
         }

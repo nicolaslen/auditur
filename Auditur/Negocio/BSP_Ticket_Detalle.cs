@@ -7,8 +7,7 @@ namespace Auditur.Negocio
         /*public string ISO  { get; set; }
         public decimal ImpContado { get; set; }
         public decimal ImpCredito { get; set; }
-        public decimal IVA21 { get; set; }
-        public string Observaciones { get; set; }*/
+        public decimal IVA21 { get; set; }*/
 
         public long TicketID { get; set; }
 
@@ -35,5 +34,6 @@ namespace Auditur.Negocio
         public decimal ComisionSuppValor { get; set; }
         public decimal ImpuestoSinComision { get; set; }
         public decimal NetoAPagar { get; set; }
+        public string Observaciones { get; set; }
     }
 }
