@@ -306,14 +306,14 @@ namespace Auditur.Presentacion
                             if (oBSP_Ticket != null && orderedLine.First().Text.Length >= 4 &&
                                 orderedLine.First().Text.Substring(0, 4) == "TOUR")
                             {
-                                oBSP_Ticket.Tour = orderedLine.First().Text.Substring(5);
+                                oBSP_Ticket.Tour = orderedLine.First().Text.Substring(5).Trim();
                                 continue;
                             }
 
                             if (oBSP_Ticket != null && orderedLine.First().Text.Length >= 4 &&
                                 orderedLine.First().Text.Substring(0, 4) == "ESAC")
                             {
-                                oBSP_Ticket.Esac = orderedLine.First().Text.Substring(5);
+                                oBSP_Ticket.Esac = orderedLine.First().Text.Substring(5).Trim();
                                 continue;
                             }
 
