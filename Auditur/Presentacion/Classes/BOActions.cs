@@ -25,43 +25,32 @@ namespace Auditur.Presentacion.Classes
                 string[] Columnas = Linea.Split(new char[] { ',', ';' });
 
                 oBO_Detalle = new BO_Ticket();
-                oBO_Detalle.IATA = Convert.ToInt64(GetColumn(Columnas, 0, true));
-                oBO_Detalle.Billete = Convert.ToInt64(GetColumn(Columnas, 1, true));
-
-                DateTime dtFecha;
-                string strFecha = GetColumn(Columnas, 2, false);
-                /*if (!DateTime.TryParse(strFecha, out dtFecha))
-                    dtFecha = new DateTime(DateTime.Today.Year, strFecha.Substring(strFecha.IndexOf("-") + 1)
-                oBO_Detalle.Fecha = dtFecha;*/
-                if (DateTime.TryParse(strFecha, out dtFecha))
-                    oBO_Detalle.Fecha = dtFecha;
-
-                oBO_Detalle.Void = GetColumn(Columnas, 3, false) == "1";
-
-                string CompaniaCod = GetColumn(Columnas, 4, false);
-                oCompaniaActual = lstCompanias.Find(x => x.Codigo == CompaniaCod);
+                oBO_Detalle.File = GetColumn(Columnas, 0, true);
+                string companiaCod = GetColumn(Columnas, 1, false);
+                oCompaniaActual = lstCompanias.Find(x => x.Codigo == companiaCod);
                 if (oCompaniaActual != null)
                     oBO_Detalle.Compania = oCompaniaActual;
                 else
-                    oBO_Detalle.Compania = new Compania { Codigo = CompaniaCod };
-  
-                oBO_Detalle.Tarifa = Convert.ToDecimal(GetColumn(Columnas, 5, true), culture);
-                oBO_Detalle.TarContado = Convert.ToDecimal(GetColumn(Columnas, 6, true), culture);
-                oBO_Detalle.TarCredito = Convert.ToDecimal(GetColumn(Columnas, 7, true), culture);
+                    oBO_Detalle.Compania = new Compania { Codigo = companiaCod };
+                oBO_Detalle.Billete = Convert.ToInt64(GetColumn(Columnas, 2, true));
+                string strFecha = GetColumn(Columnas, 3, false);
+                if (DateTime.TryParse(strFecha, out var dtFecha))
+                    oBO_Detalle.Fecha = dtFecha;
+                oBO_Detalle.Tarifa = Convert.ToDecimal(GetColumn(Columnas, 4, true), culture);
+                oBO_Detalle.Offline = GetColumn(Columnas, 5, false) == "1";
+                oBO_Detalle.Cash = Convert.ToDecimal(GetColumn(Columnas, 6, true), culture);
+                oBO_Detalle.Tarjeta = Convert.ToDecimal(GetColumn(Columnas, 7, true), culture);
                 oBO_Detalle.Impuestos = Convert.ToDecimal(GetColumn(Columnas, 8, true), culture);
-                //oBO_Detalle.IVA21 = Convert.ToDecimal(GetColumn(Columnas, 9), culture);
-                oBO_Detalle.Comision = Convert.ToDecimal(GetColumn(Columnas, 10, true), culture);
-                oBO_Detalle.Total = Convert.ToDecimal(GetColumn(Columnas, 11, true), culture);
-                //oBO_Detalle.Final = Convert.ToDecimal(GetColumn(Columnas, 12), culture);
-                oBO_Detalle.ComOver = Convert.ToDecimal(GetColumn(Columnas, 13, true), culture);
-                oBO_Detalle.Expediente = GetColumn(Columnas, 14, true);
-                oBO_Detalle.IVA105 = Convert.ToDecimal(GetColumn(Columnas, 15, true), culture);
-                oBO_Detalle.IVAComision = Convert.ToDecimal(GetColumn(Columnas, 16, true), culture);
-                oBO_Detalle.ComValor = Convert.ToDecimal(GetColumn(Columnas, 17, true), culture);
-                oBO_Detalle.Factura = GetColumn(Columnas, 18, true);
-                oBO_Detalle.Pasajero = GetColumn(Columnas, 19, false);
-                oBO_Detalle.Vendedor = GetColumn(Columnas, 20, false);
-                oBO_Detalle.Moneda = Moneda.Peso;
+                oBO_Detalle.IVA = Convert.ToDecimal(GetColumn(Columnas, 9, true), culture);
+                oBO_Detalle.IVAComision = Convert.ToDecimal(GetColumn(Columnas, 10, true), culture);
+                oBO_Detalle.Subtotal = Convert.ToDecimal(GetColumn(Columnas, 11, true), culture);
+                oBO_Detalle.Neto = Convert.ToDecimal(GetColumn(Columnas, 12, true), culture);
+                oBO_Detalle.Porcentaje = Convert.ToDecimal(GetColumn(Columnas, 13, true), culture);
+                oBO_Detalle.Over = Convert.ToDecimal(GetColumn(Columnas, 14, true), culture);
+                oBO_Detalle.APagar = Convert.ToDecimal(GetColumn(Columnas, 15, true), culture);
+                oBO_Detalle.TourCode = GetColumn(Columnas, 16, true);
+                oBO_Detalle.Marco = GetColumn(Columnas, 17, true);
+                oBO_Detalle.NroTarjeta = GetColumn(Columnas, 18, true);
             }
             catch (Exception ex)
             {

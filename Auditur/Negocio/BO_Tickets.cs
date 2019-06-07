@@ -50,22 +50,22 @@ namespace Auditur.Negocio
             lstParameters.Add(new SqlCeParameter("p1", oBO_Ticket.IATA));
             lstParameters.Add(new SqlCeParameter("p2", oBO_Ticket.Billete));
             lstParameters.Add(new SqlCeParameter("p3", oBO_Ticket.Fecha));
-            lstParameters.Add(new SqlCeParameter("p4", oBO_Ticket.Void));
+            lstParameters.Add(new SqlCeParameter("p4", oBO_Ticket.Offline));
             if (oBO_Ticket.Compania != null)
                 lstParameters.Add(new SqlCeParameter("p5", oBO_Ticket.Compania.Codigo));
             else
                 lstParameters.Add(new SqlCeParameter("p5", null));
             lstParameters.Add(new SqlCeParameter("p6", oBO_Ticket.Tarifa));
-            lstParameters.Add(new SqlCeParameter("p7", oBO_Ticket.TarContado));
-            lstParameters.Add(new SqlCeParameter("p8", oBO_Ticket.TarCredito));
+            lstParameters.Add(new SqlCeParameter("p7", oBO_Ticket.Cash));
+            lstParameters.Add(new SqlCeParameter("p8", oBO_Ticket.Tarjeta));
             lstParameters.Add(new SqlCeParameter("p9", oBO_Ticket.Impuestos));
-            lstParameters.Add(new SqlCeParameter("p10", oBO_Ticket.Comision));
-            lstParameters.Add(new SqlCeParameter("p11", oBO_Ticket.ComOver));
-            lstParameters.Add(new SqlCeParameter("p12", oBO_Ticket.Expediente));
-            lstParameters.Add(new SqlCeParameter("p13", oBO_Ticket.IVA105));
+            lstParameters.Add(new SqlCeParameter("p10", oBO_Ticket.Porcentaje));
+            lstParameters.Add(new SqlCeParameter("p11", oBO_Ticket.Over));
+            lstParameters.Add(new SqlCeParameter("p12", oBO_Ticket.File));
+            lstParameters.Add(new SqlCeParameter("p13", oBO_Ticket.IVA));
             lstParameters.Add(new SqlCeParameter("p14", oBO_Ticket.IVAComision));
-            lstParameters.Add(new SqlCeParameter("p15", oBO_Ticket.ComValor));
-            lstParameters.Add(new SqlCeParameter("p16", oBO_Ticket.Total));
+            lstParameters.Add(new SqlCeParameter("p15", oBO_Ticket.Neto));
+            lstParameters.Add(new SqlCeParameter("p16", oBO_Ticket.Subtotal));
             lstParameters.Add(new SqlCeParameter("p17", oBO_Ticket.Factura));
             lstParameters.Add(new SqlCeParameter("p18", oBO_Ticket.Pasajero));
             lstParameters.Add(new SqlCeParameter("p19", oBO_Ticket.Vendedor));
@@ -117,21 +117,21 @@ namespace Auditur.Negocio
             oBO_Ticket.Billete = rdrLector.GetInt64(rdrLector.GetOrdinal("Billete"));
             if (!rdrLector.IsDBNull(rdrLector.GetOrdinal("Fecha")))
                 oBO_Ticket.Fecha = rdrLector.GetDateTime(rdrLector.GetOrdinal("Fecha"));
-            oBO_Ticket.Void = rdrLector.GetBoolean(rdrLector.GetOrdinal("Void"));
+            oBO_Ticket.Offline = rdrLector.GetBoolean(rdrLector.GetOrdinal("Void"));
             if (!rdrLector.IsDBNull(rdrLector.GetOrdinal("CIA")))
                 oBO_Ticket.Compania = new Compania { Codigo = rdrLector.GetString(rdrLector.GetOrdinal("CIA")) };
 
             oBO_Ticket.Tarifa = rdrLector.GetDecimal(rdrLector.GetOrdinal("Tarifa"));
-            oBO_Ticket.TarContado = rdrLector.GetDecimal(rdrLector.GetOrdinal("TarContado"));
-            oBO_Ticket.TarCredito = rdrLector.GetDecimal(rdrLector.GetOrdinal("TarCredito"));
+            oBO_Ticket.Cash = rdrLector.GetDecimal(rdrLector.GetOrdinal("TarContado"));
+            oBO_Ticket.Tarjeta = rdrLector.GetDecimal(rdrLector.GetOrdinal("TarCredito"));
             oBO_Ticket.Impuestos = rdrLector.GetDecimal(rdrLector.GetOrdinal("Impuestos"));
-            oBO_Ticket.Comision = rdrLector.GetDecimal(rdrLector.GetOrdinal("Comision"));
-            oBO_Ticket.ComOver = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComOver"));
-            oBO_Ticket.Expediente = rdrLector.GetString(rdrLector.GetOrdinal("Expediente"));
-            oBO_Ticket.IVA105 = rdrLector.GetDecimal(rdrLector.GetOrdinal("IVA10"));
+            oBO_Ticket.Porcentaje = rdrLector.GetDecimal(rdrLector.GetOrdinal("Comision"));
+            oBO_Ticket.Over = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComOver"));
+            oBO_Ticket.File = rdrLector.GetString(rdrLector.GetOrdinal("Expediente"));
+            oBO_Ticket.IVA = rdrLector.GetDecimal(rdrLector.GetOrdinal("IVA10"));
             oBO_Ticket.IVAComision = rdrLector.GetDecimal(rdrLector.GetOrdinal("IVAComision"));
-            oBO_Ticket.ComValor = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComValor"));
-            oBO_Ticket.Total = rdrLector.GetDecimal(rdrLector.GetOrdinal("Total"));
+            oBO_Ticket.Neto = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComValor"));
+            oBO_Ticket.Subtotal = rdrLector.GetDecimal(rdrLector.GetOrdinal("Total"));
             oBO_Ticket.Factura = rdrLector.GetString(rdrLector.GetOrdinal("Factura"));
             oBO_Ticket.Pasajero = rdrLector.GetString(rdrLector.GetOrdinal("Pasajero"));
             oBO_Ticket.Vendedor = rdrLector.GetString(rdrLector.GetOrdinal("Vendedor"));

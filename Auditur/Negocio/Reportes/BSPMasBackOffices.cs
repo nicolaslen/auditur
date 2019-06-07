@@ -48,7 +48,7 @@ namespace Auditur.Negocio.Reportes
 
                 if (bo_ticket != null)
                 {
-                    oBspMasBackOffice.Operacion = bo_ticket.Expediente;
+                    oBspMasBackOffice.Operacion = bo_ticket.File;
                     oBspMasBackOffice.Factura = bo_ticket.Factura;
                     oBspMasBackOffice.Pasajero = bo_ticket.Pasajero;
                 }

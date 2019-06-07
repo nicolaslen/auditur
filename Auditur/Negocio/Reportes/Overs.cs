@@ -27,13 +27,13 @@ namespace Auditur.Negocio.Reportes
                     var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
                                                  oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty()
                                                      .Sum();
-                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComOver != 0))
+                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.Over != 0))
                     {
                         lstOverCompania.Add(GetOver(oBSP_Ticket, oBO_Ticket));
                     }
                 }
 
-                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComOver != 0).OrderBy(x => x.Billete))
+                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.Over != 0).OrderBy(x => x.Billete))
                 {
                     lstOverCompania.Add(GetOver(null, bo_ticketFaltante));
                 }
@@ -83,12 +83,12 @@ namespace Auditur.Negocio.Reportes
             if (oBO_Ticket != null)
             {
                 if (oBO_Ticket.Moneda == Moneda.Peso)
-                    oOver.OverPedPesos = oBO_Ticket.ComOver;
+                    oOver.OverPedPesos = oBO_Ticket.Over;
                 else if (oBO_Ticket.Moneda == Moneda.Dolar)
-                    oOver.OverPedDolares = oBO_Ticket.ComOver;
+                    oOver.OverPedDolares = oBO_Ticket.Over;
                 oOver.Factura = oBO_Ticket.Factura;
                 oOver.Pasajero = oBO_Ticket.Pasajero;
-                oOver.Operacion = oBO_Ticket.Expediente;
+                oOver.Operacion = oBO_Ticket.File;
             }
 
             oOver.DiferenciasPesos = oOver.OverRecPesos - oOver.OverPedPesos;

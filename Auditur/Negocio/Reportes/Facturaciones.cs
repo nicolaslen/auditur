@@ -44,7 +44,7 @@ namespace Auditur.Negocio.Reportes
 
                 if (bo_ticket != null)
                 {
-                    oFacturacion.Operacion = bo_ticket.Expediente;
+                    oFacturacion.Operacion = bo_ticket.File;
                     oFacturacion.Factura = bo_ticket.Factura;
                     oFacturacion.Pasajero = bo_ticket.Pasajero;
                 }

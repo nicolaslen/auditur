@@ -12,7 +12,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<SituacionBO> lstSituacionBO = new List<SituacionBO>();
 
-            /*List<BO_Ticket> lstTickets = 
+            List<BO_Ticket> lstTickets = 
                 oSemana.TicketsBO
                     .Where(bo => (!oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento && 
                                 bo.Compania.Codigo == bsp.Compania.Codigo))
@@ -20,10 +20,10 @@ namespace Auditur.Negocio.Reportes
                                 (oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento &&
                                 bo.Compania.Codigo == bsp.Compania.Codigo &&
                                 bo.Tarifa != bsp.TarContado + bsp.TarCredito &&
-                                ((bo.TarContado != 0 && bsp.TarContado == 0) ||
-                                (bo.TarCredito != 0 && bsp.TarCredito == 0))
+                                ((bo.Cash != 0 && bsp.TarContado == 0) ||
+                                (bo.Tarjeta != 0 && bsp.TarCredito == 0))
                                 ))).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete).ToList();
-
+            /*
             foreach (BO_Ticket oBO_Ticket in lstTickets)
             {
                 SituacionBO oSituacionBO = new SituacionBO();
