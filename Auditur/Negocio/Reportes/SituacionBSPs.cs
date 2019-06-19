@@ -23,8 +23,8 @@ namespace Auditur.Negocio.Reportes
 
                 oSituacionBSP.Cia = oBSP_Ticket.Compania.Codigo;
                 oSituacionBSP.Tipo = oBSP_Ticket.Trnc;
-                oSituacionBSP.Ref = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString()).FirstOrDefault();
                 oSituacionBSP.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
+                oSituacionBSP.Ref = oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento.ToString()).FirstOrDefault();
                 oSituacionBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oSituacionBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
                 oSituacionBSP.TourCode = oBSP_Ticket.Tour;

@@ -20,11 +20,10 @@ namespace Auditur.Negocio.Reportes
 
                 oBspMasBackOffice.Cia = oBSP_Ticket.Compania.Codigo;
                 oBspMasBackOffice.Tipo = oBSP_Ticket.Trnc;
+                oBspMasBackOffice.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
                 oBspMasBackOffice.RTDN = Validators.ConcatNumbers(oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).FirstOrDefault(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).Skip(1).ToList());
                 if (oBSP_Ticket.Detalle.Any(x => x.Trnc == "+RTDN:" && x.Fop == "EX"))
                     oBspMasBackOffice.RTDN += " (EX)";
-                
-                oBspMasBackOffice.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
                 oBspMasBackOffice.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oBspMasBackOffice.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
                 oBspMasBackOffice.TourCode = oBSP_Ticket.Tour;
@@ -48,9 +47,9 @@ namespace Auditur.Negocio.Reportes
 
                 if (bo_ticket != null)
                 {
-                    oBspMasBackOffice.Operacion = bo_ticket.File;
-                    oBspMasBackOffice.Factura = bo_ticket.Factura;
-                    oBspMasBackOffice.Pasajero = bo_ticket.Pasajero;
+                    oBspMasBackOffice.Operacion = bo_ticket.OperacionNro;
+                    oBspMasBackOffice.Factura = bo_ticket.FacturaNro;
+                    oBspMasBackOffice.Pasajero = bo_ticket.Pax;
                 }
 
                 lstBSPNroOP.Add(oBspMasBackOffice);

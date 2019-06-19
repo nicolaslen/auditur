@@ -7,28 +7,28 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "Tipo")]
+        [Display(Name = "TRNC")]
         public string Tipo { get; set; }
+
+        [Display(Name = "Nro. Docto")]
+        public string BoletoNro { get; set; }
 
         [Display(Name = "RTDN")]
         public string RTDN { get; set; }
 
-        [Display(Name = "Documento Nro")]
-        public string BoletoNro { get; set; }
-
         [Display(Name = "Fecha Emisión")]
         public string FechaEmision { get; set; }
 
-        [Display(Name = "Moneda")]
+        [Display(Name = "$/D")]
         public string Moneda { get; set; }
 
         [Display(Name = "Tour Code")]
         public string TourCode { get; set; }
 
-        [Display(Name = "Cod Nr")]
+        [Display(Name = "Net Remit")]
         public string CodNr { get; set; }
 
-        [Display(Name = "Stat")]
+        [Display(Name = "Destino I/D")]
         public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
@@ -52,31 +52,31 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "IVA Tarifa")]
         public decimal IVATarifa { get; set; }
 
-        [Display(Name = "Penalidad")]
+        [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
 
         [Display(Name = "Cobl")]
         public decimal Cobl { get; set; }
 
-        [Display(Name = "ComStdValor")]
+        [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }
 
-        [Display(Name = "ComSuppValor")]
+        [Display(Name = "Com Supl")]
         public decimal ComSuppValor { get; set; }
 
         [Display(Name = "IVA Com")]
         public decimal IVASinComision { get; set; }
 
-        [Display(Name = "NetoAPagar")]
+        [Display(Name = "Neto A Pagar")]
         public decimal NetoAPagar { get; set; }
 
-        [Display(Name = "Operación")]
+        [Display(Name = "Operación N°")]
         public string Operacion { get; set; }
 
-        [Display(Name = "Factura")]
+        [Display(Name = "Factura N°")]
         public string Factura { get; set; }
 
-        [Display(Name = "Pasajero")]
+        [Display(Name = "Pax")]
         public string Pasajero { get; set; }
     }
 }

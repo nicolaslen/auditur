@@ -8,50 +8,75 @@ namespace Auditur.Negocio.Reportes
 {
     public class Diferencia
     {
-        [Display(Name = "Boleto Nro")]
-        public string BoletoNroBSP { get; set; }
-        [Display(Name = "Rg")]
-        public string RgBSP { get; set; }
-        [Display(Name = "Tr")]
-        public string TrBSP { get; set; }
-        [Display(Name = "Tarifa")]
-        public decimal TarifaBSP { get; set; }
-        [Display(Name = "Contado")]
-        public decimal ContadoBSP { get; set; }
-        [Display(Name = "Crédito")]
-        public decimal CreditoBSP { get; set; }
-        [Display(Name = "Impuestos")]
-        public decimal ImpuestosBSP { get; set; }
-        [Display(Name = "Comisión")]
-        public decimal ComisionBSP { get; set; }
-        [Display(Name = "$/D")]
-        public string MonedaBSP { get; set; }
+        [Display(Name = "Cia")]
+        public string Cia { get; set; }
 
-        [Display(Name = "Tarifa ")]
-        public decimal TarifaBO { get; set; }
-        [Display(Name = "Contado ")]
-        public decimal ContadoBO { get; set; }
-        [Display(Name = "Crédito ")]
-        public decimal CreditoBO { get; set; }
-        [Display(Name = "Impuestos ")]
-        public decimal ImpuestosBO { get; set; }
-        [Display(Name = "Comisión ")]
-        public decimal ComisionBO { get; set; }
-        public string Factura { get; set; }
-        public string Pasajero { get; set; }
-        [Display(Name = "$/D ")]
-        public string MonedaBO { get; set; }
-        [Display(Name = "Tarifa  ")]
-        public string TarifaDif { get; set; }
-        [Display(Name = "Contado  ")]
-        public decimal ContadoDif { get; set; }
-        [Display(Name = "Crédito  ")]
-        public decimal CreditoDif { get; set; }
-        [Display(Name = "Impuestos  ")]
-        public decimal ImpuestosDif { get; set; }
-        [Display(Name = "Comisión  ")]
-        public decimal ComisionDif { get; set; }
-        [Display(Name = "Op. Nº")]
-        public string Operacion { get; set; }
+        [Display(Name = "TRNC N°")]
+        public string Tipo { get; set; }
+
+        [Display(Name = "RTDN N°")]
+        public string RTDN { get; set; }
+
+        [Display(Name = "Nro. Docto")]
+        public string BoletoNro { get; set; }
+
+        [Display(Name = "Fecha Emis.")]
+        public string FechaEmision { get; set; }
+
+        [Display(Name = "$/D")]
+        public string Moneda { get; set; }
+
+        //TODO: preguntar si va
+        [Display(Name = "Tour Code")]
+        public string TourCode { get; set; }
+
+        //TODO: preguntar si va
+        [Display(Name = "Cod Nr")]
+        public string CodNr { get; set; }
+
+        [Display(Name = "Stat I/D")]
+        public string Stat { get; set; }
+
+        [Display(Name = "Fop CA")]
+        public decimal FopCA { get; set; }
+
+        [Display(Name = "Fop CC")]
+        public decimal FopCC { get; set; }
+
+        [Display(Name = "Total Transac")]
+        public decimal TotalTransaccion { get; set; }
+
+        [Display(Name = "Valor Tarifa")]
+        public decimal ValorTarifa { get; set; }
+
+        [Display(Name = "Imp")]
+        public decimal Imp { get; set; }
+
+        [Display(Name = "T&C")]
+        public decimal TyC { get; set; }
+
+        [Display(Name = "IVA Tarifa")]
+        public decimal IVATarifa { get; set; }
+
+        [Display(Name = "Pen")]
+        public decimal Penalidad { get; set; }
+
+        [Display(Name = "Cobl")]
+        public decimal Cobl { get; set; }
+
+        [Display(Name = "Com Std")]
+        public decimal ComStdValor { get; set; }
+
+        [Display(Name = "Com Supl")]
+        public decimal ComSuppValor { get; set; }
+
+        [Display(Name = "IVA Com")]
+        public decimal IVASinComision { get; set; }
+
+        [Display(Name = "Neto A Pagar")]
+        public decimal NetoAPagar { get; set; }
+
+        [Display(Name = "Observaciones")]
+        public string Observaciones { get; set; }
     }
 }

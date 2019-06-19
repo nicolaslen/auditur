@@ -211,16 +211,16 @@ namespace Auditur.Presentacion
             return false;
         }
 
-        private bool GenerarControlIVAs()
+        private bool GenerarDiferenciasIVA()
         {
-            string Reporte = "Control IVA";
+            string Reporte = "Diferencias IVA";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
             {
-                ControlIVAs ControlIVAs = new ControlIVAs();
-                List<ControlIVA> lstReporte = ControlIVAs.Generar(semanaToReport);
-                List<string> header = GetHeader(semanaToReport, "CONTROL IVA");
+                DiferenciasIVAs ControlIVAs = new DiferenciasIVAs();
+                List<DiferenciasIVA> lstReporte = ControlIVAs.Generar(semanaToReport);
+                List<string> header = GetHeader(semanaToReport, "Diferencias IVA");
                 string footer = lstReporte.Count.ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
@@ -261,16 +261,16 @@ namespace Auditur.Presentacion
             }
             return false;
         }
-        private bool GenerarDiferencias()
+        private bool GenerarDiferenciasEmisiones()
         {
-            string Reporte = "Diferencias";
+            string Reporte = "DiferenciasEmisiones";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
             {
                 Diferencias Diferencias = new Diferencias();
                 List<Diferencia> lstReporte = Diferencias.Generar(semanaToReport);
-                List<string> header = GetHeader(semanaToReport, "Diferencias de Boletos (BSP vs BackOffice)");
+                List<string> header = GetHeader(semanaToReport, "Diferencias Emisiones");
                 string footer = lstReporte.Count.ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
@@ -397,10 +397,10 @@ namespace Auditur.Presentacion
 
             int ReportesGenerados = 0;
             if ((Opcion == 1 || Opcion == 0) && GenerarBSPMasBackoffices()) ReportesGenerados++;
-            if ((Opcion == 2 || Opcion == 0) && GenerarControlIVAs()) ReportesGenerados++;
+            if ((Opcion == 2 || Opcion == 0) && GenerarDiferenciasIVA()) ReportesGenerados++;
             if ((Opcion == 3 || Opcion == 0) && GenerarCreditos()) ReportesGenerados++;
             if ((Opcion == 4 || Opcion == 0) && GenerarDebitos()) ReportesGenerados++;
-            if ((Opcion == 5 || Opcion == 0) && GenerarDiferencias()) ReportesGenerados++;
+            if ((Opcion == 5 || Opcion == 0) && GenerarDiferenciasEmisiones()) ReportesGenerados++;
             if ((Opcion == 6 || Opcion == 0) && GenerarOvers()) ReportesGenerados++;
             if ((Opcion == 7 || Opcion == 0) && GenerarReembolsos()) ReportesGenerados++;
             if ((Opcion == 8 || Opcion == 0) && GenerarSituacionBOs()) ReportesGenerados++;

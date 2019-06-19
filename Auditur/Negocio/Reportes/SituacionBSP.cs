@@ -11,19 +11,19 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "Tipo")]
+        [Display(Name = "TRNC")]
         public string Tipo { get; set; }
-
-        [Display(Name = "RTDN")]
-        public string Ref { get; set; }
 
         [Display(Name = "Documento Nro")]
         public string BoletoNro { get; set; }
 
+        [Display(Name = "RTDN")]
+        public string Ref { get; set; }
+
         [Display(Name = "Fecha Emisión")]
         public string FechaEmision { get; set; }
 
-        [Display(Name = "Moneda")]
+        [Display(Name = "$/D")]
         public string Moneda { get; set; }
 
         [Display(Name = "Tour Code")]

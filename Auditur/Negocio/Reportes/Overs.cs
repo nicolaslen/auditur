@@ -27,13 +27,13 @@ namespace Auditur.Negocio.Reportes
                     var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
                                                  oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty()
                                                      .Sum();
-                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.Over != 0))
+                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComSupl != 0)) //TODO: Que va aca en vez de comsupl?
                     {
                         lstOverCompania.Add(GetOver(oBSP_Ticket, oBO_Ticket));
                     }
                 }
 
-                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.Over != 0).OrderBy(x => x.Billete))
+                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComSupl != 0).OrderBy(x => x.Billete)) //TODO: Que va acá en vez de ComSupl?
                 {
                     lstOverCompania.Add(GetOver(null, bo_ticketFaltante));
                 }
@@ -63,10 +63,10 @@ namespace Auditur.Negocio.Reportes
             Over oOver = new Over();
 
             oOver.Cia = oBSP_Ticket.Compania.Codigo;
-            oOver.BoletoNro = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
+            oOver.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
             oOver.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
-            oOver.NetRemit = oBSP_Ticket != null ? oBSP_Ticket.Nr : "";
-            oOver.TourCode = oBSP_Ticket != null ? oBSP_Ticket.Tour : "";
+            oOver.NetRemit = oBSP_Ticket.Nr;
+            oOver.TourCode = oBSP_Ticket.Tour;
             oOver.Observaciones = "";
 
             if (oBSP_Ticket != null)
@@ -83,12 +83,12 @@ namespace Auditur.Negocio.Reportes
             if (oBO_Ticket != null)
             {
                 if (oBO_Ticket.Moneda == Moneda.Peso)
-                    oOver.OverPedPesos = oBO_Ticket.Over;
+                    oOver.OverPedPesos = oBO_Ticket.ComSupl; //oBO_Ticket.; TODO: Que va aca?
                 else if (oBO_Ticket.Moneda == Moneda.Dolar)
-                    oOver.OverPedDolares = oBO_Ticket.Over;
-                oOver.Factura = oBO_Ticket.Factura;
-                oOver.Pasajero = oBO_Ticket.Pasajero;
-                oOver.Operacion = oBO_Ticket.File;
+                    oOver.OverPedDolares = oBO_Ticket.ComSupl; //oBO_Ticket.FacturaNro; TODO: Que va aca?
+                oOver.Factura = oBO_Ticket.FacturaNro;
+                oOver.Pasajero = oBO_Ticket.Pax;
+                oOver.Operacion = oBO_Ticket.OperacionNro;
             }
 
             oOver.DiferenciasPesos = oOver.OverRecPesos - oOver.OverPedPesos;

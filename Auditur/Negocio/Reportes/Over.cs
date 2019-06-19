@@ -7,7 +7,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "Documento Nro")]
+        [Display(Name = "Nro. Docto")]
         public string BoletoNro { get; set; }
 
         [Display(Name = "Fecha Emisión")]
@@ -41,6 +41,7 @@ namespace Auditur.Negocio.Reportes
         public string Operacion { get; set; }
         [Display(Name = "Factura Nº")]
         public string Factura { get; set; }
+        [Display(Name = "Pax")]
         public string Pasajero { get; set; }
 
         public string Observaciones { get; set; }

@@ -151,7 +151,7 @@
             this.btnDiferencias.Name = "btnDiferencias";
             this.btnDiferencias.Size = new System.Drawing.Size(140, 33);
             this.btnDiferencias.TabIndex = 9;
-            this.btnDiferencias.Text = "Diferencias";
+            this.btnDiferencias.Text = "Difs Emisiones";
             this.btnDiferencias.UseVisualStyleBackColor = true;
             this.btnDiferencias.Click += new System.EventHandler(this.btnDiferencias_Click);
             // 
@@ -203,11 +203,11 @@
             this.btnControlIVAs.Name = "btnControlIVAs";
             this.btnControlIVAs.Size = new System.Drawing.Size(140, 33);
             this.btnControlIVAs.TabIndex = 5;
-            this.btnControlIVAs.Text = "Control IVAs";
+            this.btnControlIVAs.Text = "Diferencias IVA";
             this.btnControlIVAs.UseVisualStyleBackColor = true;
             this.btnControlIVAs.Click += new System.EventHandler(this.btnControlIVAs_Click);
             // 
-            // btnBSPNroOPs
+            // btnBSPMasBackOffices
             // 
             this.btnBSPMasBackOffices.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnBSPMasBackOffices.Font = new System.Drawing.Font("Calibri", 14.25F);

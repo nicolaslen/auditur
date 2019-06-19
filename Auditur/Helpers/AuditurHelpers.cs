@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlServerCe;
 using System.Linq;
 using System.Text;
 
@@ -48,6 +49,15 @@ namespace Helpers
         public static string QueryDeleteByParameters(string[] Columns, string TableName)
         {
             return "DELETE FROM " + TableName + " WHERE " + string.Join(" = ? AND ", Columns) + " = ?";
+        }
+
+        public static void AddParameters(this List<SqlCeParameter> list, params object[] parameters)
+        {
+            int p = 1;
+            foreach (var param in parameters)
+            {
+                list.Add(new SqlCeParameter("p" + p++, param));
+            }
         }
     }
 }
