@@ -4,19 +4,19 @@ using System.Linq;
 
 namespace Auditur.Negocio.Reportes
 {
-    public class BSPMasBackOffices : IReport<BSPMasBackOffice>
+    public class EmisionesMasBackOffices : IReport<EmisionesMasBackOffice>
     {
-        public List<BSPMasBackOffice> Generar(Semana oSemana)
+        public List<EmisionesMasBackOffice> Generar(Semana oSemana)
         {
-            List<BSPMasBackOffice> lstBSPNroOP = new List<BSPMasBackOffice>();
+            List<EmisionesMasBackOffice> lstBSPNroOP = new List<EmisionesMasBackOffice>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA")).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA" || x.Trnc == "CANN")).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
                 BO_Ticket bo_ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento);
 
-                BSPMasBackOffice oBspMasBackOffice = new BSPMasBackOffice();
+                EmisionesMasBackOffice oBspMasBackOffice = new EmisionesMasBackOffice();
 
                 oBspMasBackOffice.Cia = oBSP_Ticket.Compania.Codigo;
                 oBspMasBackOffice.Tipo = oBSP_Ticket.Trnc;

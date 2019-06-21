@@ -10,26 +10,17 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "TRNC")]
         public string Tipo { get; set; }
 
-        [Display(Name = "RTDN")]
-        public string RTDN { get; set; }
-
-        [Display(Name = "Documento Nro")]
+        [Display(Name = "RFND N°")]
         public string BoletoNro { get; set; }
 
-        [Display(Name = "Fecha Emisión")]
+        [Display(Name = "RTDN N°")]
+        public string RTDN { get; set; }
+        
+        [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
-
-        [Display(Name = "Tour Code")]
-        public string TourCode { get; set; }
-
-        [Display(Name = "Cod Nr")]
-        public string CodNr { get; set; }
-
-        [Display(Name = "Stat")]
-        public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
         public decimal FopCA { get; set; }
@@ -54,21 +45,19 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Penalidad")]
         public decimal Penalidad { get; set; }
-
-        [Display(Name = "Cobl")]
-        public decimal Cobl { get; set; }
-
-        [Display(Name = "ComStdValor")]
+        
+        [Display(Name = "Com Std Valor")]
         public decimal ComStdValor { get; set; }
 
-        [Display(Name = "ComSuppValor")]
+        [Display(Name = "Com Supp Valor")]
         public decimal ComSuppValor { get; set; }
 
-        [Display(Name = "IVA Com")]
+        [Display(Name = "IVA S/Com")]
         public decimal IVASinComision { get; set; }
 
-        [Display(Name = "NetoAPagar")]
+        [Display(Name = "Neto A Pagar")]
         public decimal NetoAPagar { get; set; }
+
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }
     }

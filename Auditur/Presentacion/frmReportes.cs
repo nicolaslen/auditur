@@ -196,14 +196,14 @@ namespace Auditur.Presentacion
 
         private bool GenerarBSPMasBackoffices()
         {
-            string Reporte = "BSP+BackOffice";
+            string Reporte = "Emisiones+BackOffice";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
             {
-                BSPMasBackOffices bspMasBackOffices = new BSPMasBackOffices();
-                List<BSPMasBackOffice> lstReporte = bspMasBackOffices.Generar(semanaToReport);
-                List<string> header = GetHeader(semanaToReport, "BSP + BackOffice");
+                EmisionesMasBackOffices bspMasBackOffices = new EmisionesMasBackOffices();
+                List<EmisionesMasBackOffice> lstReporte = bspMasBackOffices.Generar(semanaToReport);
+                List<string> header = GetHeader(semanaToReport, "Emisiones + BackOffice");
                 string footer = lstReporte.Count.ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
@@ -213,7 +213,7 @@ namespace Auditur.Presentacion
 
         private bool GenerarDiferenciasIVA()
         {
-            string Reporte = "Diferencias IVA";
+            string Reporte = "DiferenciasIVA";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
@@ -311,7 +311,7 @@ namespace Auditur.Presentacion
         }
         private bool GenerarSituacionBOs()
         {
-            string Reporte = "Situacion BO";
+            string Reporte = "SituacionBO";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
@@ -327,7 +327,7 @@ namespace Auditur.Presentacion
         }
         private bool GenerarSituacionBSPs()
         {
-            string Reporte = "Situacion BSP";
+            string Reporte = "SituacionBSP";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
@@ -344,7 +344,7 @@ namespace Auditur.Presentacion
 
         private bool GenerarFacturacion()
         {
-            string Reporte = "Listado para facturación";
+            string Reporte = "ListadoParaFacturación";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))

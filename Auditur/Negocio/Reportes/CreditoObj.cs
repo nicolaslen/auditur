@@ -17,23 +17,12 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "RTDN N°")]
         public string RTDN { get; set; }
 
-        [Display(Name = "Nro. Docto")]
-        public string BoletoNro { get; set; }
-
         [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
-
-        //TODO: preguntar si va
-        [Display(Name = "Tour Code")]
-        public string TourCode { get; set; }
-
-        //TODO: preguntar si va
-        [Display(Name = "Cod Nr")]
-        public string CodNr { get; set; }
-
+        
         [Display(Name = "Stat I/D")]
         public string Stat { get; set; }
 

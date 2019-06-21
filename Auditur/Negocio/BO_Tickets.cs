@@ -21,7 +21,6 @@ namespace Auditur.Negocio
 
         public void Insertar(BO_Ticket oBO_Ticket)
         {
-            //TODO: Cambiar tabla en DB
             string query =
                 AuditurHelpers.QueryInsert(
                 new string[] {

@@ -2,7 +2,7 @@
 
 namespace Auditur.Negocio.Reportes
 {
-    public class BSPMasBackOffice
+    public class EmisionesMasBackOffice
     {
         [Display(Name = "Cia")]
         public string Cia { get; set; }

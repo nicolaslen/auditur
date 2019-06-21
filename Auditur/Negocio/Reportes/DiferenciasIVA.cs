@@ -14,7 +14,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Nro. Docto")]
         public string BoletoNro { get; set; }
 
-        [Display(Name = "Fecha Emisión")]
+        [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]

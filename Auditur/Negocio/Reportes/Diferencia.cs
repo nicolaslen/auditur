@@ -11,8 +11,8 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "TRNC N°")]
-        public string Tipo { get; set; }
+        [Display(Name = "TRNC")]
+        public string Trnc { get; set; }
 
         [Display(Name = "RTDN N°")]
         public string RTDN { get; set; }
@@ -26,15 +26,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
 
-        //TODO: preguntar si va
-        [Display(Name = "Tour Code")]
-        public string TourCode { get; set; }
-
-        //TODO: preguntar si va
-        [Display(Name = "Cod Nr")]
-        public string CodNr { get; set; }
-
-        [Display(Name = "Stat I/D")]
+        [Display(Name = "Destino I/D")]
         public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
@@ -75,8 +67,14 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Neto A Pagar")]
         public decimal NetoAPagar { get; set; }
+        
+        [Display(Name = "Operación N°")]
+        public string OperacionNro { get; set; }
 
-        [Display(Name = "Observaciones")]
-        public string Observaciones { get; set; }
+        [Display(Name = "Factura N°")]
+        public string Factura { get; set; }
+
+        [Display(Name = "Pax")]
+        public string Pasajero { get; set; }
     }
 }

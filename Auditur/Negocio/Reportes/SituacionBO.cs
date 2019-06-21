@@ -61,5 +61,8 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pax")]
         public string Pasajero { get; set; }
+
+        [Display(Name = "Observaciones")]
+        public string Observaciones { get; set; }
     }
 }

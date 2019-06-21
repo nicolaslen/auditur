@@ -50,7 +50,7 @@ namespace Auditur.Presentacion.Classes
                 oBO_Detalle.ComSupl = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
                 oBO_Detalle.IVACom = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
                 oBO_Detalle.Neto = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-
+                colNumber++;
                 oBO_Detalle.OperacionNro = GetColumn(Columnas, colNumber++, true);
                 oBO_Detalle.FacturaNro = GetColumn(Columnas, colNumber++, true);
                 oBO_Detalle.Pax = GetColumn(Columnas, colNumber++, true);

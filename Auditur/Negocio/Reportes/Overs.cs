@@ -27,13 +27,13 @@ namespace Auditur.Negocio.Reportes
                     var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
                                                  oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty()
                                                      .Sum();
-                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComSupl != 0)) //TODO: Que va aca en vez de comsupl?
+                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComSupl != 0))
                     {
                         lstOverCompania.Add(GetOver(oBSP_Ticket, oBO_Ticket));
                     }
                 }
 
-                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComSupl != 0).OrderBy(x => x.Billete)) //TODO: Que va acá en vez de ComSupl?
+                foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComSupl != 0).OrderBy(x => x.Billete))
                 {
                     lstOverCompania.Add(GetOver(null, bo_ticketFaltante));
                 }
@@ -83,9 +83,9 @@ namespace Auditur.Negocio.Reportes
             if (oBO_Ticket != null)
             {
                 if (oBO_Ticket.Moneda == Moneda.Peso)
-                    oOver.OverPedPesos = oBO_Ticket.ComSupl; //oBO_Ticket.; TODO: Que va aca?
+                    oOver.OverPedPesos = oBO_Ticket.ComSupl;
                 else if (oBO_Ticket.Moneda == Moneda.Dolar)
-                    oOver.OverPedDolares = oBO_Ticket.ComSupl; //oBO_Ticket.FacturaNro; TODO: Que va aca?
+                    oOver.OverPedDolares = oBO_Ticket.ComSupl;
                 oOver.Factura = oBO_Ticket.FacturaNro;
                 oOver.Pasajero = oBO_Ticket.Pax;
                 oOver.Operacion = oBO_Ticket.OperacionNro;

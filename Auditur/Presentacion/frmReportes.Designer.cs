@@ -216,7 +216,7 @@
             this.btnBSPMasBackOffices.Name = "btnBSPMasBackOffices";
             this.btnBSPMasBackOffices.Size = new System.Drawing.Size(140, 33);
             this.btnBSPMasBackOffices.TabIndex = 4;
-            this.btnBSPMasBackOffices.Text = "BSP + BackOffice";
+            this.btnBSPMasBackOffices.Text = "Emisiones + BO";
             this.btnBSPMasBackOffices.UseVisualStyleBackColor = true;
             this.btnBSPMasBackOffices.Click += new System.EventHandler(this.btnBSPNroOPs_Click);
             // 
