@@ -299,7 +299,7 @@ namespace Auditur.Presentacion
                                 if (oBSP_Ticket != null)
                                     semanaToImport.TicketsBSP.Add(oBSP_Ticket);
 
-                                oBSP_Ticket = orderedLine.ObtenerBSP_Ticket(compania, concepto, moneda.Value, rg.Value);
+                                oBSP_Ticket = orderedLine.ObtenerBSP_Ticket(compania, concepto, moneda.Value, rg.Value, Application.CurrentCulture);
                                 continue;
                             }
 
