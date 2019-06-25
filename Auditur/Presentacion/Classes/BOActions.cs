@@ -20,6 +20,8 @@ namespace Auditur.Presentacion.Classes
             BO_Ticket oBO_Detalle = null;
             try
             {
+                //TODO: sacar culture, unificar convert.todecimal como en bsp, y corregir errores de lectura
+
                 Compania oCompaniaActual = null;
 
                 string[] Columnas = Linea.Split(new char[] { ',', ';' });
@@ -34,7 +36,7 @@ namespace Auditur.Presentacion.Classes
                     oBO_Detalle.Compania = oCompaniaActual;
                 else
                     oBO_Detalle.Compania = new Compania { Codigo = companiaCod };
-                oBO_Detalle.Billete = Convert.ToInt64(GetColumn(Columnas, colNumber++, true));
+                oBO_Detalle.Billete = -Convert.ToInt64(GetColumn(Columnas, colNumber++, true));
                 string strFecha = GetColumn(Columnas, colNumber++, false);
                 if (DateTime.TryParse(strFecha, out var dtFecha))
                     oBO_Detalle.Fecha = dtFecha;

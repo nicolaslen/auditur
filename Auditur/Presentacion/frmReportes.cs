@@ -391,6 +391,9 @@ namespace Auditur.Presentacion
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = AuditurHelpers.DefaultCultureInfo();
+            System.Threading.Thread.CurrentThread.CurrentCulture = AuditurHelpers.DefaultCultureInfo();
+
             BackgroundWorker bw = sender as BackgroundWorker;
 
             int Opcion = ((int)e.Argument);

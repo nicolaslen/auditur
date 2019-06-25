@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlServerCe;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -58,6 +59,17 @@ namespace Helpers
             {
                 list.Add(new SqlCeParameter("p" + p++, param));
             }
+        }
+
+        public static CultureInfo DefaultCultureInfo()
+        {
+            CultureInfo culture = new CultureInfo("es-AR");
+
+            culture.NumberFormat.NumberDecimalSeparator = ",";
+            culture.NumberFormat.NumberGroupSeparator = ".";
+            culture.NumberFormat.CurrencyDecimalSeparator = ",";
+            culture.NumberFormat.CurrencyGroupSeparator = ".";
+            return culture;
         }
     }
 }

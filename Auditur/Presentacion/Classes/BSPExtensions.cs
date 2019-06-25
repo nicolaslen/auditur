@@ -88,23 +88,23 @@ namespace Auditur.Presentacion.Classes
             oBSP_Ticket.Nr = orderedLine.GetChunkTextBetween(169, 192);
             oBSP_Ticket.Stat = orderedLine.GetChunkTextBetween(200, 211);
             oBSP_Ticket.Fop = orderedLine.GetChunkTextBetween(218, 235);
-            oBSP_Ticket.ValorTransaccion = Convert.ToDecimal(orderedLine.GetChunkTextBetween(242, 292), culture);
-            oBSP_Ticket.ValorTarifa = Convert.ToDecimal(orderedLine.GetChunkTextBetween(306, 346), culture);
-            oBSP_Ticket.ImpuestoValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(355, 388), culture);
+            oBSP_Ticket.ValorTransaccion = orderedLine.GetChunkTextBetween(242, 292).ToDecimal();
+            oBSP_Ticket.ValorTarifa = orderedLine.GetChunkTextBetween(306, 346).ToDecimal();
+            oBSP_Ticket.ImpuestoValor = orderedLine.GetChunkTextBetween(355, 388).ToDecimal();
             oBSP_Ticket.ImpuestoCodigo = orderedLine.GetChunkTextBetween(388, 400);
-            oBSP_Ticket.ImpuestoTyCValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(406, 442), culture);
+            oBSP_Ticket.ImpuestoTyCValor = orderedLine.GetChunkTextBetween(406, 442).ToDecimal();
             oBSP_Ticket.ImpuestoTyCCodigo = orderedLine.GetChunkTextBetween(442, 453);
-            oBSP_Ticket.ImpuestoPenValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(461, 496), culture);
+            oBSP_Ticket.ImpuestoPenValor = orderedLine.GetChunkTextBetween(461, 496).ToDecimal();
             oBSP_Ticket.ImpuestoPenCodigo = orderedLine.GetChunkTextBetween(496, 507);
-            oBSP_Ticket.ImpuestoCobl = Convert.ToDecimal(orderedLine.GetChunkTextBetween(520, 562), culture);
-            oBSP_Ticket.ComisionStdPorcentaje = Convert.ToDecimal(
-                orderedLine.GetChunkTextBetween(562, 585), culture);
-            oBSP_Ticket.ComisionStdValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(594, 639), culture);
+            oBSP_Ticket.ImpuestoCobl = orderedLine.GetChunkTextBetween(520, 562).ToDecimal();
+            oBSP_Ticket.ComisionStdPorcentaje = 
+                orderedLine.GetChunkTextBetween(562, 585).ToDecimal();
+            oBSP_Ticket.ComisionStdValor = orderedLine.GetChunkTextBetween(594, 639).ToDecimal();
             oBSP_Ticket.ComisionSuppPorcentaje =
-                Convert.ToDecimal(orderedLine.GetChunkTextBetween(638, 657), culture);
-            oBSP_Ticket.ComisionSuppValor = Convert.ToDecimal(orderedLine.GetChunkTextBetween(670, 711), culture);
-            oBSP_Ticket.ImpuestoSinComision = Convert.ToDecimal(orderedLine.GetChunkTextBetween(730, 764), culture);
-            oBSP_Ticket.NetoAPagar = Convert.ToDecimal(orderedLine.GetChunkTextBetween(780, 818), culture);
+                orderedLine.GetChunkTextBetween(638, 657).ToDecimal();
+            oBSP_Ticket.ComisionSuppValor = orderedLine.GetChunkTextBetween(670, 711).ToDecimal();
+            oBSP_Ticket.ImpuestoSinComision = orderedLine.GetChunkTextBetween(730, 764).ToDecimal();
+            oBSP_Ticket.NetoAPagar = orderedLine.GetChunkTextBetween(780, 818).ToDecimal();
             return oBSP_Ticket;
         }
 

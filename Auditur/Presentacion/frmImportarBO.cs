@@ -171,6 +171,7 @@ namespace Auditur.Presentacion
 
                 StreamReader fileReader = new StreamReader(fileName);
                 fileReader.ReadLine();
+                fileReader.ReadLine();
                 while ((Linea = fileReader.ReadLine()) != null)
                 {
                     iLinea++;
@@ -240,6 +241,9 @@ namespace Auditur.Presentacion
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = AuditurHelpers.DefaultCultureInfo();
+            System.Threading.Thread.CurrentThread.CurrentCulture = AuditurHelpers.DefaultCultureInfo();
+
             bool blnResult = false;
             BackgroundWorker bw = sender as BackgroundWorker;
 
