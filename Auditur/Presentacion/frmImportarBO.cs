@@ -18,7 +18,7 @@ namespace Auditur.Presentacion
         public frmImportarBO()
         {
             InitializeComponent();
-            this.BOActions = new BOActions(Application.CurrentCulture);
+            this.BOActions = new BOActions();
         }
 
         private BOActions BOActions { get; set; }

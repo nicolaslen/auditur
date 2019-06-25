@@ -10,11 +10,6 @@ namespace Auditur.Presentacion.Classes
 {
     public class BOActions
     {
-        private CultureInfo culture;
-        public BOActions(CultureInfo _culture)
-        {
-            this.culture = _culture;
-        }
         public BO_Ticket GetDetalles(ref string Linea, int iLinea, List<Compania> lstCompanias)
         {
             BO_Ticket oBO_Detalle = null;
@@ -41,17 +36,17 @@ namespace Auditur.Presentacion.Classes
                 if (DateTime.TryParse(strFecha, out var dtFecha))
                     oBO_Detalle.Fecha = dtFecha;
                 oBO_Detalle.Moneda = GetColumn(Columnas, colNumber++, false) == "D" ? Moneda.Dolar : Moneda.Peso;
-                oBO_Detalle.CA = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.CC = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.TotalTransaccion = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.ValorTarifa = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.Impuestos = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.TasasCargos = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.IVATarifa = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.ComStd = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.ComSupl = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.IVACom = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
-                oBO_Detalle.Neto = Convert.ToDecimal(GetColumn(Columnas, colNumber++, true), culture);
+                oBO_Detalle.CA = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.CC = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.TotalTransaccion = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.ValorTarifa = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.Impuestos = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.TasasCargos = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.IVATarifa = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.ComStd = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.ComSupl = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.IVACom = GetColumn(Columnas, colNumber++, true).ToDecimal();
+                oBO_Detalle.Neto = GetColumn(Columnas, colNumber++, true).ToDecimal();
                 colNumber++;
                 oBO_Detalle.OperacionNro = GetColumn(Columnas, colNumber++, true);
                 oBO_Detalle.FacturaNro = GetColumn(Columnas, colNumber++, true);
@@ -66,7 +61,7 @@ namespace Auditur.Presentacion.Classes
 
         private string GetColumn(string[] Columnas, int index, bool isNumber)
         {
-            return (Columnas.Length > index ? (isNumber ? Columnas[index].Replace('.', ',') : Columnas[index]) : (isNumber ? "0" : "")).Trim();
+            return (Columnas.Length > index && !string.IsNullOrWhiteSpace(Columnas[index]) ? (isNumber ? Columnas[index].Replace('.', ',') : Columnas[index]) : (isNumber ? "0" : "")).Trim();
         }
 
         public void Guardar(Semana oSemana, BackgroundWorker backgroundWorker1)
