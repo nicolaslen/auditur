@@ -31,7 +31,7 @@ namespace Auditur.Presentacion.Classes
                     oBO_Detalle.Compania = oCompaniaActual;
                 else
                     oBO_Detalle.Compania = new Compania { Codigo = companiaCod };
-                oBO_Detalle.Billete = -Convert.ToInt64(GetColumn(Columnas, colNumber++, true));
+                oBO_Detalle.Billete = Math.Abs(Convert.ToInt64(GetColumn(Columnas, colNumber++, true)));
                 string strFecha = GetColumn(Columnas, colNumber++, false);
                 if (DateTime.TryParse(strFecha, out var dtFecha))
                     oBO_Detalle.Fecha = dtFecha;
