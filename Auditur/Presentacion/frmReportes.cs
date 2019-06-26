@@ -194,7 +194,7 @@ namespace Auditur.Presentacion
             return blnReturn;
         }
 
-        private bool GenerarBSPMasBackoffices()
+        private bool GenerarEmisionesMasBackoffices()
         {
             string Reporte = "Emisiones+BackOffice";
             string FileName = GetFileName(Reporte);
@@ -399,7 +399,7 @@ namespace Auditur.Presentacion
             int Opcion = ((int)e.Argument);
 
             int ReportesGenerados = 0;
-            if ((Opcion == 1 || Opcion == 0) && GenerarBSPMasBackoffices()) ReportesGenerados++;
+            if ((Opcion == 1 || Opcion == 0) && GenerarEmisionesMasBackoffices()) ReportesGenerados++;
             if ((Opcion == 2 || Opcion == 0) && GenerarDiferenciasIVA()) ReportesGenerados++;
             if ((Opcion == 3 || Opcion == 0) && GenerarCreditos()) ReportesGenerados++;
             if ((Opcion == 4 || Opcion == 0) && GenerarDebitos()) ReportesGenerados++;
