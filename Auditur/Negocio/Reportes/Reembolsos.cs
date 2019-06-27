@@ -18,7 +18,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => AddReembolso(lstReembolsosPesos, x));
             if (lstReembolsosPesos.Count > 0)
             {
-                lstReembolsosPesos.Add(new Reembolso { RTDN = "TOTAL", NetoAPagar = lstReembolsosPesos.Sum(x => x.NetoAPagar) });
+                lstReembolsosPesos.Add(new Reembolso { Cia = "TOTAL", NetoAPagar = lstReembolsosPesos.Sum(x => x.NetoAPagar) });
                 lstReembolsos.AddRange(lstReembolsosPesos);
             }
 
@@ -26,7 +26,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => AddReembolso(lstReembolsosDolares, x));
             if (lstReembolsosDolares.Count > 0)
             {
-                lstReembolsosDolares.Add(new Reembolso { RTDN = "TOTAL", NetoAPagar = lstReembolsosDolares.Sum(x => x.NetoAPagar) });
+                lstReembolsosDolares.Add(new Reembolso { Cia = "TOTAL", NetoAPagar = lstReembolsosDolares.Sum(x => x.NetoAPagar) });
                 lstReembolsos.AddRange(lstReembolsosDolares);
             }
 
@@ -39,9 +39,7 @@ namespace Auditur.Negocio.Reportes
 
             oReembolso.Cia = oBSP_Ticket.Compania.Codigo;
             oReembolso.Tipo = oBSP_Ticket.Trnc;
-            oReembolso.RTDN = oBSP_Ticket.NroDocumento.ToString();
-
-            oReembolso.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
+            oReembolso.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
             oReembolso.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oReembolso.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
             oReembolso.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0);
@@ -49,7 +47,7 @@ namespace Auditur.Negocio.Reportes
             oReembolso.TotalTransaccion =
                 (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0);
             oReembolso.ValorTarifa = oBSP_Ticket.ValorTarifa;
-            oReembolso.Imp = oBSP_Ticket.ImpuestoValor;
+            oReembolso.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" ? oBSP_Ticket.ImpuestoValor : 0);
             oReembolso.TyC = oBSP_Ticket.ImpuestoTyCValor;
             oReembolso.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0);
             oReembolso.Penalidad = oBSP_Ticket.ImpuestoPenValor;
@@ -66,8 +64,6 @@ namespace Auditur.Negocio.Reportes
 
                 oReembolso.Cia = "";
                 oReembolso.Tipo = detalle.Trnc;
-                oReembolso.RTDN = detalle.NroDocumento.ToString();
-
                 oReembolso.BoletoNro = detalle.NroDocumento.ToString();
                 oReembolso.FechaEmision = AuditurHelpers.GetDateTimeString(detalle.FechaEmision);
                 oReembolso.Moneda = "";

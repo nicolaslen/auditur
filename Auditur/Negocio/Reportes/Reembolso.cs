@@ -12,9 +12,6 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "RFND N°")]
         public string BoletoNro { get; set; }
-
-        [Display(Name = "RTDN N°")]
-        public string RTDN { get; set; }
         
         [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }

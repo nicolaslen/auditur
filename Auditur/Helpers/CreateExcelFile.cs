@@ -129,7 +129,7 @@ namespace Helpers
 
                     int EspacioHeaderTable = 2;
 
-                    if (dt.TableName == "Control IVA")
+                    /*if (dt.TableName == "DiferenciasIVA")
                     {
                         int filaExtra = header.Length + EspacioHeaderTable;
                         
@@ -145,7 +145,7 @@ namespace Helpers
 
                         EspacioHeaderTable++;
                     }
-                    else if (dt.TableName == "Diferencias")
+                    else if (dt.TableName == "DiferenciasEmisiones")
                     {
                         int filaExtra = header.Length + EspacioHeaderTable;
 
@@ -161,7 +161,7 @@ namespace Helpers
 
                         EspacioHeaderTable++;
                     }
-                    else if (dt.TableName == "BSP-Op.Nro")
+                    else */if (dt.TableName == "Emisiones+BackOffice")
                     {
                         int filaExtra = header.Length + EspacioHeaderTable;
 
@@ -184,7 +184,7 @@ namespace Helpers
 
                         EspacioHeaderTable++;
                     }
-                    else if (dt.TableName == "Listado para facturación")
+                    else if (dt.TableName == "ListadoParaFacturación")
                     {
                         int filaExtra = header.Length + EspacioHeaderTable;
 

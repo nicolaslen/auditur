@@ -303,7 +303,7 @@ namespace Auditur.Presentacion
                 Reembolsos Reembolsos = new Reembolsos();
                 List<Reembolso> lstReporte = Reembolsos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Reembolsos en BSP");
-                string footer = lstReporte.Count(x => x.RTDN != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.Cia != "TOTAL") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -319,7 +319,7 @@ namespace Auditur.Presentacion
                 SituacionBOs SituacionBOs = new SituacionBOs();
                 List<SituacionBO> lstReporte = SituacionBOs.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Situación Back Office (Movimientos registrados en su sistema y no en BSP)");
-                string footer = lstReporte.Count.ToString() + " registros";
+                string footer = lstReporte.Count + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }

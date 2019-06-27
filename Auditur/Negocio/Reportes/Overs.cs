@@ -44,7 +44,7 @@ namespace Auditur.Negocio.Reportes
                     lstOver.AddRange(lstOverCompania);
 
                     var oOverTotal = new Over();
-                    oOverTotal.BoletoNro = "TOTAL";
+                    oOverTotal.Cia = "TOTAL";
                     oOverTotal.OverRecPesos = lstOverCompania.Select(x => x.OverRecPesos).Sum();
                     oOverTotal.OverPedPesos = lstOverCompania.Select(x => x.OverPedPesos).Sum();
                     oOverTotal.OverRecDolares = lstOverCompania.Select(x => x.OverRecDolares).Sum();
@@ -63,45 +63,37 @@ namespace Auditur.Negocio.Reportes
         private Over GetOver(BSP_Ticket oBSP_Ticket, BO_Ticket oBO_Ticket)
         {
             Over oOver = new Over();
-            try
+            oOver.Cia = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
+            oOver.BoletoNro = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
+            oOver.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
+            oOver.NetRemit = oBSP_Ticket?.Nr;
+            oOver.TourCode = oBSP_Ticket?.Tour;
+            oOver.Observaciones = "";
+
+            if (oBSP_Ticket != null)
             {
-                oOver.Cia = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
-                oOver.BoletoNro = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
-                oOver.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
-                oOver.NetRemit = oBSP_Ticket?.Nr;
-                oOver.TourCode = oBSP_Ticket?.Tour;
-                oOver.Observaciones = "";
-
-                if (oBSP_Ticket != null)
-                {
-                    var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
-                                                  oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0)
-                                                      .Sum();
-                    if (oBSP_Ticket.Moneda == Moneda.Peso)
-                        oOver.OverRecPesos = -totalComisionSuppValor;
-                    else
-                        oOver.OverRecDolares = -totalComisionSuppValor;
-                }
-
-                if (oBO_Ticket != null)
-                {
-                    if (oBO_Ticket.Moneda == Moneda.Peso)
-                        oOver.OverPedPesos = oBO_Ticket.ComSupl;
-                    else if (oBO_Ticket.Moneda == Moneda.Dolar)
-                        oOver.OverPedDolares = oBO_Ticket.ComSupl;
-                    oOver.Factura = oBO_Ticket.FacturaNro;
-                    oOver.Pasajero = oBO_Ticket.Pax;
-                    oOver.Operacion = oBO_Ticket.OperacionNro;
-                }
-
-                oOver.DiferenciasPesos = oOver.OverRecPesos - oOver.OverPedPesos;
-                oOver.DiferenciasDolares = oOver.OverRecDolares - oOver.OverPedDolares;
+                var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
+                                              oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0)
+                                                  .Sum();
+                if (oBSP_Ticket.Moneda == Moneda.Peso)
+                    oOver.OverRecPesos = -totalComisionSuppValor;
+                else
+                    oOver.OverRecDolares = -totalComisionSuppValor;
             }
-            catch (Exception e)
+
+            if (oBO_Ticket != null)
             {
-                Console.WriteLine(e);
-                throw;
+                if (oBO_Ticket.Moneda == Moneda.Peso)
+                    oOver.OverPedPesos = oBO_Ticket.ComSupl;
+                else if (oBO_Ticket.Moneda == Moneda.Dolar)
+                    oOver.OverPedDolares = oBO_Ticket.ComSupl;
+                oOver.Factura = oBO_Ticket.FacturaNro;
+                oOver.Pasajero = oBO_Ticket.Pax;
+                oOver.Operacion = oBO_Ticket.OperacionNro;
             }
+
+            oOver.DiferenciasPesos = oOver.OverRecPesos - oOver.OverPedPesos;
+            oOver.DiferenciasDolares = oOver.OverRecDolares - oOver.OverPedDolares;
             return oOver;
         }
     }

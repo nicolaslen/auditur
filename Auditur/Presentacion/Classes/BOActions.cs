@@ -13,49 +13,40 @@ namespace Auditur.Presentacion.Classes
         public BO_Ticket GetDetalles(ref string Linea, int iLinea, List<Compania> lstCompanias)
         {
             BO_Ticket oBO_Detalle = null;
-            try
-            {
-                //TODO: sacar culture, unificar convert.todecimal como en bsp, y corregir errores de lectura
+            Compania oCompaniaActual = null;
 
-                Compania oCompaniaActual = null;
+            string[] Columnas = Linea.Split(new char[] { ',', ';' });
 
-                string[] Columnas = Linea.Split(new char[] { ',', ';' });
+            oBO_Detalle = new BO_Ticket();
+            int colNumber = 0;
 
-                oBO_Detalle = new BO_Ticket();
-                int colNumber = 0;
-
-                oBO_Detalle.IATA = Convert.ToInt64(GetColumn(Columnas, colNumber++, true));
-                string companiaCod = GetColumn(Columnas, colNumber++, false);
-                oCompaniaActual = lstCompanias.Find(x => x.Codigo == companiaCod);
-                if (oCompaniaActual != null)
-                    oBO_Detalle.Compania = oCompaniaActual;
-                else
-                    oBO_Detalle.Compania = new Compania { Codigo = companiaCod };
-                oBO_Detalle.Billete = Math.Abs(Convert.ToInt64(GetColumn(Columnas, colNumber++, true)));
-                string strFecha = GetColumn(Columnas, colNumber++, false);
-                if (DateTime.TryParse(strFecha, out var dtFecha))
-                    oBO_Detalle.Fecha = dtFecha;
-                oBO_Detalle.Moneda = GetColumn(Columnas, colNumber++, false) == "D" ? Moneda.Dolar : Moneda.Peso;
-                oBO_Detalle.CA = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.CC = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.TotalTransaccion = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.ValorTarifa = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.Impuestos = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.TasasCargos = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.IVATarifa = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.ComStd = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.ComSupl = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.IVACom = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                oBO_Detalle.Neto = GetColumn(Columnas, colNumber++, true).ToDecimal();
-                colNumber++;
-                oBO_Detalle.OperacionNro = GetColumn(Columnas, colNumber++, true);
-                oBO_Detalle.FacturaNro = GetColumn(Columnas, colNumber++, true);
-                oBO_Detalle.Pax = GetColumn(Columnas, colNumber++, true);
-            }
-            catch (Exception ex)
-            {
-                TextToFile.Errores(TextToFile.Error(ex));
-            }
+            oBO_Detalle.IATA = Convert.ToInt64(GetColumn(Columnas, colNumber++, true));
+            string companiaCod = GetColumn(Columnas, colNumber++, false);
+            oCompaniaActual = lstCompanias.Find(x => x.Codigo == companiaCod);
+            if (oCompaniaActual != null)
+                oBO_Detalle.Compania = oCompaniaActual;
+            else
+                oBO_Detalle.Compania = new Compania { Codigo = companiaCod };
+            oBO_Detalle.Billete = Math.Abs(Convert.ToInt64(GetColumn(Columnas, colNumber++, true)));
+            string strFecha = GetColumn(Columnas, colNumber++, false);
+            if (DateTime.TryParse(strFecha, out var dtFecha))
+                oBO_Detalle.Fecha = dtFecha;
+            oBO_Detalle.Moneda = GetColumn(Columnas, colNumber++, false) == "D" ? Moneda.Dolar : Moneda.Peso;
+            oBO_Detalle.CA = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.CC = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.TotalTransaccion = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.ValorTarifa = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.Impuestos = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.TasasCargos = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.IVATarifa = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.ComStd = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.ComSupl = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.IVACom = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            oBO_Detalle.Neto = GetColumn(Columnas, colNumber++, true).ToDecimal();
+            colNumber++;
+            oBO_Detalle.OperacionNro = GetColumn(Columnas, colNumber++, true);
+            oBO_Detalle.FacturaNro = GetColumn(Columnas, colNumber++, true);
+            oBO_Detalle.Pax = GetColumn(Columnas, colNumber++, true);
             return oBO_Detalle;
         }
 

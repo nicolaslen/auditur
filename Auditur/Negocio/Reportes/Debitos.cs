@@ -18,7 +18,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => AddDebito(lstDebitoPesos, x));
             if (lstDebitoPesos.Count > 0)
             {
-                lstDebitoPesos.Add(new Debito { RTDN = "TOTAL", NetoAPagar = lstDebitoPesos.Sum(x => x.NetoAPagar) });
+                lstDebitoPesos.Add(new Debito { Cia = "TOTAL", NetoAPagar = lstDebitoPesos.Sum(x => x.NetoAPagar) });
                 lstDebito.AddRange(lstDebitoPesos);
             }
 
@@ -26,7 +26,7 @@ namespace Auditur.Negocio.Reportes
             lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => AddDebito(lstDebitoDolares, x));
             if (lstDebitoDolares.Count > 0)
             {
-                lstDebitoDolares.Add(new Debito { RTDN = "TOTAL", NetoAPagar = lstDebitoDolares.Sum(x => x.NetoAPagar) });
+                lstDebitoDolares.Add(new Debito { Cia = "TOTAL", NetoAPagar = lstDebitoDolares.Sum(x => x.NetoAPagar) });
                 lstDebito.AddRange(lstDebitoDolares);
             }
 
