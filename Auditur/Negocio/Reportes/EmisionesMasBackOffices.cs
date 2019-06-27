@@ -10,7 +10,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<EmisionesMasBackOffice> lstBSPNroOP = new List<EmisionesMasBackOffice>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA" || x.Trnc == "CANN")).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA" || x.Trnc == "EMDS" || x.Trnc == "CANN" || x.Trnc == "TASF")).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
