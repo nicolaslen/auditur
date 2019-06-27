@@ -7,12 +7,15 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "TRNC")]
-        public string Tipo { get; set; }
-
         [Display(Name = "RFND N°")]
         public string BoletoNro { get; set; }
-        
+
+        [Display(Name = "RTDN N°")]
+        public string RTDN { get; set; }
+
+        /*[Display(Name = "TRNC")]
+        public string Tipo { get; set; }*/
+
         [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
@@ -25,7 +28,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Fop CC")]
         public decimal FopCC { get; set; }
 
-        [Display(Name = "Total Transacción")]
+        [Display(Name = "Total Transac")]
         public decimal TotalTransaccion { get; set; }
 
         [Display(Name = "Valor Tarifa")]
@@ -57,5 +60,7 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }
+
+       
     }
 }

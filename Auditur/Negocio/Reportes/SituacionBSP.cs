@@ -14,13 +14,13 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "TRNC")]
         public string Tipo { get; set; }
 
-        [Display(Name = "Documento Nro")]
+        [Display(Name = "Nro. Docto")]
         public string BoletoNro { get; set; }
 
         [Display(Name = "RTDN")]
         public string Ref { get; set; }
 
-        [Display(Name = "Fecha Emisión")]
+        [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]
@@ -29,10 +29,10 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Tour Code")]
         public string TourCode { get; set; }
 
-        [Display(Name = "Cod Nr")]
+        [Display(Name = "Net Remit")]
         public string CodNr { get; set; }
 
-        [Display(Name = "Stat")]
+        [Display(Name = "Destino I/D")]
         public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
@@ -41,7 +41,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Fop CC")]
         public decimal FopCC { get; set; }
 
-        [Display(Name = "Total Transacción")]
+        [Display(Name = "Total Transac")]
         public decimal TotalTransaccion { get; set; }
 
         [Display(Name = "Valor Tarifa")]
@@ -56,7 +56,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "IVA Tarifa")]
         public decimal IVATarifa { get; set; }
 
-        [Display(Name = "Penalidad")]
+        [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
 
         [Display(Name = "Cobl")]
@@ -65,7 +65,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "ComStdValor")]
         public decimal ComStdValor { get; set; }
 
-        [Display(Name = "ComSuppValor")]
+        [Display(Name = "ComSuplValor")]
         public decimal ComSuppValor { get; set; }
 
         [Display(Name = "IVA Com")]

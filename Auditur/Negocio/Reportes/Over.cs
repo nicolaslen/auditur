@@ -10,7 +10,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Nro. Docto")]
         public string BoletoNro { get; set; }
 
-        [Display(Name = "Fecha Emisión")]
+        [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "NET REMIT")]
@@ -37,10 +37,12 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Diferencias u$s")]
         public decimal DiferenciasDolares { get; set; }
 
-        [Display(Name = "Op. Nº")]
+        [Display(Name = "Operación N°")]
         public string Operacion { get; set; }
-        [Display(Name = "Factura Nº")]
+
+        [Display(Name = "Factura N°")]
         public string Factura { get; set; }
+
         [Display(Name = "Pax")]
         public string Pasajero { get; set; }
 

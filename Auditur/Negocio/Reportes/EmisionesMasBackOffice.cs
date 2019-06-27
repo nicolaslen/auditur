@@ -16,7 +16,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "RTDN")]
         public string RTDN { get; set; }
 
-        [Display(Name = "Fecha Emisión")]
+        [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]
@@ -37,7 +37,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Fop CC")]
         public decimal FopCC { get; set; }
 
-        [Display(Name = "Total Transacción")]
+        [Display(Name = "Total Transac")]
         public decimal TotalTransaccion { get; set; }
 
         [Display(Name = "Valor Tarifa")]

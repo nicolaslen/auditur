@@ -15,7 +15,7 @@ namespace Auditur.Negocio.Reportes
             List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "DEBIT MEMOS").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.NroDocumento).ToList();
 
             List<Debito> lstDebitoPesos = new List<Debito>();
-            lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => AddDebito(lstDebitoPesos, x));
+            lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => lstDebitoPesos.Add(GetDebito(x)));
             if (lstDebitoPesos.Count > 0)
             {
                 lstDebitoPesos.Add(new Debito { Cia = "TOTAL", NetoAPagar = lstDebitoPesos.Sum(x => x.NetoAPagar) });
@@ -23,7 +23,7 @@ namespace Auditur.Negocio.Reportes
             }
 
             List<Debito> lstDebitoDolares = new List<Debito>();
-            lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => AddDebito(lstDebitoDolares, x));
+            lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => lstDebitoDolares.Add(GetDebito(x)));
             if (lstDebitoDolares.Count > 0)
             {
                 lstDebitoDolares.Add(new Debito { Cia = "TOTAL", NetoAPagar = lstDebitoDolares.Sum(x => x.NetoAPagar) });
@@ -33,13 +33,18 @@ namespace Auditur.Negocio.Reportes
             return lstDebito;
         }
 
-        private void AddDebito(List<Debito> debitos, BSP_Ticket oBSP_Ticket)
+        private Debito GetDebito(BSP_Ticket oBSP_Ticket)
         {
             Debito oDebito = new Debito();
 
             oDebito.Cia = oBSP_Ticket.Compania.Codigo;
             oDebito.Tipo = oBSP_Ticket.Trnc;
-            oDebito.RTDN = oBSP_Ticket.NroDocumento.ToString();
+
+            oDebito.RTDN = Validators.ConcatNumbers(oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).FirstOrDefault(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).Skip(1).ToList());
+            if (oBSP_Ticket.Detalle.Any(x => x.Trnc == "+RTDN:" && x.Fop == "EX"))
+                oDebito.RTDN += " (EX)";
+
+            oDebito.NroDocumento = oBSP_Ticket.NroDocumento.ToString();
             oDebito.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oDebito.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
             oDebito.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
@@ -57,35 +62,7 @@ namespace Auditur.Negocio.Reportes
             oDebito.ComSuppValor = oBSP_Ticket.ComisionSuppValor;
             oDebito.IVAComision = oBSP_Ticket.ImpuestoSinComision;
             oDebito.NetoAPagar = oBSP_Ticket.NetoAPagar;
-
-
-            debitos.Add(oDebito);
-
-            foreach (var detalle in oBSP_Ticket.Detalle)
-            {
-                oDebito = new Debito();
-
-                oDebito.Tipo = detalle.Trnc;
-                oDebito.RTDN = detalle.NroDocumento.ToString();
-                oDebito.FechaEmision = AuditurHelpers.GetDateTimeString(detalle.FechaEmision);
-                oDebito.FopCA = (detalle.Fop == "CA" ? detalle.ValorTransaccion : 0);
-                oDebito.FopCC = (detalle.Fop == "CC" ? detalle.ValorTransaccion : 0);
-                oDebito.TotalTransaccion =
-                    (detalle.Fop == "CC" || detalle.Fop == "CA" ? detalle.ValorTransaccion : 0);
-                oDebito.ValorTarifa = detalle.ValorTarifa;
-                oDebito.Imp = detalle.ImpuestoValor;
-                oDebito.TyC = detalle.ImpuestoTyCValor;
-                oDebito.IVATarifa = (detalle.ImpuestoCodigo == "DL" ? detalle.ImpuestoValor : 0);
-                oDebito.Penalidad = detalle.ImpuestoPenValor;
-                oDebito.Cobl = detalle.ImpuestoCobl;
-                oDebito.ComStdValor = detalle.ComisionStdValor;
-                oDebito.ComSuppValor = detalle.ComisionSuppValor;
-                oDebito.IVAComision = detalle.ImpuestoSinComision;
-                oDebito.NetoAPagar = detalle.NetoAPagar;
-
-
-                debitos.Add(oDebito);
-            }
+            return oDebito;
         }
     }
 }
