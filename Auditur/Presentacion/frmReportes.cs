@@ -204,7 +204,7 @@ namespace Auditur.Presentacion
                 EmisionesMasBackOffices bspMasBackOffices = new EmisionesMasBackOffices();
                 List<EmisionesMasBackOffice> lstReporte = bspMasBackOffices.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Emisiones + BackOffice");
-                string footer = lstReporte.Count.ToString() + " registros";
+                string footer = lstReporte.Count + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }

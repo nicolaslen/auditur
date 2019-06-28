@@ -1,16 +1,10 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Data;
-using System.Reflection;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml;
-using ClosedXML;
-using ClosedXML.Excel;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Linq;
+using System.Reflection;
 
 namespace Helpers
 {
@@ -31,13 +25,14 @@ namespace Helpers
                 return false;
             }
         }
+
         #region HELPER_FUNCTIONS
+
         public static DataTable ListToDataTable<T>(List<T> list, string Title)
         {
             DataTable dt = new DataTable(Title);
             try
             {
-
                 foreach (PropertyInfo info in typeof(T).GetProperties())
                 {
                     var dc = new DataColumn(info.Name, GetNullableType(info.PropertyType));
@@ -70,6 +65,7 @@ namespace Helpers
         {
             return info.IsDefined(typeof(DisplayAttribute), false) ? info.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().Single().Name : info.Name;
         }
+
         private static Type GetNullableType(Type t)
         {
             Type returnType = t;
@@ -79,6 +75,7 @@ namespace Helpers
             }
             return returnType;
         }
+
         private static bool IsNullableType(Type type)
         {
             return (type == typeof(string) ||
@@ -103,7 +100,8 @@ namespace Helpers
                 return false;
             }
         }
-        #endregion
+
+        #endregion HELPER_FUNCTIONS
 
         /// <summary>
         /// Create an Excel file, and write it to a file.
@@ -114,25 +112,61 @@ namespace Helpers
         /// <returns>True if successful, false if something went wrong.</returns>
         public static bool CreateExcelDocument(DataSet ds, string excelFilename, string[] header, string footer)
         {
-            //TODO: VER NOMBRES
             try
             {
+                List<string> refsTitles = new List<string>
+                {
+                    "REF:",
+                    "COBL:",
+                    "COM STD:",
+                    "COM SUPL:",
+                    "FOP:",
+                    "PEN:",
+                    "RTDN:",
+                    "STAT:",
+                    "T&C",
+                    "TRNC:"
+                };
+
+                List<string> refs = new List<string>
+                {
+                    "Tarifa  + Impuestos comisionables",
+                    "Comisión",
+                    "Over",
+                    "Forma de pago",
+                    "Penalidad",
+                    "Documento de referencia",
+                    "Ruta (I Internacional - D Doméstico)",
+                    "Imp. Tasas y Cargos",
+                    "Tipo de documento"
+                };
+
                 XLWorkbook wb = new XLWorkbook();
                 foreach (DataTable dt in ds.Tables)
-	            {
-		            var ws = wb.Worksheets.Add(dt.TableName);
+                {
+                    var ws = wb.Worksheets.Add(dt.TableName);
                     ws.PageSetup.PageOrientation = XLPageOrientation.Landscape;
 
                     var rgHeader = ws.Cell(1, 1).InsertData(header);
                     rgHeader.Style.Font.Bold = true;
                     rgHeader.Style.Fill.BackgroundColor = XLColor.Gainsboro;
 
+                    var rgRefsTitles = ws.Cell(1, 10).InsertData(refsTitles);
+                    var rgRefs = ws.Cell(2, 11).InsertData(refs);
+
+                    rgRefsTitles.Style.Font.SetFontSize(8);
+                    rgRefsTitles.Style.Font.Bold = true;
+
+                    rgRefs.Style.Font.SetFontSize(8);
+
                     int EspacioHeaderTable = 2;
+
+                    var headerLength = Math.Max(header.Length, refsTitles.Count);
 
                     /*if (dt.TableName == "DiferenciasIVA")
                     {
                         int filaExtra = header.Length + EspacioHeaderTable;
-                        
+
                         ws.Cell(filaExtra, 1).Value = "Liquidación BSP";
                         ws.Cell(filaExtra, 11).Value = "Liquidación BO";
                         ws.Cell(filaExtra, 20).Value = "Diferencias (BSP - BackOffice) (Solo > 0,50)";
@@ -161,9 +195,10 @@ namespace Helpers
 
                         EspacioHeaderTable++;
                     }
-                    else */if (dt.TableName == "Emisiones+BackOffice")
+                    else 
+                    if (dt.TableName == "Emisiones+BackOffice")
                     {
-                        int filaExtra = header.Length + EspacioHeaderTable;
+                        int filaExtra = headerLength + EspacioHeaderTable;
 
                         ws.Cell(filaExtra, 7).Value = "Fecha";
                         ws.Cell(filaExtra, 9).Value = "Forma de Pago";
@@ -184,9 +219,24 @@ namespace Helpers
 
                         EspacioHeaderTable++;
                     }
+                    else */
+                    if (dt.TableName == "Over")
+                    {
+                        int filaExtra = headerLength + EspacioHeaderTable;
+
+                        ws.Cell(filaExtra, 6).Value = "OVER PESOS";
+                        ws.Cell(filaExtra, 9).Value = "OVER DOLARES";
+
+                        ws.Range(filaExtra, 6, filaExtra, 8).Merge();
+                        ws.Range(filaExtra, 9, filaExtra, 11).Merge();
+                        ws.Row(filaExtra).Style.Font.Bold = true;
+                        ws.Row(filaExtra).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                        EspacioHeaderTable++;
+                    }
                     else if (dt.TableName == "ListadoParaFacturación")
                     {
-                        int filaExtra = header.Length + EspacioHeaderTable;
+                        int filaExtra = headerLength + EspacioHeaderTable;
 
                         ws.Cell(filaExtra, 7).Value = "Fecha";
                         ws.Cell(filaExtra, 11).Value = "IVA";
@@ -204,26 +254,27 @@ namespace Helpers
                         EspacioHeaderTable++;
                     }
 
-                    var table = ws.Cell(header.Length + EspacioHeaderTable, 1).InsertTable(dt);
+                    var table = ws.Cell(headerLength + EspacioHeaderTable, 1).InsertTable(dt);
                     table.ShowAutoFilter = false;
                     table.Theme = XLTableTheme.None;
-                    
+
                     table.Row(1).Style.Font.Bold = true;
 
                     int colCount = table.ColumnCount();
 
-                    var rangeHeader = ws.Range(1, 1, header.Length, colCount);
-                    for (int i = 1; i <= header.Length; i++)
-                        rangeHeader.Row(i).Merge();
+                    var rangeHeader = ws.Range(1, 1, headerLength, colCount);
+                    for (int i = 1; i <= headerLength; i++)
+                        rangeHeader.Range(i, 1, i, 9).Merge();
 
                     if (dt.TableName == "Over" || dt.TableName == "Creditos" || dt.TableName == "Debitos" || dt.TableName == "Reembolsos")
                     {
                         table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Font.Bold = true;
+                        table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Fill.BackgroundColor = XLColor.Gainsboro;
                     }
 
                     ws.Columns().AdjustToContents();
                     ws.Cell(table.LastRow().RowNumber() + 2, 1).Value = footer;
-	            }
+                }
 
                 wb.SaveAs(excelFilename);
 

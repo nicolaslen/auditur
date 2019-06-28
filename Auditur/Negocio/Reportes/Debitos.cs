@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Helpers;
 
 namespace Auditur.Negocio.Reportes
 {
@@ -11,7 +9,7 @@ namespace Auditur.Negocio.Reportes
         public List<Debito> Generar(Semana oSemana)
         {
             List<Debito> lstDebito = new List<Debito>();
-            
+
             List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "DEBIT MEMOS").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.NroDocumento).ToList();
 
             List<Debito> lstDebitoPesos = new List<Debito>();
@@ -53,9 +51,11 @@ namespace Auditur.Negocio.Reportes
             oDebito.TotalTransaccion =
                 (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0);
             oDebito.ValorTarifa = oBSP_Ticket.ValorTarifa;
-            oDebito.Imp = oBSP_Ticket.ImpuestoValor;
+            oDebito.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" ? oBSP_Ticket.ImpuestoValor : 0)
+                           + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
             oDebito.TyC = oBSP_Ticket.ImpuestoTyCValor;
-            oDebito.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0);
+            oDebito.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0)
+                                + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
             oDebito.Penalidad = oBSP_Ticket.ImpuestoPenValor;
             oDebito.Cobl = oBSP_Ticket.ImpuestoCobl;
             oDebito.ComStdValor = oBSP_Ticket.ComisionStdValor;

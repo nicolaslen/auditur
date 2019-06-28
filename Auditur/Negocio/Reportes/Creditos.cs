@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Helpers;
 
 namespace Auditur.Negocio.Reportes
 {
@@ -53,9 +51,11 @@ namespace Auditur.Negocio.Reportes
             oCredito.TotalTransaccion =
                 (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0);
             oCredito.ValorTarifa = oBSP_Ticket.ValorTarifa;
-            oCredito.Imp = oBSP_Ticket.ImpuestoValor;
+            oCredito.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" ? oBSP_Ticket.ImpuestoValor : 0)
+                                 + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
             oCredito.TyC = oBSP_Ticket.ImpuestoTyCValor;
-            oCredito.IVATarifa = oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0;
+            oCredito.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0)
+                                   + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
             oCredito.Penalidad = oBSP_Ticket.ImpuestoPenValor;
             oCredito.Cobl = oBSP_Ticket.ImpuestoCobl;
             oCredito.ComStdValor = oBSP_Ticket.ComisionStdValor;
