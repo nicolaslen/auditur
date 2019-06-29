@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Cornsilk;
+            this.BackColor = System.Drawing.Color.AliceBlue;
             this.Font = new System.Drawing.Font("Calibri", 11.25F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmHome";

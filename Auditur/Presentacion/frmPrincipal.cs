@@ -16,7 +16,7 @@ namespace Auditur.Presentacion
         {
             ucMenu1.Div = spcDiv.Panel2;
             CargarFirst();
-            //spcDiv.BackColor = System.Drawing.Color.Cornsilk;
+            //spcDiv.BackColor = System.Drawing.Color.AliceBlue;
         }
 
         private void spcDiv_Panel2_ControlRemoved(object sender, ControlEventArgs e)

@@ -46,7 +46,7 @@
             // 
             // mnuGeneral
             // 
-            this.mnuGeneral.BackColor = System.Drawing.Color.Cornsilk;
+            this.mnuGeneral.BackColor = System.Drawing.Color.AliceBlue;
             this.mnuGeneral.Font = new System.Drawing.Font("Calibri", 14.25F);
             this.mnuGeneral.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importarToolStripMenuItem,
@@ -157,7 +157,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Cornsilk;
+            this.BackColor = System.Drawing.Color.AliceBlue;
             this.Controls.Add(this.mnuGeneral);
             this.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);

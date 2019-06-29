@@ -206,7 +206,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Cornsilk;
+            this.BackColor = System.Drawing.Color.AliceBlue;
             this.Controls.Add(this.grbABMAgencias);
             this.Controls.Add(this.grbListadoAgencias);
             this.Font = new System.Drawing.Font("Calibri", 14.25F);

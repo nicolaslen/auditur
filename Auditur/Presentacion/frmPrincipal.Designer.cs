@@ -41,7 +41,7 @@
             this.spcDiv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.spcDiv.BackColor = System.Drawing.Color.Cornsilk;
+            this.spcDiv.BackColor = System.Drawing.Color.AliceBlue;
             this.spcDiv.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.spcDiv.IsSplitterFixed = true;
             this.spcDiv.Location = new System.Drawing.Point(0, 0);
@@ -56,7 +56,7 @@
             // spcDiv.Panel2
             // 
             this.spcDiv.Panel2.AutoScroll = true;
-            this.spcDiv.Panel2.BackColor = System.Drawing.Color.Cornsilk;
+            this.spcDiv.Panel2.BackColor = System.Drawing.Color.AliceBlue;
             this.spcDiv.Panel2MinSize = 41;
             this.spcDiv.Size = new System.Drawing.Size(762, 640);
             this.spcDiv.SplitterDistance = 37;
@@ -88,7 +88,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frmPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AUDITUR - Auditoría del BSP";
+            this.Text = "AUDITUR 3.0 - Auditoría del BSP";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             this.spcDiv.Panel1.ResumeLayout(false);

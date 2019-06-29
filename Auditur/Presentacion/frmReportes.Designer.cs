@@ -258,7 +258,7 @@
             // 
             // frmCurrents1
             // 
-            this.frmCurrents1.BackColor = System.Drawing.Color.Cornsilk;
+            this.frmCurrents1.BackColor = System.Drawing.Color.AliceBlue;
             this.frmCurrents1.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.frmCurrents1.Location = new System.Drawing.Point(5, 5);
             this.frmCurrents1.Margin = new System.Windows.Forms.Padding(5);
@@ -317,7 +317,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Cornsilk;
+            this.BackColor = System.Drawing.Color.AliceBlue;
             this.Controls.Add(this.grbProceso);
             this.Controls.Add(this.frmCurrents1);
             this.Controls.Add(this.grbReportes);

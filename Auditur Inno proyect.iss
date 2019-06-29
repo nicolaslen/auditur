@@ -5,11 +5,11 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{7C2880D4-9C04-4C51-AF4B-DC56EA56EACA}}
-AppName=Auditur
+AppId={{9A52E712-0B32-4C16-A3EF-E221E9C3362A}}
+AppName=Auditur 3
 AppVerName=Auditur 3.0
 AppPublisher=Nicolás Len
-DefaultDirName={pf}\Auditur
+DefaultDirName={pf}\Auditur 3
 DisableDirPage=yes
 DefaultGroupName=Auditur
 DisableProgramGroupPage=yes
@@ -30,9 +30,9 @@ Source: D:\Users\Nicolas\Documents\Trabajo\Auditur\VS2013\git\Auditur\Presentaci
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: {group}\Auditur; Filename: {app}\Auditur.exe
+Name: {group}\Auditur 3; Filename: {app}\Auditur.exe
 Name: {group}\{cm:UninstallProgram,Auditur}; Filename: {uninstallexe}
-Name: {commondesktop}\Auditur; Filename: {app}\Auditur.exe; Tasks: desktopicon
+Name: {commondesktop}\Auditur 3; Filename: {app}\Auditur.exe; Tasks: desktopicon
 
 [Run]
 Filename: {app}\Auditur.exe; Description: {cm:LaunchProgram,Auditur}; Flags: nowait skipifsilent
