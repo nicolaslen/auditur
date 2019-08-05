@@ -1,0 +1,16 @@
+Recargar todo un bsp,  va muuuuuy lento
+Listado para facturación no sale
+Creditos: no suma en el total y cuenta mal los registros del reporte.
+En debitos y creditos no salen adm y acm, no suma totales y la cantidad de registros suma +1. Eliminar COBL.  Orden de columnas: TRNC, Nro. Docto, RTDN No, eliminar STAT.
+
+DiferenciasEmisiones 4591560181 swan 4/7/19 es diferencia pero Fop CA debería estar igual. Mostrar primer columna (BSP, BO, DIFERENCIA). Sacar Nro a TRNC. Eliminar STAT. Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
+DiferenciasIVA en IVA Tarifa da igual, pero en el total en vez de mostrar 0, muestra el valor de ambos (4591560181). Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
+Emisiones + BackOffice (Sacar +BackOffice en el titulo del reporte), eliminar columna Cobl
+Over: Over pedido y over recibido deberian sumarse y se restan (tanto en pesos como en dolares)
+Reembolsos: No salen los RTDN, agregar la columna de STAT. En el reporte cambiar "IVA S/Com" por ?
+SituacionBO: Si está todo en 0, no debería aparecer en el reporte
+SituacionBSP: Cuando lee el backoffice, no está leyendo la columna i=1 (dejar de saltear 2, saltear solo 1)
+
+Formato de referencias: mostrar en dos columnas debajo del titulo. Ver si queda bien ponerlo en hoja aparte del reporte
+
+Listado para facturación: casi todo está en emisiones y reembolsos
