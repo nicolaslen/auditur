@@ -11,7 +11,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<SituacionBSP> lstSituacionBSP = new List<SituacionBSP>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(bspT => bspT.Concepto.Nombre == "ISSUES" && bspT.Trnc == "TKTT" &&
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(bspT => bspT.Concepto.Nombre == "ISSUES" &&
                     !oSemana.TicketsBO.Any(boT => boT.Billete == bspT.NroDocumento &&
                         boT.Compania.Codigo == bspT.Compania.Codigo))
                 .OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento)
