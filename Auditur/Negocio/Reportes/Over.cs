@@ -25,7 +25,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Over Rec. $")]
         public decimal OverRecPesos { get; set; }
 
-        [Display(Name = "Diferencias $")]
+        [Display(Name = "(Rec. - Ped.) $")]
         public decimal DiferenciasPesos { get; set; }
 
         [Display(Name = "Over Ped. u$s")]
@@ -34,7 +34,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Over Rec. u$s")]
         public decimal OverRecDolares { get; set; }
 
-        [Display(Name = "Diferencias u$s")]
+        [Display(Name = "(Rec. - Ped.) u$s")]
         public decimal DiferenciasDolares { get; set; }
 
         [Display(Name = "Operación N°")]
@@ -45,9 +45,5 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pax")]
         public string Pasajero { get; set; }
-
-        public string Observaciones { get; set; }
-
-
     }
 }

@@ -19,7 +19,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
 
-        [Display(Name = "Destino I/D")]
+        [Display(Name = "Stat I/D")]
         public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
@@ -46,10 +46,10 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Penalidad")]
         public decimal Penalidad { get; set; }
         
-        [Display(Name = "Com Std Valor")]
+        [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }
 
-        [Display(Name = "Com Supp Valor")]
+        [Display(Name = "Com Supp")]
         public decimal ComSuppValor { get; set; }
 
         [Display(Name = "IVA S/Com")]

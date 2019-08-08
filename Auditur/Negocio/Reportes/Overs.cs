@@ -68,7 +68,6 @@ namespace Auditur.Negocio.Reportes
             oOver.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
             oOver.NetRemit = oBSP_Ticket?.Nr;
             oOver.TourCode = oBSP_Ticket?.Tour;
-            oOver.Observaciones = "";
 
             if (oBSP_Ticket != null)
             {
