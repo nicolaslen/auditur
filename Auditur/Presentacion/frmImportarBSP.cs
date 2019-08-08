@@ -394,6 +394,8 @@ namespace Auditur.Presentacion
                         Observaciones = Linea;
                         while (Observaciones.IndexOf("||") > -1)
                             Observaciones = Observaciones.Replace("||", "|");
+                        while (Observaciones.IndexOf("  ") > -1)
+                            Observaciones = Observaciones.Replace("  ", " ");
                         if (Observaciones.Substring(Observaciones.Length - 1) == "|") Observaciones = Observaciones.Substring(0, Observaciones.Length - 1);
                         oACM = new ACM { Billete = BilleteACM, Observaciones = Observaciones };
                         listACM.Add(oACM);
@@ -431,6 +433,8 @@ namespace Auditur.Presentacion
                         Observaciones = Linea;
                         while (Observaciones.IndexOf("||") > -1)
                             Observaciones = Observaciones.Replace("||", "|");
+                        while (Observaciones.IndexOf("  ") > -1)
+                            Observaciones = Observaciones.Replace("  ", " ");
                         if (Observaciones.Substring(Observaciones.Length - 1) == "|") Observaciones = Observaciones.Substring(0, Observaciones.Length - 1);
                         oADM = new ADM { Billete = BilleteADM, Observaciones = Observaciones };
                         listADM.Add(oADM);

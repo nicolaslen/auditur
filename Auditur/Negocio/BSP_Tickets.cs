@@ -6,6 +6,7 @@ using System.Data.SqlServerCe;
 using Helpers;
 using System.Data;
 using System.Reflection;
+using Auditur.Negocio.Reportes;
 
 namespace Auditur.Negocio
 {
@@ -137,21 +138,21 @@ namespace Auditur.Negocio
             BSP_Ticket oBSP_Ticket = new BSP_Ticket();
 
             oBSP_Ticket.ID = rdrLector.GetInt64(rdrLector.GetOrdinal("ID"));
-            oBSP_Ticket.Trnc = rdrLector.GetString(rdrLector.GetOrdinal("Trnc"));
+            oBSP_Ticket.Trnc = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Trnc"));
             oBSP_Ticket.NroDocumento = rdrLector.GetInt64(rdrLector.GetOrdinal("NroDocumento"));
-            oBSP_Ticket.FechaEmision = rdrLector.GetDateTime(rdrLector.GetOrdinal("FechaEmision"));
-            oBSP_Ticket.Cpn = rdrLector.GetString(rdrLector.GetOrdinal("Cpn"));
-            oBSP_Ticket.Nr = rdrLector.GetString(rdrLector.GetOrdinal("Nr"));
-            oBSP_Ticket.Stat = rdrLector.GetString(rdrLector.GetOrdinal("Stat"));
-            oBSP_Ticket.Fop = rdrLector.GetString(rdrLector.GetOrdinal("Fop"));
+            oBSP_Ticket.FechaEmision = rdrLector.GetDateTimeOrNull(rdrLector.GetOrdinal("FechaEmision"));
+            oBSP_Ticket.Cpn = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Cpn"));
+            oBSP_Ticket.Nr = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Nr"));
+            oBSP_Ticket.Stat = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Stat"));
+            oBSP_Ticket.Fop = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Fop"));
             oBSP_Ticket.ValorTransaccion = rdrLector.GetDecimal(rdrLector.GetOrdinal("ValorTransaccion"));
             oBSP_Ticket.ValorTarifa = rdrLector.GetDecimal(rdrLector.GetOrdinal("ValorTarifa"));
             oBSP_Ticket.ImpuestoValor = rdrLector.GetDecimal(rdrLector.GetOrdinal("ImpuestoValor"));
-            oBSP_Ticket.ImpuestoCodigo = rdrLector.GetString(rdrLector.GetOrdinal("ImpuestoCodigo"));
+            oBSP_Ticket.ImpuestoCodigo = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("ImpuestoCodigo"));
             oBSP_Ticket.ImpuestoTyCValor = rdrLector.GetDecimal(rdrLector.GetOrdinal("ImpuestoTyCValor"));
-            oBSP_Ticket.ImpuestoTyCCodigo = rdrLector.GetString(rdrLector.GetOrdinal("ImpuestoTyCCodigo"));
+            oBSP_Ticket.ImpuestoTyCCodigo = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("ImpuestoTyCCodigo"));
             oBSP_Ticket.ImpuestoPenValor = rdrLector.GetDecimal(rdrLector.GetOrdinal("ImpuestoPenValor"));
-            oBSP_Ticket.ImpuestoPenCodigo = rdrLector.GetString(rdrLector.GetOrdinal("ImpuestoPenCodigo"));
+            oBSP_Ticket.ImpuestoPenCodigo = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("ImpuestoPenCodigo"));
             oBSP_Ticket.ImpuestoCobl = rdrLector.GetDecimal(rdrLector.GetOrdinal("ImpuestoCobl"));
             oBSP_Ticket.ComisionStdPorcentaje = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComisionStdPorcentaje"));
             oBSP_Ticket.ComisionStdValor = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComisionStdValor"));
@@ -159,9 +160,9 @@ namespace Auditur.Negocio
             oBSP_Ticket.ComisionSuppValor = rdrLector.GetDecimal(rdrLector.GetOrdinal("ComisionSuppValor"));
             oBSP_Ticket.ImpuestoSinComision = rdrLector.GetDecimal(rdrLector.GetOrdinal("ImpuestoSinComision"));
             oBSP_Ticket.NetoAPagar = rdrLector.GetDecimal(rdrLector.GetOrdinal("NetoAPagar"));
-            oBSP_Ticket.Tour = rdrLector.GetString(rdrLector.GetOrdinal("Tour"));
-            oBSP_Ticket.Esac = rdrLector.GetString(rdrLector.GetOrdinal("Esac"));
-            oBSP_Ticket.Observaciones = rdrLector.GetString(rdrLector.GetOrdinal("Observaciones"));
+            oBSP_Ticket.Tour = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Tour"));
+            oBSP_Ticket.Esac = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Esac"));
+            oBSP_Ticket.Observaciones = rdrLector.GetStringOrNull(rdrLector.GetOrdinal("Observaciones"));
 
             oBSP_Ticket.Moneda = rdrLector.GetBoolean(rdrLector.GetOrdinal("Moneda")) ? Moneda.Dolar : Moneda.Peso;
 

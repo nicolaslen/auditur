@@ -116,7 +116,6 @@ namespace Helpers
             {
                 List<string> refsTitles = new List<string>
                 {
-                    "REF:",
                     "COBL:",
                     "COM STD:",
                     "COM SUPL:",
@@ -124,7 +123,7 @@ namespace Helpers
                     "PEN:",
                     "RTDN:",
                     "STAT:",
-                    "T&C",
+                    "T&C:",
                     "TRNC:"
                 };
 
@@ -149,19 +148,12 @@ namespace Helpers
 
                     var rgHeader = ws.Cell(1, 1).InsertData(header);
                     rgHeader.Style.Font.Bold = true;
-                    rgHeader.Style.Fill.BackgroundColor = XLColor.Gainsboro;
-
-                    var rgRefsTitles = ws.Cell(1, 10).InsertData(refsTitles);
-                    var rgRefs = ws.Cell(2, 11).InsertData(refs);
-
-                    rgRefsTitles.Style.Font.SetFontSize(8);
-                    rgRefsTitles.Style.Font.Bold = true;
-
-                    rgRefs.Style.Font.SetFontSize(8);
+                    rgHeader.Style.Font.SetFontSize(12);
+                    rgHeader.Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241); ;
 
                     int EspacioHeaderTable = 2;
 
-                    var headerLength = Math.Max(header.Length, refsTitles.Count);
+                    var headerLength = header.Length;
 
                     /*if (dt.TableName == "DiferenciasIVA")
                     {
@@ -259,6 +251,8 @@ namespace Helpers
                     table.Theme = XLTableTheme.None;
 
                     table.Row(1).Style.Font.Bold = true;
+                    table.Row(1).Style.Font.FontColor = XLColor.White;
+                    table.Row(1).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 54, 96, 146);
 
                     int colCount = table.ColumnCount();
 
@@ -269,12 +263,20 @@ namespace Helpers
                     if (dt.TableName == "Over" || dt.TableName == "Creditos" || dt.TableName == "Debitos" || dt.TableName == "Reembolsos")
                     {
                         table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Font.Bold = true;
-                        table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Fill.BackgroundColor = XLColor.Gainsboro;
+                        table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
                     }
 
                     ws.Columns().AdjustToContents();
                     ws.Cell(table.LastRow().RowNumber() + 2, 1).Value = footer;
                 }
+
+                var wsRefs = wb.Worksheets.Add("Referencias");
+                var rgRefsTitles = wsRefs.Cell(1, 1).InsertData(refsTitles);
+                var rgRefs = wsRefs.Cell(1, 2).InsertData(refs);
+                rgRefsTitles.Style.Font.SetFontSize(12);
+                rgRefsTitles.Style.Font.Bold = true;
+                rgRefs.Style.Font.SetFontSize(12);
+                wsRefs.Columns().AdjustToContents();
 
                 wb.SaveAs(excelFilename);
 

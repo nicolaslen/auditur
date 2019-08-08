@@ -43,7 +43,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "IVA Tarifa")]
         public decimal IVATarifa { get; set; }
 
-        [Display(Name = "Penalidad")]
+        [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
         
         [Display(Name = "Com Std")]

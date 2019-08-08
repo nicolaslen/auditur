@@ -365,8 +365,7 @@ namespace Auditur.Presentacion
             header.Add("Informe de Auditoría");
             header.Add(Titulo);
             header.Add("Período de Liquidación del " + oSemana.FechaDesde.ToShortDateString() + " hasta " + oSemana.FechaHasta.ToShortDateString() + " - Semana " + oSemana.Periodo.ToShortDateString());
-            header.Add("Empresa " + oSemana.Agencia.Nombre);
-            header.Add("IATA " + oSemana.Agencia.ID);
+            header.Add("Empresa " + oSemana.Agencia.Nombre + " - IATA " + oSemana.Agencia.ID);
             return header;
         }
 
