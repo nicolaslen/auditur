@@ -17,10 +17,10 @@ Débitos:
 	- eliminar STAT (LISTO)
 
 DiferenciasEmisiones:
-	- 4591560181 swan 4/7/19 es diferencia pero Fop CA igualmente debería verse (PREGUNTAR DE DONDE SACO EL DATO)
+	- 4591560181 swan 4/7/19 es diferencia pero Fop CA igualmente debería verse (LISTO)
 	- Mostrar primer columna (BSP, BO, DIFERENCIA) (LISTO). 
 	- Sacar Nro a TRNC(LISTO)
-	- Eliminar STAT (NO ESTABA STAT)
+	- Agregar STAT
 	- Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
 	
 DiferenciasIVA:
@@ -40,10 +40,11 @@ Reembolsos:
 	- En el reporte cambiar "IVA S/Com" por ?
 
 SituacionBO: 
-	- Si está todo en 0, no debería aparecer en el reporte
+	- Si está todo en 0, no debería aparecer en el reporte (Todos los valores numericos)
 	
 SituacionBSP
 	- Cuando lee el backoffice, no está leyendo la columna i=1 (dejar de saltear 2, saltear solo 1) (LISTO)
+	- ELIMINAR LOS BOLETOS QUE SON CANX
 
 Formato de referencias: mostrar en dos columnas debajo del titulo. Ver si queda bien ponerlo en hoja aparte del reporte
 
@@ -51,8 +52,8 @@ Listado para facturación:
 	casi todo está en emisiones y reembolsos
 	
 PREGUNTAR:
-	- DiferenciasEmisiones no tiene STAT y me pediste sacarlo
-	- De donde saco diferenciasEmisiones.bo.fopca?
+	- DiferenciasEmisiones no tiene STAT y me pediste sacarlo (HAY QUE PONERLO)
+	- De donde saco diferenciasEmisiones.bo.fopca? (DEL BO)
 	- Archivos con el formato?
 	- Archivos con "de que depende para estar en diferencias?"
 	- Listado de facturación 

@@ -86,6 +86,8 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBO.BoletoNro = bo_ticket.Billete.ToString();
                         oDiferenciaBO.FechaEmision = AuditurHelpers.GetDateTimeString(bo_ticket.Fecha);
                         oDiferenciaBO.Moneda = bo_ticket.Moneda == Moneda.Peso ? "$" : "D";
+                        oDiferenciaBSP.FopCA = bo_ticket.CA;
+                        oDiferenciaBSP.FopCC = bo_ticket.CC;
                         oDiferenciaBO.TotalTransaccion = bo_ticket.TotalTransaccion;
                         oDiferenciaBO.ValorTarifa = bo_ticket.ValorTarifa;
                         oDiferenciaBO.Imp = bo_ticket.Impuestos;

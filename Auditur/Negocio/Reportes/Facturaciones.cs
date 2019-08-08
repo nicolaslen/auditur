@@ -21,8 +21,9 @@ namespace Auditur.Negocio.Reportes
                 Facturacion oFacturacion = new Facturacion();
 
                 oFacturacion.Cia = oBSP_Ticket.Compania.Codigo;
-                oFacturacion.Tipo = oBSP_Ticket.Trnc;
                 oFacturacion.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
+                oFacturacion.Tipo = oBSP_Ticket.Trnc;
+                
                 oFacturacion.RTDN = Validators.ConcatNumbers(oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).FirstOrDefault(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).Skip(1).ToList());
                 if (oBSP_Ticket.Detalle.Any(x => x.Trnc == "+RTDN:" && x.Fop == "EX"))
                     oFacturacion.RTDN += " (EX)";
