@@ -196,7 +196,7 @@ namespace Helpers
                         EspacioHeaderTable++;
                     }
                     else 
-                    if (dt.TableName == "Emisiones+BackOffice")
+                    if (dt.TableName == "Emisiones")
                     {
                         int filaExtra = headerLength + EspacioHeaderTable;
 

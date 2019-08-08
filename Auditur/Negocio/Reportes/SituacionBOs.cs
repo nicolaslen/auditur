@@ -35,8 +35,8 @@ namespace Auditur.Negocio.Reportes
                 oSituacionBO.IVATarifa = oBO_Ticket.IVATarifa;
                 oSituacionBO.ComStdValor = oBO_Ticket.ComStd;
                 oSituacionBO.ComSuppValor = oBO_Ticket.ComSupl;
-                oSituacionBO.IVAComision = oBO_Ticket.IVACom;;
-                oSituacionBO.NetoAPagar = oBO_Ticket.Neto;;
+                oSituacionBO.IVAComision = oBO_Ticket.IVACom;
+                oSituacionBO.NetoAPagar = oBO_Ticket.Neto;
                 oSituacionBO.OperacionNro = oBO_Ticket.OperacionNro;
                 oSituacionBO.Factura = oBO_Ticket.FacturaNro;
                 oSituacionBO.Pasajero = oBO_Ticket.Pax;

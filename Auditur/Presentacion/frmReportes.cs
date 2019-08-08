@@ -120,7 +120,7 @@ namespace Auditur.Presentacion
             StartWorking(0);
         }
 
-        private void btnBSPNroOPs_Click(object sender, EventArgs e)
+        private void btnEmisiones_Click(object sender, EventArgs e)
         {
             StartWorking(1);
         }
@@ -194,16 +194,16 @@ namespace Auditur.Presentacion
             return blnReturn;
         }
 
-        private bool GenerarEmisionesMasBackoffices()
+        private bool GenerarEmisiones()
         {
-            string Reporte = "Emisiones+BackOffice";
+            string Reporte = "Emisiones";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
             {
-                EmisionesMasBackOffices bspMasBackOffices = new EmisionesMasBackOffices();
-                List<EmisionesMasBackOffice> lstReporte = bspMasBackOffices.Generar(semanaToReport);
-                List<string> header = GetHeader(semanaToReport, "Emisiones + BackOffice");
+                Emisiones emisiones = new Emisiones();
+                List<Emision> lstReporte = emisiones.Generar(semanaToReport);
+                List<string> header = GetHeader(semanaToReport, "Emisiones");
                 string footer = lstReporte.Count + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
@@ -221,7 +221,7 @@ namespace Auditur.Presentacion
                 DiferenciasIVAs ControlIVAs = new DiferenciasIVAs();
                 List<DiferenciasIVA> lstReporte = ControlIVAs.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Diferencias IVA");
-                string footer = lstReporte.Count.ToString() + " registros";
+                string footer = lstReporte.Count + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -238,7 +238,7 @@ namespace Auditur.Presentacion
                 Creditos Creditos = new Creditos();
                 List<CreditoObj> lstReporte = Creditos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Notas de Crédito en BSP");
-                string footer = lstReporte.Count(x => x.RTDN != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.Cia != "TOTAL") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -255,7 +255,7 @@ namespace Auditur.Presentacion
                 Debitos Debitos = new Debitos();
                 List<Debito> lstReporte = Debitos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Notas de Débito en BSP");
-                string footer = lstReporte.Count(x => x.RTDN != "TOTAL").ToString() + " registros";
+                string footer = lstReporte.Count(x => x.Cia != "TOTAL").ToString() + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -399,7 +399,7 @@ namespace Auditur.Presentacion
             int Opcion = ((int)e.Argument);
 
             int ReportesGenerados = 0;
-            if ((Opcion == 1 || Opcion == 0) && GenerarEmisionesMasBackoffices()) ReportesGenerados++;
+            if ((Opcion == 1 || Opcion == 0) && GenerarEmisiones()) ReportesGenerados++;
             if ((Opcion == 2 || Opcion == 0) && GenerarDiferenciasIVA()) ReportesGenerados++;
             if ((Opcion == 3 || Opcion == 0) && GenerarCreditos()) ReportesGenerados++;
             if ((Opcion == 4 || Opcion == 0) && GenerarDebitos()) ReportesGenerados++;

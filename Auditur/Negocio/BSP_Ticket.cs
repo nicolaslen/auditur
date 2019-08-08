@@ -10,17 +10,6 @@ namespace Auditur.Negocio
             Detalle = new List<BSP_Ticket_Detalle>();
         }
 
-        /*public string Tipo { get; set; }
-        public decimal TarContado { get; set; }
-        public decimal TarCredito { get; set; }
-        public decimal IVA105 { get; set; }
-        public decimal ComPorcentaje { get; set; }
-        public decimal ComValor { get; set; }
-        public decimal ComOver { get; set; }
-        public decimal ComIVA { get; set; }
-        public decimal Total { get; set; }
-        public BSP_Rg Rg { get; set; }*/
-
         public Concepto Concepto { get; set; }
         public long SemanaID { get; set; }
         public Moneda Moneda { get; set; }
@@ -52,7 +41,7 @@ namespace Auditur.Negocio
         public decimal NetoAPagar { get; set; }
         public string Tour { get; set; }
         public string Esac { get; set; }
-
-        public List<BSP_Ticket_Detalle> Detalle { get; set; }
+        public string Observaciones { get; set; }
+        public List<BSP_Ticket_Detalle> Detalle { get; set; }   
     }
 }

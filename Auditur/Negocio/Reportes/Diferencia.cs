@@ -8,10 +8,13 @@ namespace Auditur.Negocio.Reportes
 {
     public class Diferencia
     {
+        [Display(Name = " ")]
+        public string Origen { get; set; }
+
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "TRNC N°")]
+        [Display(Name = "TRNC")]
         public string Trnc { get; set; }
 
         [Display(Name = "Nro. Docto")]
@@ -25,9 +28,6 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
-
-        [Display(Name = "Destino I/D")]
-        public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
         public decimal FopCA { get; set; }

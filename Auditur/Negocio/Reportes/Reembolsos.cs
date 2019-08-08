@@ -36,10 +36,11 @@ namespace Auditur.Negocio.Reportes
             Reembolso oReembolso = new Reembolso();
 
             oReembolso.Cia = oBSP_Ticket.Compania.Codigo;
-            oReembolso.RTDN = (oBSP_Ticket.Trnc == "+RTDN" ? oBSP_Ticket.NroDocumento : (oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN").Select(x => x.NroDocumento).FirstOrDefault())).ToString();
+            oReembolso.RTDN = (oBSP_Ticket.Trnc == "+RTDN:" ? oBSP_Ticket.NroDocumento : (oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento).FirstOrDefault())).ToString();
             oReembolso.BoletoNro = oBSP_Ticket.NroDocumento.ToString();
             oReembolso.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
             oReembolso.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
+            oReembolso.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
             oReembolso.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
             oReembolso.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
             oReembolso.TotalTransaccion = (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC" || x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();

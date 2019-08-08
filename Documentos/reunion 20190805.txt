@@ -1,16 +1,61 @@
 Recargar todo un bsp,  va muuuuuy lento
-Listado para facturación no sale
-Creditos: no suma en el total y cuenta mal los registros del reporte.
-En debitos y creditos no salen adm y acm, no suma totales y la cantidad de registros suma +1. Eliminar COBL.  Orden de columnas: TRNC, Nro. Docto, RTDN No, eliminar STAT.
 
-DiferenciasEmisiones 4591560181 swan 4/7/19 es diferencia pero Fop CA debería estar igual. Mostrar primer columna (BSP, BO, DIFERENCIA). Sacar Nro a TRNC. Eliminar STAT. Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
-DiferenciasIVA en IVA Tarifa da igual, pero en el total en vez de mostrar 0, muestra el valor de ambos (4591560181). Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
-Emisiones + BackOffice (Sacar +BackOffice en el titulo del reporte), eliminar columna Cobl
-Over: Over pedido y over recibido deberian sumarse y se restan (tanto en pesos como en dolares)
-Reembolsos: No salen los RTDN, agregar la columna de STAT. En el reporte cambiar "IVA S/Com" por ?
-SituacionBO: Si está todo en 0, no debería aparecer en el reporte
-SituacionBSP: Cuando lee el backoffice, no está leyendo la columna i=1 (dejar de saltear 2, saltear solo 1)
+Créditos: 
+	- cuenta mal los registros del reporte (LISTO)
+	- no sale acm (LISTO)
+	- no suma totales (LISTO)
+	- la cantidad de registros suma +1 (LISTO)
+	- Eliminar cobl (LISTO)
+	- Orden de columnas: TRNC, Nro. Docto, RTDN No(LISTO)
+	- eliminar STAT (LISTO)
+Débitos:
+	- no sale adm (LISTO)
+	- no suma totales (LISTO)
+	- la cantidad de registros suma +1 (LISTO)
+	- Eliminar cobl (LISTO)
+	- Orden de columnas: TRNC, Nro. Docto, RTDN No(LISTO)
+	- eliminar STAT (LISTO)
+
+DiferenciasEmisiones:
+	- 4591560181 swan 4/7/19 es diferencia pero Fop CA igualmente debería verse (PREGUNTAR DE DONDE SACO EL DATO)
+	- Mostrar primer columna (BSP, BO, DIFERENCIA) (LISTO). 
+	- Sacar Nro a TRNC(LISTO)
+	- Eliminar STAT (NO ESTABA STAT)
+	- Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
+	
+DiferenciasIVA:
+	- en IVA Tarifa da igual, pero en el total en vez de mostrar 0, muestra el valor de ambos (4591560181)(LISTO)
+	- Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
+	
+Emisiones + BackOffice:
+	- Sacar +BackOffice en el titulo del reporte (LISTO)
+	- eliminar columna Cobl (LISTO)
+
+Over: 
+	- Over pedido y over recibido deberian sumarse y se restan (tanto en pesos como en dolares) (LISTO)
+
+Reembolsos: 
+	- No salen los RTDN (LISTO)
+	- agregar la columna de STAT (LISTO)
+	- En el reporte cambiar "IVA S/Com" por ?
+
+SituacionBO: 
+	- Si está todo en 0, no debería aparecer en el reporte
+	
+SituacionBSP
+	- Cuando lee el backoffice, no está leyendo la columna i=1 (dejar de saltear 2, saltear solo 1) (LISTO)
 
 Formato de referencias: mostrar en dos columnas debajo del titulo. Ver si queda bien ponerlo en hoja aparte del reporte
 
-Listado para facturación: casi todo está en emisiones y reembolsos
+Listado para facturación: 
+	casi todo está en emisiones y reembolsos
+	
+PREGUNTAR:
+	- DiferenciasEmisiones no tiene STAT y me pediste sacarlo
+	- De donde saco diferenciasEmisiones.bo.fopca?
+	- Archivos con el formato?
+	- Archivos con "de que depende para estar en diferencias?"
+	- Listado de facturación 
+		- Dice "Este listado comprende todos los boletos de los Informes de Emisiones y Reembolso". Recordar que en emisiones se debe cumplir la siguiente condicion: x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA" || x.Trnc == "EMDS" || x.Trnc == "CANN" || x.Trnc == "TASF").
+		- Los impuestos se calculan con la siguiente formula: Impuestos - ???????????
+		- Para terminar se oculta la columna TyC ??????????????????

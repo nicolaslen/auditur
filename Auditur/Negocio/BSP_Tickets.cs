@@ -49,6 +49,7 @@ namespace Auditur.Negocio
                     "NetoAPagar",
                     "Tour",
                     "Esac",
+                    "Observaciones",
                     "Moneda",
                     "IdConcepto", 
                     "IdCompania",
@@ -81,6 +82,7 @@ namespace Auditur.Negocio
             lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.NetoAPagar));
             lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.Tour));
             lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.Esac));
+            lstParameters.Add(new SqlCeParameter("p" + p++, oBSP_Ticket.Observaciones));
             lstParameters.Add(new SqlCeParameter("p" + p++, (uint)oBSP_Ticket.Moneda));
 
             if (oBSP_Ticket.Concepto != null)
@@ -159,6 +161,7 @@ namespace Auditur.Negocio
             oBSP_Ticket.NetoAPagar = rdrLector.GetDecimal(rdrLector.GetOrdinal("NetoAPagar"));
             oBSP_Ticket.Tour = rdrLector.GetString(rdrLector.GetOrdinal("Tour"));
             oBSP_Ticket.Esac = rdrLector.GetString(rdrLector.GetOrdinal("Esac"));
+            oBSP_Ticket.Observaciones = rdrLector.GetString(rdrLector.GetOrdinal("Observaciones"));
 
             oBSP_Ticket.Moneda = rdrLector.GetBoolean(rdrLector.GetOrdinal("Moneda")) ? Moneda.Dolar : Moneda.Peso;
 

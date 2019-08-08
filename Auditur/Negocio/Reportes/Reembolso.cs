@@ -13,14 +13,14 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "RTDN N°")]
         public string RTDN { get; set; }
 
-        /*[Display(Name = "TRNC")]
-        public string Tipo { get; set; }*/
-
         [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
+
+        [Display(Name = "Destino I/D")]
+        public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
         public decimal FopCA { get; set; }

@@ -55,7 +55,7 @@ namespace Auditur.Negocio.Reportes
                         Math.Abs(netoDif) >= DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new Diferencia();
-                        
+                        oDiferenciaBSP.Origen = "BSP";
                         oDiferenciaBSP.Cia = oBSP_Ticket.Compania.Codigo;
                         oDiferenciaBSP.Trnc = oBSP_Ticket.Trnc;
                         oDiferenciaBSP.RTDN = Validators.ConcatNumbers(oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).FirstOrDefault(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+RTDN:").Select(x => x.NroDocumento.ToString()).Skip(1).ToList());
@@ -65,7 +65,6 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBSP.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
                         oDiferenciaBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                         oDiferenciaBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-                        oDiferenciaBSP.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                         oDiferenciaBSP.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                         oDiferenciaBSP.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                         oDiferenciaBSP.TotalTransaccion = valorTransaccionBSP;
@@ -82,6 +81,7 @@ namespace Auditur.Negocio.Reportes
                         lstDiferencia.Add(oDiferenciaBSP);
                         
                         var oDiferenciaBO = new Diferencia();
+                        oDiferenciaBO.Origen = "BO";
                         oDiferenciaBO.Cia = bo_ticket.Compania.Codigo;
                         oDiferenciaBO.BoletoNro = bo_ticket.Billete.ToString();
                         oDiferenciaBO.FechaEmision = AuditurHelpers.GetDateTimeString(bo_ticket.Fecha);
@@ -101,6 +101,7 @@ namespace Auditur.Negocio.Reportes
                         lstDiferencia.Add(oDiferenciaBO);
 
                         var oDiferencia = new Diferencia();
+                        oDiferencia.Origen = "DIFERENCIA";
                         oDiferencia.FopCA = oDiferenciaBSP.FopCA - oDiferenciaBO.FopCA;
                         oDiferencia.FopCC = oDiferenciaBSP.FopCC - oDiferenciaBO.FopCC;
                         oDiferencia.TotalTransaccion = valorTransaccionDif;

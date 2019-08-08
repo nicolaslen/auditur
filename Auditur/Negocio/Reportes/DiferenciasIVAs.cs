@@ -29,7 +29,7 @@ namespace Auditur.Negocio.Reportes
                     decimal ivaTarifaBsp = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
                                            oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
                                                .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                    decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVACom, 2);
+                    decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVATarifa, 2);
 
                     decimal comStdBsp = oBSP_Ticket.ComisionStdValor +
                                         oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();

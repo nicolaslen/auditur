@@ -2,7 +2,7 @@
 
 namespace Auditur.Negocio.Reportes
 {
-    public class EmisionesMasBackOffice
+    public class Emision
     {
         [Display(Name = "Cia")]
         public string Cia { get; set; }
@@ -54,9 +54,6 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
-
-        [Display(Name = "Cobl")]
-        public decimal Cobl { get; set; }
 
         [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }

@@ -171,7 +171,6 @@ namespace Auditur.Presentacion
 
                 StreamReader fileReader = new StreamReader(fileName);
                 fileReader.ReadLine();
-                fileReader.ReadLine();
                 while ((Linea = fileReader.ReadLine()) != null)
                 {
                     iLinea++;

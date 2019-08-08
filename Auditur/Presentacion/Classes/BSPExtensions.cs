@@ -112,7 +112,7 @@ namespace Auditur.Presentacion.Classes
         {
             var detalle = new BSP_Ticket_Detalle();
 
-            var possibleRTDN = orderedLine.GetChunkTextBetween(22, 160);
+            var possibleRTDN = orderedLine.GetChunkTextBetween(20, 170);
             if (possibleRTDN != null && possibleRTDN.Length >= 5 && possibleRTDN.Substring(0, 5) == "+RTDN")
             {
                 possibleRTDN = Regex.Replace(possibleRTDN, @"\s+", " ");

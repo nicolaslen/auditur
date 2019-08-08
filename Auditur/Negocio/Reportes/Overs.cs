@@ -92,8 +92,8 @@ namespace Auditur.Negocio.Reportes
                 oOver.Operacion = oBO_Ticket.OperacionNro;
             }
 
-            oOver.DiferenciasPesos = oOver.OverRecPesos - oOver.OverPedPesos;
-            oOver.DiferenciasDolares = oOver.OverRecDolares - oOver.OverPedDolares;
+            oOver.DiferenciasPesos = oOver.OverRecPesos + oOver.OverPedPesos;
+            oOver.DiferenciasDolares = oOver.OverRecDolares + oOver.OverPedDolares;
             return oOver;
         }
     }

@@ -11,23 +11,20 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
-        [Display(Name = "TRNC N°")]
+        [Display(Name = "TRNC")]
         public string Tipo { get; set; }
-
-        [Display(Name = "RTDN N°")]
-        public string RTDN { get; set; }
 
         [Display(Name = "Nro. Docto")]
         public string NroDocumento { get; set; }
+
+        [Display(Name = "RTDN N°")]
+        public string RTDN { get; set; }
 
         [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
-        
-        [Display(Name = "Stat I/D")]
-        public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
         public decimal FopCA { get; set; }
@@ -52,9 +49,6 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
-
-        [Display(Name = "Cobl")]
-        public decimal Cobl { get; set; }
 
         [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }
