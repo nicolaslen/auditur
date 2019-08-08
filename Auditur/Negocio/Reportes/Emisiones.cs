@@ -10,7 +10,7 @@ namespace Auditur.Negocio.Reportes
         {
             List<Emision> lstEmisiones = new List<Emision>();
 
-            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && (x.Trnc == "TKTT" || x.Trnc == "CANX" || x.Trnc == "EMDA" || x.Trnc == "EMDS" || x.Trnc == "CANN" || x.Trnc == "TASF")).OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
+            List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
 
             foreach (BSP_Ticket oBSP_Ticket in lstTickets)
             {
@@ -28,7 +28,6 @@ namespace Auditur.Negocio.Reportes
                 oEmision.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
                 oEmision.TourCode = oBSP_Ticket.Tour;
                 oEmision.CodNr = oBSP_Ticket.Nr;
-                oEmision.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                 oEmision.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                 oEmision.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                 oEmision.TotalTransaccion = (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC" || x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();

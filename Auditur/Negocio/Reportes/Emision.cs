@@ -13,7 +13,7 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Nro. Docto")]
         public string BoletoNro { get; set; }
 
-        [Display(Name = "RTDN")]
+        [Display(Name = "RTDN N°")]
         public string RTDN { get; set; }
 
         [Display(Name = "Fecha Emis.")]
@@ -27,9 +27,6 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Net Remit")]
         public string CodNr { get; set; }
-
-        [Display(Name = "Destino I/D")]
-        public string Stat { get; set; }
 
         [Display(Name = "Fop CA")]
         public decimal FopCA { get; set; }
@@ -54,6 +51,9 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
+
+        [Display(Name = "Cobl")]
+        public decimal Cobl { get; set; }
 
         [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }

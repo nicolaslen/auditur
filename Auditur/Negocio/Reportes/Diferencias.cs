@@ -51,8 +51,7 @@ namespace Auditur.Negocio.Reportes
                         Math.Abs(ivaTarifaDif) >= DiferenciaMinima ||
                         Math.Abs(comStdDif) >= DiferenciaMinima ||
                         Math.Abs(comSuplDif) >= DiferenciaMinima ||
-                        Math.Abs(ivaComDif) >= DiferenciaMinima ||
-                        Math.Abs(netoDif) >= DiferenciaMinima)
+                        Math.Abs(ivaComDif) >= DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new Diferencia();
                         oDiferenciaBSP.Origen = "BSP";
@@ -65,6 +64,7 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBSP.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(), oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString()).ToList());
                         oDiferenciaBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                         oDiferenciaBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
+                        oDiferenciaBSP.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                         oDiferenciaBSP.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                         oDiferenciaBSP.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
                         oDiferenciaBSP.TotalTransaccion = valorTransaccionBSP;
@@ -73,7 +73,6 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBSP.TyC = tycBsp;
                         oDiferenciaBSP.IVATarifa = ivaTarifaBsp;
                         oDiferenciaBSP.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
-                        oDiferenciaBSP.Cobl = oBSP_Ticket.ImpuestoCobl + oBSP_Ticket.Detalle.Select(x => x.ImpuestoCobl).DefaultIfEmpty(0).Sum();
                         oDiferenciaBSP.ComStdValor = comStdBsp;
                         oDiferenciaBSP.ComSuppValor = comSuplBsp;
                         oDiferenciaBSP.IVASinComision = ivaComBsp;
@@ -103,7 +102,7 @@ namespace Auditur.Negocio.Reportes
                         lstDiferencia.Add(oDiferenciaBO);
 
                         var oDiferencia = new Diferencia();
-                        oDiferencia.Origen = "DIFERENCIA";
+                        oDiferencia.Origen = "DIF";
                         oDiferencia.FopCA = oDiferenciaBSP.FopCA - oDiferenciaBO.FopCA;
                         oDiferencia.FopCC = oDiferenciaBSP.FopCC - oDiferenciaBO.FopCC;
                         oDiferencia.TotalTransaccion = valorTransaccionDif;
@@ -112,7 +111,6 @@ namespace Auditur.Negocio.Reportes
                         oDiferencia.TyC = tycBsp;
                         oDiferencia.IVATarifa = ivaTarifaDif;
                         oDiferencia.Penalidad = oDiferenciaBSP.Penalidad - oDiferenciaBO.Penalidad;
-                        oDiferencia.Cobl = oDiferenciaBSP.Cobl - oDiferenciaBO.Cobl;
                         oDiferencia.ComStdValor = comStdDif;
                         oDiferencia.ComSuppValor = comSuplDif;
                         oDiferencia.IVASinComision = ivaComDif;

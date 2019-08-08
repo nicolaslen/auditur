@@ -44,7 +44,14 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "IVA Com")]
         public decimal IVASinComision { get; set; }
 
-        [Display(Name = "IVA Com")]
+        [Display(Name = "STAT")]
         public string Stat { get; set; }
+
+        [Display(Name = "CA")]
+        public decimal CA { get; set; }
+
+        [Display(Name = "CC")]
+        public decimal CC { get; set; }
+
     }
 }

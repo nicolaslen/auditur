@@ -56,9 +56,6 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
 
-        [Display(Name = "Cobl")]
-        public decimal Cobl { get; set; }
-
         [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }
 

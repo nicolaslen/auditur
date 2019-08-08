@@ -8,6 +8,7 @@ Créditos:
 	- Eliminar cobl (LISTO)
 	- Orden de columnas: TRNC, Nro. Docto, RTDN No(LISTO)
 	- eliminar STAT (LISTO)
+	- Instructivo para ACM
 Débitos:
 	- no sale adm (LISTO)
 	- no suma totales (LISTO)
@@ -15,12 +16,13 @@ Débitos:
 	- Eliminar cobl (LISTO)
 	- Orden de columnas: TRNC, Nro. Docto, RTDN No(LISTO)
 	- eliminar STAT (LISTO)
+	- Instructivo para ADM
 
 DiferenciasEmisiones:
 	- 4591560181 swan 4/7/19 es diferencia pero Fop CA igualmente debería verse (LISTO)
 	- Mostrar primer columna (BSP, BO, DIFERENCIA) (LISTO). 
 	- Sacar Nro a TRNC(LISTO)
-	- Agregar STAT
+	- Agregar STAT (QUE VA EN BO Y EN DIFERENCIA?)
 	- Ver en el excel de david, de qué depende mostrarlo o no en el reporte.
 	
 DiferenciasIVA:
@@ -40,11 +42,11 @@ Reembolsos:
 	- En el reporte cambiar "IVA S/Com" por ?
 
 SituacionBO: 
-	- Si está todo en 0, no debería aparecer en el reporte (Todos los valores numericos)
+	- Si está todo en 0, no debería aparecer en el reporte (LISTO)
 	
 SituacionBSP
 	- Cuando lee el backoffice, no está leyendo la columna i=1 (dejar de saltear 2, saltear solo 1) (LISTO)
-	- ELIMINAR LOS BOLETOS QUE SON CANX
+	- ELIMINAR LOS BOLETOS QUE SON CANX (LISTO)
 
 Formato de referencias: mostrar en dos columnas debajo del titulo. Ver si queda bien ponerlo en hoja aparte del reporte
 

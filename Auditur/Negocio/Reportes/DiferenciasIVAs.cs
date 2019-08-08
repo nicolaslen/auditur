@@ -49,21 +49,22 @@ namespace Auditur.Negocio.Reportes
                         Math.Abs(ivaComDif) >= DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new DiferenciasIVA();
-
+                        oDiferenciaBSP.Origen = "BSP";
                         oDiferenciaBSP.Cia = oBSP_Ticket.Compania.Codigo;
                         oDiferenciaBSP.BoletoNro = Validators.ConcatNumbers(oBSP_Ticket.NroDocumento.ToString(),
                             oBSP_Ticket.Detalle.Where(x => x.Trnc == "+TKTT").Select(x => x.NroDocumento.ToString())
                                 .ToList());
                         oDiferenciaBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                         oDiferenciaBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
-                        oDiferenciaBSP.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                         oDiferenciaBSP.ValorTarifa = valorTarifaBsp;
                         oDiferenciaBSP.IVATarifa = ivaTarifaBsp;
                         oDiferenciaBSP.ComStdValor = comStdBsp;
                         oDiferenciaBSP.ComSuppValor = comSuplBsp;
+                        oDiferenciaBSP.IVAComision = ivaComBsp;
                         lstDiferenciasIVA.Add(oDiferenciaBSP);
 
                         var oDiferenciaBO = new DiferenciasIVA();
+                        oDiferenciaBO.Origen = "BO";
                         oDiferenciaBO.Cia = bo_ticket.Compania.Codigo;
                         oDiferenciaBO.BoletoNro = bo_ticket.Billete.ToString();
                         oDiferenciaBO.FechaEmision = AuditurHelpers.GetDateTimeString(bo_ticket.Fecha);
@@ -72,16 +73,19 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBO.IVATarifa = bo_ticket.IVATarifa;
                         oDiferenciaBO.ComStdValor = bo_ticket.ComStd;
                         oDiferenciaBO.ComSuppValor = bo_ticket.ComSupl;
+                        oDiferenciaBO.IVAComision = bo_ticket.IVACom;
                         oDiferenciaBO.OperacionNro = bo_ticket.OperacionNro;
                         oDiferenciaBO.Factura = bo_ticket.FacturaNro;
                         oDiferenciaBO.Pasajero = bo_ticket.Pax;
                         lstDiferenciasIVA.Add(oDiferenciaBO);
 
                         var oDiferencia = new DiferenciasIVA();
+                        oDiferencia.Origen = "DIF";
                         oDiferencia.ValorTarifa = valorTarifaDif;
                         oDiferencia.IVATarifa = ivaTarifaDif;
                         oDiferencia.ComStdValor = comStdDif;
                         oDiferencia.ComSuppValor = comSuplDif;
+                        oDiferencia.IVAComision = ivaComDif;
                         lstDiferenciasIVA.Add(oDiferencia);
                     }
                 }

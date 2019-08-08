@@ -15,7 +15,18 @@ namespace Auditur.Negocio.Reportes
             List<BO_Ticket> lstTickets = 
                 oSemana.TicketsBO
                     .Where(bo => !oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento && 
-                                bo.Compania.Codigo == bsp.Compania.Codigo))
+                                bo.Compania.Codigo == bsp.Compania.Codigo) && 
+                                 (bo.CA != 0 || 
+                                  bo.CC != 0 || 
+                                  bo.TotalTransaccion != 0 || 
+                                  bo.ValorTarifa != 0 || 
+                                  bo.Impuestos != 0 || 
+                                  bo.TasasCargos != 0 || 
+                                  bo.IVATarifa != 0 || 
+                                  bo.ComStd != 0 || 
+                                  bo.ComSupl != 0 || 
+                                  bo.IVACom != 0 || 
+                                  bo.Neto != 0))
                                 .OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete)
                                 .ToList();
             

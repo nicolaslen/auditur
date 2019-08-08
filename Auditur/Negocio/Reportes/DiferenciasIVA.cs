@@ -8,6 +8,9 @@ namespace Auditur.Negocio.Reportes
 {
     public class DiferenciasIVA
     {
+        [Display(Name = " ")]
+        public string Origen { get; set; }
+
         [Display(Name = "Cia")]
         public string Cia { get; set; }
 
@@ -19,9 +22,6 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
-
-        [Display(Name = "Destino I/D")]
-        public string Stat { get; set; }
 
         [Display(Name = "Valor Tarifa")]
         public decimal ValorTarifa { get; set; }
