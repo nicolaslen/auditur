@@ -149,7 +149,7 @@ namespace Helpers
                     var rgHeader = ws.Cell(1, 1).InsertData(header);
                     rgHeader.Style.Font.Bold = true;
                     rgHeader.Style.Font.SetFontSize(12);
-                    rgHeader.Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241); ;
+                    rgHeader.Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241);
 
                     int EspacioHeaderTable = 2;
 
@@ -264,6 +264,14 @@ namespace Helpers
                     {
                         table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Font.Bold = true;
                         table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
+                    }
+
+                    if (dt.TableName == "Creditos" || dt.TableName == "Debitos")
+                    {
+                        ws.Cell(headerLength + 1, colCount).Value = "Al hacer doble clic en las Observaciones, podrá limpiar los datos obtenidos del " + (dt.TableName == "Creditos" ? "ACM" : "ADM") + ", dejando únicamente lo necesario.";
+                        ws.Cell(headerLength + 1, colCount).Style.Font.SetFontSize(9);
+                        ws.Cell(headerLength + 1, colCount).Style.Font.Italic = true;
+
                     }
 
                     ws.Columns().AdjustToContents();

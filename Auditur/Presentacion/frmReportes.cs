@@ -287,7 +287,7 @@ namespace Auditur.Presentacion
                 Overs Overs = new Overs();
                 List<Over> lstReporte = Overs.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Análisis de Over");
-                string footer = lstReporte.Count(x => x.BoletoNro != "TOTAL") + " registros";
+                string footer = lstReporte.Count(x => x.Cia != "TOTAL") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
