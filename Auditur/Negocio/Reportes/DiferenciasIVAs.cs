@@ -56,6 +56,7 @@ namespace Auditur.Negocio.Reportes
                                 .ToList());
                         oDiferenciaBSP.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                         oDiferenciaBSP.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
+                        oDiferenciaBSP.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                         oDiferenciaBSP.ValorTarifa = valorTarifaBsp;
                         oDiferenciaBSP.IVATarifa = ivaTarifaBsp;
                         oDiferenciaBSP.ComStdValor = comStdBsp;

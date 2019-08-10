@@ -23,6 +23,9 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
 
+        [Display(Name = "Stat I/D")]
+        public string Stat { get; set; }
+
         [Display(Name = "Valor Tarifa")]
         public decimal ValorTarifa { get; set; }
 

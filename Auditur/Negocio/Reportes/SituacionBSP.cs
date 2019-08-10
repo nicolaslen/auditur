@@ -32,9 +32,6 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Net Remit")]
         public string CodNr { get; set; }
 
-        [Display(Name = "Stat I/D")]
-        public string Stat { get; set; }
-
         [Display(Name = "Fop CA")]
         public decimal FopCA { get; set; }
 
@@ -58,10 +55,7 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
-
-        [Display(Name = "Cobl")]
-        public decimal Cobl { get; set; }
-
+        
         [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }
 
