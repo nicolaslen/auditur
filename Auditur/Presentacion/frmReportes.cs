@@ -221,7 +221,7 @@ namespace Auditur.Presentacion
                 DiferenciasIVAs ControlIVAs = new DiferenciasIVAs();
                 List<DiferenciasIVA> lstReporte = ControlIVAs.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Diferencias IVA");
-                string footer = lstReporte.Count + " registros";
+                string footer = lstReporte.Count(x => x.Origen == "BSP") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }
@@ -271,7 +271,7 @@ namespace Auditur.Presentacion
                 Diferencias Diferencias = new Diferencias();
                 List<Diferencia> lstReporte = Diferencias.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Diferencias Emisiones");
-                string footer = lstReporte.Count.ToString() + " registros";
+                string footer = lstReporte.Count(x => x.Origen == "BSP") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;
             }

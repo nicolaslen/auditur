@@ -225,7 +225,7 @@ namespace Helpers
                         ws.Row(filaExtra).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                         EspacioHeaderTable++;
-                    }
+                    }/*
                     else if (dt.TableName == "ListadoParaFacturación")
                     {
                         int filaExtra = headerLength + EspacioHeaderTable;
@@ -244,7 +244,7 @@ namespace Helpers
                         ws.Range(filaExtra, 1, filaExtra, 18).Style.Font.Bold = true;
 
                         EspacioHeaderTable++;
-                    }
+                    }*/
 
                     var table = ws.Cell(headerLength + EspacioHeaderTable, 1).InsertTable(dt);
                     table.ShowAutoFilter = false;
@@ -264,6 +264,12 @@ namespace Helpers
                     {
                         table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Font.Bold = true;
                         table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
+                    }
+
+                    if (dt.TableName == "DiferenciasEmisiones" || dt.TableName == "DiferenciasIVA")
+                    {
+                        table.Rows(x => x.Cell(1).Value.ToString() == "DIF").Style.Font.Bold = true;
+                        table.Rows(x => x.Cell(1).Value.ToString() == "DIF").Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
                     }
 
                     if (dt.TableName == "Creditos" || dt.TableName == "Debitos")
