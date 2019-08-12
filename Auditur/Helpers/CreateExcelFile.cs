@@ -148,8 +148,12 @@ namespace Helpers
 
                     var rgHeader = ws.Cell(1, 1).InsertData(header);
                     rgHeader.Style.Font.Bold = true;
-                    rgHeader.Style.Font.SetFontSize(12);
-                    rgHeader.Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241);
+                    rgHeader.Style.Font.SetFontSize(10);
+                    rgHeader.Style.Font.FontName = "Verdana";
+                    rgHeader.Style.Font.FontColor = XLColor.White;
+                    rgHeader.Row(1).Style.Font.SetFontSize(14);
+                    ws.Row(1).Height = 58;
+                    ws.Rows(1, 3).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 54, 96, 146);
 
                     int EspacioHeaderTable = 2;
 
@@ -222,6 +226,7 @@ namespace Helpers
                         ws.Range(filaExtra, 6, filaExtra, 8).Merge();
                         ws.Range(filaExtra, 9, filaExtra, 11).Merge();
                         ws.Row(filaExtra).Style.Font.Bold = true;
+                        ws.Row(filaExtra).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241);
                         ws.Row(filaExtra).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                         EspacioHeaderTable++;
@@ -251,25 +256,34 @@ namespace Helpers
                     table.Theme = XLTableTheme.None;
 
                     table.Row(1).Style.Font.Bold = true;
-                    table.Row(1).Style.Font.FontColor = XLColor.White;
-                    table.Row(1).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 54, 96, 146);
+                    table.Row(1).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241);
+                    table.Row(1).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    table.Row(1).Style.Border.BottomBorderColor = XLColor.FromArgb(100, 54, 96, 146);
 
                     int colCount = table.ColumnCount();
 
                     var rangeHeader = ws.Range(1, 1, headerLength, colCount);
                     for (int i = 1; i <= headerLength; i++)
-                        rangeHeader.Range(i, 1, i, 9).Merge();
+                        rangeHeader.Range(i, 1, i, 14).Merge();
 
+
+                    IXLRangeRows rows = null;
                     if (dt.TableName == "Over" || dt.TableName == "Creditos" || dt.TableName == "Debitos" || dt.TableName == "Reembolsos")
                     {
-                        table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Font.Bold = true;
-                        table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL").Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
+                        rows = table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL");
                     }
 
                     if (dt.TableName == "DiferenciasEmisiones" || dt.TableName == "DiferenciasIVA")
                     {
-                        table.Rows(x => x.Cell(1).Value.ToString() == "DIF").Style.Font.Bold = true;
-                        table.Rows(x => x.Cell(1).Value.ToString() == "DIF").Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
+                        rows = table.Rows(x => x.Cell(1).Value.ToString() == "DIF");
+                    }
+
+                    if (rows != null)
+                    {
+                        rows.Style.Font.Bold = true;
+                        rows.Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
+                        rows.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        rows.Style.Border.TopBorderColor = XLColor.FromArgb(100, 54, 96, 146);
                     }
 
                     if (dt.TableName == "Creditos" || dt.TableName == "Debitos")
