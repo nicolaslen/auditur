@@ -236,7 +236,7 @@ namespace Helpers
                         ws.Range(filaExtra, 6, filaExtra, 8).Merge();
                         ws.Range(filaExtra, 9, filaExtra, 11).Merge();
                         ws.Row(filaExtra).Style.Font.Bold = true;
-                        ws.Row(filaExtra).Style.Fill.BackgroundColor = azulClarito;
+                        ws.Range(filaExtra, 1, filaExtra, 14).Style.Fill.BackgroundColor = azulClarito;
                         ws.Row(filaExtra).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                         EspacioHeaderTable++;
