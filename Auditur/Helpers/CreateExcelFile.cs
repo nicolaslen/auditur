@@ -140,6 +140,10 @@ namespace Helpers
                     "Tipo de documento"
                 };
 
+                var azulOscuro = XLColor.FromArgb(100, 54, 96, 146);
+                var azulClarito = XLColor.FromArgb(100, 220, 230, 241);
+                var azul = XLColor.FromArgb(100, 141, 180, 226);
+
                 XLWorkbook wb = new XLWorkbook();
                 foreach (DataTable dt in ds.Tables)
                 {
@@ -153,7 +157,7 @@ namespace Helpers
                     rgHeader.Style.Font.FontColor = XLColor.White;
                     rgHeader.Row(1).Style.Font.SetFontSize(14);
                     ws.Row(1).Height = 58;
-                    ws.Rows(1, 3).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 54, 96, 146);
+                    ws.Rows(1, 3).Style.Fill.BackgroundColor = azulOscuro;
 
                     int EspacioHeaderTable = 2;
 
@@ -223,10 +227,16 @@ namespace Helpers
                         ws.Cell(filaExtra, 6).Value = "OVER PESOS";
                         ws.Cell(filaExtra, 9).Value = "OVER DOLARES";
 
+                        var rangeWithBorders = ws.Range(filaExtra, 6, filaExtra + 1, 11);
+                        rangeWithBorders.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                        rangeWithBorders.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        rangeWithBorders.Style.Border.InsideBorderColor = azulOscuro;
+                        rangeWithBorders.Style.Border.OutsideBorderColor = azulOscuro;
+
                         ws.Range(filaExtra, 6, filaExtra, 8).Merge();
                         ws.Range(filaExtra, 9, filaExtra, 11).Merge();
                         ws.Row(filaExtra).Style.Font.Bold = true;
-                        ws.Row(filaExtra).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241);
+                        ws.Row(filaExtra).Style.Fill.BackgroundColor = azulClarito;
                         ws.Row(filaExtra).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                         EspacioHeaderTable++;
@@ -254,11 +264,16 @@ namespace Helpers
                     var table = ws.Cell(headerLength + EspacioHeaderTable, 1).InsertTable(dt);
                     table.ShowAutoFilter = false;
                     table.Theme = XLTableTheme.None;
+                    table.Cells(x => x.DataType == XLDataType.Text).Style.Alignment.Horizontal =
+                        XLAlignmentHorizontalValues.Center;
+                    table.Style.NumberFormat.NumberFormatId = 2;
 
-                    table.Row(1).Style.Font.Bold = true;
-                    table.Row(1).Style.Fill.BackgroundColor = XLColor.FromArgb(100, 220, 230, 241);
-                    table.Row(1).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                    table.Row(1).Style.Border.BottomBorderColor = XLColor.FromArgb(100, 54, 96, 146);
+                    IXLRangeRow row1 = table.Row(1);
+                    row1.Style.Font.Bold = true;
+                    row1.Style.Fill.BackgroundColor = azulClarito;
+                    row1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    row1.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    row1.Style.Border.BottomBorderColor = azulOscuro;
 
                     int colCount = table.ColumnCount();
 
@@ -281,17 +296,18 @@ namespace Helpers
                     if (rows != null)
                     {
                         rows.Style.Font.Bold = true;
-                        rows.Style.Fill.BackgroundColor = XLColor.FromArgb(100, 141, 180, 226);
+                        rows.Style.Fill.BackgroundColor = azul;
                         rows.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                        rows.Style.Border.TopBorderColor = XLColor.FromArgb(100, 54, 96, 146);
+                        rows.Style.Border.TopBorderColor = azulOscuro;
                     }
 
                     if (dt.TableName == "Creditos" || dt.TableName == "Debitos")
                     {
-                        ws.Cell(headerLength + 1, colCount).Value = "Al hacer doble clic en las Observaciones, podrá limpiar los datos obtenidos del " + (dt.TableName == "Creditos" ? "ACM" : "ADM") + ", dejando únicamente lo necesario.";
-                        ws.Cell(headerLength + 1, colCount).Style.Font.SetFontSize(9);
-                        ws.Cell(headerLength + 1, colCount).Style.Font.Italic = true;
-
+                        var cellObservaciones = table.Cell(1, colCount);
+                        cellObservaciones.Value = "Al hacer doble clic en esta columna, podrá limpiar los datos obtenidos del " + (dt.TableName == "Creditos" ? "ACM" : "ADM") + ", dejando únicamente lo necesario.";
+                        cellObservaciones.Style.Font.SetFontSize(9);
+                        cellObservaciones.Style.Font.Italic = true;
+                        cellObservaciones.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
                     }
 
                     ws.Columns().AdjustToContents();

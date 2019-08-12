@@ -31,7 +31,7 @@ namespace Auditur.Negocio.Reportes
                     
                     decimal impuestosDif = Math.Round(impuestosBsp - bo_ticket.Impuestos, 2);
                     decimal ivaTarifaBsp = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                    decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVACom, 2);
+                    decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVATarifa, 2);
                     decimal tycBsp = oBSP_Ticket.ImpuestoTyCValor +
                                      oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
                     
@@ -85,8 +85,8 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBO.BoletoNro = bo_ticket.Billete.ToString();
                         oDiferenciaBO.FechaEmision = AuditurHelpers.GetDateTimeString(bo_ticket.Fecha);
                         oDiferenciaBO.Moneda = bo_ticket.Moneda == Moneda.Peso ? "$" : "D";
-                        oDiferenciaBSP.FopCA = bo_ticket.CA;
-                        oDiferenciaBSP.FopCC = bo_ticket.CC;
+                        oDiferenciaBO.FopCA = bo_ticket.CA;
+                        oDiferenciaBO.FopCC = bo_ticket.CC;
                         oDiferenciaBO.TotalTransaccion = bo_ticket.TotalTransaccion;
                         oDiferenciaBO.ValorTarifa = bo_ticket.ValorTarifa;
                         oDiferenciaBO.Imp = bo_ticket.Impuestos;

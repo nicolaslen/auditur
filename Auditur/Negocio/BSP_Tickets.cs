@@ -111,6 +111,17 @@ namespace Auditur.Negocio
             return intReturn;
         }
 
+        public int EliminarPorCompania(long CompaniaID)
+        {
+            int intReturn = 0;
+            List<SqlCeParameter> lstParameters = new List<SqlCeParameter>();
+            lstParameters.Add(new SqlCeParameter("CompaniaID", CompaniaID));
+
+            intReturn = DeleteByParameters(lstParameters);
+
+            return intReturn;
+        }
+
         public long TicketsCargados(long SemanaID)
         {
             long lngResult = 0;

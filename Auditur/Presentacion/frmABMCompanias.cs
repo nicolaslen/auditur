@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Auditur.Negocio;
 using System.Data.SqlServerCe;
 using Auditur.Presentacion.Classes;
+using Helpers;
 
 namespace Auditur.Presentacion
 {
@@ -48,6 +49,9 @@ namespace Auditur.Presentacion
                     case "Edit":
                         EditarCompania(CompaniaID);
                         break;
+                    case "Del":
+                        EliminarCompania(CompaniaID);
+                        break;
                 }
             }
         }
@@ -82,6 +86,23 @@ namespace Auditur.Presentacion
                 txtCompaniaID.Focus();
             }
         }
+
+        private void EliminarCompania(long CompaniaID)
+        {
+            if (MessageBox.Show("¿Está seguro que desea eliminar la compañía?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                using (SqlCeConnection conn = AccesoDatos.OpenConn())
+                {
+                    BSP_Tickets BSPTickets = new BSP_Tickets();
+                    Companias companias = new Companias();
+
+                    BSPTickets.EliminarPorCompania(CompaniaID);
+                    companias.Eliminar(CompaniaID);
+                }
+                MessageBox.Show("Compañía eliminada correctamente.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dgvCompanias_Load();
+            }
+}
 
         private void AgregarCompania(Compania oCompania, bool Nuevo)
         {

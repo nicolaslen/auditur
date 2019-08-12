@@ -42,6 +42,17 @@ namespace Auditur.Negocio
             AccesoDatos.ExecuteNonQuery(query, CommandType.Text, lstParameters, conn);
         }
 
+        public int Eliminar(long CompaniaID)
+        {
+            int intReturn = 0;
+            List<SqlCeParameter> lstParameters = new List<SqlCeParameter>();
+            lstParameters.Add(new SqlCeParameter("ID", CompaniaID));
+
+            intReturn = DeleteByParameters(lstParameters);
+
+            return intReturn;
+        }
+
         public Compania ObtenerPorNombre(string Nombre)
         {
             Compania oCompania = null;

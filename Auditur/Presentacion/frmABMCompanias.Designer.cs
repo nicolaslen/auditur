@@ -44,6 +44,7 @@
             this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Codigo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Del = new System.Windows.Forms.DataGridViewImageColumn();
             this.grbListadoCompanias.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCompanias)).BeginInit();
             this.grbABMCompanias.SuspendLayout();
@@ -87,7 +88,8 @@
             this.ID,
             this.Nombre,
             this.Codigo,
-            this.Edit});
+            this.Edit,
+            this.Del});
             this.dgvCompanias.Location = new System.Drawing.Point(8, 74);
             this.dgvCompanias.Margin = new System.Windows.Forms.Padding(4);
             this.dgvCompanias.Name = "dgvCompanias";
@@ -223,6 +225,15 @@
             this.Edit.ReadOnly = true;
             this.Edit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
+            // Del
+            // 
+            this.Del.FillWeight = 21.85755F;
+            this.Del.HeaderText = "";
+            this.Del.Image = global::Auditur.Presentacion.Properties.Resources.Eliminar;
+            this.Del.Name = "Del";
+            this.Del.ReadOnly = true;
+            this.Del.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
             // frmABMCompanias
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -259,6 +270,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn Codigo;
         private System.Windows.Forms.DataGridViewImageColumn Edit;
+        private System.Windows.Forms.DataGridViewImageColumn Del;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtCodigoCompania;
     }
