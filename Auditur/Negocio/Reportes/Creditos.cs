@@ -60,7 +60,7 @@ namespace Auditur.Negocio.Reportes
             oCredito.ComSuppValor = oBSP_Ticket.ComisionSuppValor;
             oCredito.IVASinComision = oBSP_Ticket.ImpuestoSinComision;
             oCredito.NetoAPagar = oBSP_Ticket.NetoAPagar;
-            oCredito.Observaciones = oBSP_Ticket.Observaciones.Replace("|", "\n");
+            oCredito.Observaciones = oBSP_Ticket.Observaciones?.Replace("|", "\n");
             return oCredito;
         }
     }
