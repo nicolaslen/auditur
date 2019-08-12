@@ -8,7 +8,7 @@ Créditos:
 	- Eliminar cobl (LISTO)
 	- Orden de columnas: TRNC, Nro. Docto, RTDN No(LISTO)
 	- eliminar STAT (LISTO)
-	- Instructivo para ACM
+	- Instructivo para ACM (LISTO)
 Débitos:
 	- no sale adm (LISTO)
 	- no suma totales (LISTO)
@@ -16,7 +16,7 @@ Débitos:
 	- Eliminar cobl (LISTO)
 	- Orden de columnas: TRNC, Nro. Docto, RTDN No(LISTO)
 	- eliminar STAT (LISTO)
-	- Instructivo para ADM
+	- Instructivo para ADM (LISTO)
 
 DiferenciasEmisiones:
 	- 4591560181 swan 4/7/19 es diferencia pero Fop CA igualmente debería verse (LISTO)
