@@ -12,24 +12,13 @@ namespace Auditur.Negocio.Reportes
         {
             List<SituacionBO> lstSituacionBO = new List<SituacionBO>();
 
-            List<BO_Ticket> lstTickets = 
+            List<BO_Ticket> lstTickets =
                 oSemana.TicketsBO
-                    .Where(bo => !oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento && 
-                                bo.Compania.Codigo == bsp.Compania.Codigo) && 
-                                 (bo.CA != 0 || 
-                                  bo.CC != 0 || 
-                                  bo.TotalTransaccion != 0 || 
-                                  bo.ValorTarifa != 0 || 
-                                  bo.Impuestos != 0 || 
-                                  bo.TasasCargos != 0 || 
-                                  bo.IVATarifa != 0 || 
-                                  bo.ComStd != 0 || 
-                                  bo.ComSupl != 0 || 
-                                  bo.IVACom != 0 || 
-                                  bo.Neto != 0))
+                    .Where(bo => !oSemana.TicketsBSP.Any(bsp => bo.Billete == bsp.NroDocumento &&
+                                bo.Compania.Codigo == bsp.Compania.Codigo))
                                 .OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Billete)
                                 .ToList();
-            
+
             foreach (BO_Ticket oBO_Ticket in lstTickets)
             {
                 SituacionBO oSituacionBO = new SituacionBO();
@@ -53,7 +42,18 @@ namespace Auditur.Negocio.Reportes
                 oSituacionBO.Pasajero = oBO_Ticket.Pax;
                 oSituacionBO.Observaciones = "No figura en su BSP";
 
-                lstSituacionBO.Add(oSituacionBO);
+                if (oSituacionBO.FopCA != 0 ||
+                   oSituacionBO.FopCC != 0 ||
+                   oSituacionBO.TotalTransaccion != 0 ||
+                   oSituacionBO.ValorTarifa != 0 ||
+                   oSituacionBO.Imp != 0 ||
+                   oSituacionBO.TyC != 0 ||
+                   oSituacionBO.IVATarifa != 0 ||
+                   oSituacionBO.ComStdValor != 0 ||
+                   oSituacionBO.ComSuppValor != 0 ||
+                   oSituacionBO.IVAComision != 0 ||
+                   oSituacionBO.NetoAPagar != 0)
+                    lstSituacionBO.Add(oSituacionBO);
             }
 
             return lstSituacionBO;

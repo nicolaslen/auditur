@@ -4,36 +4,36 @@ using System.Linq;
 
 namespace Auditur.Negocio.Reportes
 {
-    public class Creditos : IReport<CreditoObj>
+    public class Creditos : IReport<Credito>
     {
-        public List<CreditoObj> Generar(Semana oSemana)
+        public List<Credito> Generar(Semana oSemana)
         {
-            List<CreditoObj> lstCredito = new List<CreditoObj>();
+            List<Credito> lstCredito = new List<Credito>();
 
             List<BSP_Ticket> lstTickets = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "CREDIT MEMOS").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.Moneda).ThenBy(x => x.NroDocumento).ToList();
 
-            List<CreditoObj> lstCreditoPesos = new List<CreditoObj>();
+            List<Credito> lstCreditoPesos = new List<Credito>();
             lstTickets.Where(x => x.Moneda == Moneda.Peso).ToList().ForEach(x => lstCreditoPesos.Add(GetCredito(x)));
             if (lstCreditoPesos.Count > 0)
             {
-                lstCreditoPesos.Add(new CreditoObj { Cia = "TOTAL", FopCA = lstCreditoPesos.Sum(x => x.FopCA), FopCC = lstCreditoPesos.Sum(x => x.FopCC), TotalTransaccion = lstCreditoPesos.Sum(x => x.TotalTransaccion), ValorTarifa = lstCreditoPesos.Sum(x => x.ValorTarifa), Imp = lstCreditoPesos.Sum(x => x.Imp), TyC = lstCreditoPesos.Sum(x => x.TyC), IVATarifa = lstCreditoPesos.Sum(x => x.IVATarifa), Penalidad = lstCreditoPesos.Sum(x => x.Penalidad), ComStdValor = lstCreditoPesos.Sum(x => x.ComStdValor), ComSuppValor = lstCreditoPesos.Sum(x => x.ComStdValor), IVASinComision = lstCreditoPesos.Sum(x => x.IVASinComision), NetoAPagar = lstCreditoPesos.Sum(x => x.NetoAPagar) });
+                lstCreditoPesos.Add(new Credito { Cia = "TOTAL", FopCA = lstCreditoPesos.Sum(x => x.FopCA), FopCC = lstCreditoPesos.Sum(x => x.FopCC), TotalTransaccion = lstCreditoPesos.Sum(x => x.TotalTransaccion), ValorTarifa = lstCreditoPesos.Sum(x => x.ValorTarifa), Imp = lstCreditoPesos.Sum(x => x.Imp), TyC = lstCreditoPesos.Sum(x => x.TyC), IVATarifa = lstCreditoPesos.Sum(x => x.IVATarifa), Penalidad = lstCreditoPesos.Sum(x => x.Penalidad), ComStdValor = lstCreditoPesos.Sum(x => x.ComStdValor), ComSuppValor = lstCreditoPesos.Sum(x => x.ComStdValor), IVASinComision = lstCreditoPesos.Sum(x => x.IVASinComision), NetoAPagar = lstCreditoPesos.Sum(x => x.NetoAPagar) });
                 lstCredito.AddRange(lstCreditoPesos);
             }
 
-            List<CreditoObj> lstCreditoDolares = new List<CreditoObj>();
+            List<Credito> lstCreditoDolares = new List<Credito>();
             lstTickets.Where(x => x.Moneda == Moneda.Dolar).ToList().ForEach(x => lstCreditoDolares.Add(GetCredito(x)));
             if (lstCreditoDolares.Count > 0)
             {
-                lstCreditoDolares.Add(new CreditoObj { Cia = "TOTAL", FopCA = lstCreditoDolares.Sum(x => x.FopCA), FopCC = lstCreditoDolares.Sum(x => x.FopCC), TotalTransaccion = lstCreditoDolares.Sum(x => x.TotalTransaccion), ValorTarifa = lstCreditoDolares.Sum(x => x.ValorTarifa), Imp = lstCreditoDolares.Sum(x => x.Imp), TyC = lstCreditoDolares.Sum(x => x.TyC), IVATarifa = lstCreditoDolares.Sum(x => x.IVATarifa), Penalidad = lstCreditoDolares.Sum(x => x.Penalidad), ComStdValor = lstCreditoDolares.Sum(x => x.ComStdValor), ComSuppValor = lstCreditoDolares.Sum(x => x.ComStdValor), IVASinComision = lstCreditoDolares.Sum(x => x.IVASinComision), NetoAPagar = lstCreditoDolares.Sum(x => x.NetoAPagar) });
+                lstCreditoDolares.Add(new Credito { Cia = "TOTAL", FopCA = lstCreditoDolares.Sum(x => x.FopCA), FopCC = lstCreditoDolares.Sum(x => x.FopCC), TotalTransaccion = lstCreditoDolares.Sum(x => x.TotalTransaccion), ValorTarifa = lstCreditoDolares.Sum(x => x.ValorTarifa), Imp = lstCreditoDolares.Sum(x => x.Imp), TyC = lstCreditoDolares.Sum(x => x.TyC), IVATarifa = lstCreditoDolares.Sum(x => x.IVATarifa), Penalidad = lstCreditoDolares.Sum(x => x.Penalidad), ComStdValor = lstCreditoDolares.Sum(x => x.ComStdValor), ComSuppValor = lstCreditoDolares.Sum(x => x.ComStdValor), IVASinComision = lstCreditoDolares.Sum(x => x.IVASinComision), NetoAPagar = lstCreditoDolares.Sum(x => x.NetoAPagar) });
                 lstCredito.AddRange(lstCreditoDolares);
             }
 
             return lstCredito;
         }
 
-        private CreditoObj GetCredito(BSP_Ticket oBSP_Ticket)
+        private Credito GetCredito(BSP_Ticket oBSP_Ticket)
         {
-            CreditoObj oCredito = new CreditoObj();
+            Credito oCredito = new Credito();
 
             oCredito.Cia = oBSP_Ticket.Compania.Codigo;
             oCredito.Tipo = oBSP_Ticket.Trnc;

@@ -40,17 +40,24 @@ namespace Helpers
                     dt.Columns.Add(dc);
                 }
 
-                foreach (T t in list)
+                if (list.Any())
                 {
-                    DataRow row = dt.NewRow();
-                    foreach (PropertyInfo info in typeof(T).GetProperties())
+                    foreach (T t in list)
                     {
-                        if (!IsNullableType(info.PropertyType))
-                            row[info.Name] = info.GetValue(t, null);
-                        else
-                            row[info.Name] = (info.GetValue(t, null) ?? DBNull.Value);
+                        DataRow row = dt.NewRow();
+                        foreach (PropertyInfo info in typeof(T).GetProperties())
+                        {
+                            if (!IsNullableType(info.PropertyType))
+                                row[info.Name] = info.GetValue(t, null);
+                            else
+                                row[info.Name] = (info.GetValue(t, null) ?? DBNull.Value);
+                        }
+                        dt.Rows.Add(row);
                     }
-                    dt.Rows.Add(row);
+                }
+                else
+                {
+                    dt.Rows.Add(dt.NewRow());
                 }
             }
             catch (Exception ex)

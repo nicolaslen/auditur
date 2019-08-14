@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Auditur.Negocio.Reportes
 {
-    public class CreditoObj
+    public class Credito
     {
         [Display(Name = "Cia")]
         public string Cia { get; set; }

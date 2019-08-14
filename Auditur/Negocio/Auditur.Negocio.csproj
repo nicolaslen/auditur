@@ -72,7 +72,7 @@
     <Compile Include="Reportes\Emisiones.cs" />
     <Compile Include="Reportes\DiferenciasIVA.cs" />
     <Compile Include="Reportes\DiferenciasIVAs.cs" />
-    <Compile Include="Reportes\CreditoObj.cs" />
+    <Compile Include="Reportes\Credito.cs" />
     <Compile Include="Reportes\Creditos.cs" />
     <Compile Include="Reportes\Debito.cs" />
     <Compile Include="Reportes\Debitos.cs" />

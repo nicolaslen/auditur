@@ -236,7 +236,7 @@ namespace Auditur.Presentacion
             if (CheckFile(FileName, Reporte))
             {
                 Creditos Creditos = new Creditos();
-                List<CreditoObj> lstReporte = Creditos.Generar(semanaToReport);
+                List<Credito> lstReporte = Creditos.Generar(semanaToReport);
                 List<string> header = GetHeader(semanaToReport, "Notas de Crédito en BSP");
                 string footer = lstReporte.Count(x => x.Cia != "TOTAL") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);

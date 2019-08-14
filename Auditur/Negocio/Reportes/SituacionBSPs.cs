@@ -45,7 +45,19 @@ namespace Auditur.Negocio.Reportes
                 oSituacionBSP.NetoAPagar = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
                 oSituacionBSP.Observaciones = "No figura en su BO";
 
-                lstSituacionBSP.Add(oSituacionBSP);
+                if (oSituacionBSP.FopCA != 0 || 
+                    oSituacionBSP.FopCC != 0 || 
+                    oSituacionBSP.TotalTransaccion != 0 || 
+                    oSituacionBSP.ValorTarifa != 0 || 
+                    oSituacionBSP.Imp != 0 || 
+                    oSituacionBSP.TyC != 0 || 
+                    oSituacionBSP.IVATarifa != 0 || 
+                    oSituacionBSP.Penalidad != 0 || 
+                    oSituacionBSP.ComStdValor != 0 || 
+                    oSituacionBSP.ComSuppValor != 0 || 
+                    oSituacionBSP.IVASinComision != 0 || 
+                    oSituacionBSP.NetoAPagar != 0)
+                    lstSituacionBSP.Add(oSituacionBSP);
             }
 
             return lstSituacionBSP;
