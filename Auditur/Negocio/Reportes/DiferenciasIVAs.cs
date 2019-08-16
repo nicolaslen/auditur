@@ -8,7 +8,7 @@ namespace Auditur.Negocio.Reportes
 {
     public class DiferenciasIVAs : IReport<DiferenciasIVA>
     {
-        private const decimal DiferenciaMinima = 0.5M;
+        private const decimal DiferenciaMinima = 1;
 
         public List<DiferenciasIVA> Generar(Semana oSemana)
         {
@@ -42,11 +42,11 @@ namespace Auditur.Negocio.Reportes
                     decimal ivaComDif = ivaComBsp - bo_ticket.IVACom;
 
                     if (oBSP_Ticket.Moneda != bo_ticket.Moneda ||
-                        Math.Abs(valorTarifaDif) >= DiferenciaMinima ||
-                        Math.Abs(ivaTarifaDif) >= DiferenciaMinima ||
-                        Math.Abs(comStdDif) >= DiferenciaMinima ||
-                        Math.Abs(comSuplDif) >= DiferenciaMinima ||
-                        Math.Abs(ivaComDif) >= DiferenciaMinima)
+                        Math.Abs(valorTarifaDif) > DiferenciaMinima ||
+                        Math.Abs(ivaTarifaDif) > DiferenciaMinima ||
+                        Math.Abs(comStdDif) > DiferenciaMinima ||
+                        Math.Abs(comSuplDif) > DiferenciaMinima ||
+                        Math.Abs(ivaComDif) > DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new DiferenciasIVA();
                         oDiferenciaBSP.Origen = "BSP";

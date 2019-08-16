@@ -45,13 +45,13 @@ namespace Auditur.Negocio.Reportes
                     decimal netoDif = netoBsp - bo_ticket.Neto;
 
                     if (oBSP_Ticket.Moneda != bo_ticket.Moneda || 
-                        Math.Abs(valorTransaccionDif) >= DiferenciaMinima || 
-                        Math.Abs(valorTarifaDif) >= DiferenciaMinima ||
-                        Math.Abs(impuestosDif) >= DiferenciaMinima ||
-                        Math.Abs(ivaTarifaDif) >= DiferenciaMinima ||
-                        Math.Abs(comStdDif) >= DiferenciaMinima ||
-                        Math.Abs(comSuplDif) >= DiferenciaMinima ||
-                        Math.Abs(ivaComDif) >= DiferenciaMinima)
+                        Math.Abs(valorTransaccionDif) > DiferenciaMinima || 
+                        Math.Abs(valorTarifaDif) > DiferenciaMinima ||
+                        Math.Abs(impuestosDif) > DiferenciaMinima ||
+                        Math.Abs(ivaTarifaDif) > DiferenciaMinima ||
+                        Math.Abs(comStdDif) > DiferenciaMinima ||
+                        Math.Abs(comSuplDif) > DiferenciaMinima ||
+                        Math.Abs(ivaComDif) > DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new Diferencia();
                         oDiferenciaBSP.Origen = "BSP";

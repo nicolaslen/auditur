@@ -149,7 +149,7 @@ namespace Helpers
 
                 var azulOscuro = XLColor.FromArgb(100, 54, 96, 146);
                 var azulClarito = XLColor.FromArgb(100, 220, 230, 241);
-                var azul = XLColor.FromArgb(100, 141, 180, 226);
+                var azul = XLColor.FromArgb(100, 172, 200, 234);
 
                 XLWorkbook wb = new XLWorkbook();
                 foreach (DataTable dt in ds.Tables)
