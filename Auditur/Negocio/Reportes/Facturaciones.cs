@@ -36,6 +36,7 @@ namespace Auditur.Negocio.Reportes
                 oFacturacion.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) +
                                          oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
                                              .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+                oFacturacion.Penalidad = oBSP_Ticket.ImpuestoPenValor;
                 oFacturacion.Impuestos = (oBSP_Ticket.ImpuestoCodigo != "QN" && oBSP_Ticket.ImpuestoCodigo != "DL"
                                              ? oBSP_Ticket.ImpuestoValor
                                              : 0) +
