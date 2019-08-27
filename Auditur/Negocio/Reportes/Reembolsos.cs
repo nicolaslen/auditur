@@ -45,16 +45,10 @@ namespace Auditur.Negocio.Reportes
             oReembolso.FopCC = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
             oReembolso.TotalTransaccion = (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC" || x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
             oReembolso.ValorTarifa = oBSP_Ticket.ValorTarifa;
-
-            var tycCodigos = new[]
-            {
-                "YQ", "YR"
-            };
-            oReembolso.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" && !tycCodigos.Contains(oBSP_Ticket.ImpuestoCodigo) ? oBSP_Ticket.ImpuestoValor : 0)
-                + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL" && !tycCodigos.Contains(oBSP_Ticket.ImpuestoCodigo)).Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-            oReembolso.TyC = (tycCodigos.Contains(oBSP_Ticket.ImpuestoCodigo) ? oBSP_Ticket.ImpuestoValor : 0) +
-                             oBSP_Ticket.Detalle.Where(x => tycCodigos.Contains(x.ImpuestoCodigo))
-                                 .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oReembolso.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" ? oBSP_Ticket.ImpuestoValor : 0)
+                + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oReembolso.TyC = oBSP_Ticket.ImpuestoTyCValor +
+                             oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
             oReembolso.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0)
                 + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
             oReembolso.Penalidad = oBSP_Ticket.ImpuestoPenValor;
