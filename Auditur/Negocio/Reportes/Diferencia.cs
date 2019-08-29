@@ -55,7 +55,7 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Pen")]
         public decimal Penalidad { get; set; }
-
+        /*
         [Display(Name = "Com Std")]
         public decimal ComStdValor { get; set; }
 
@@ -64,7 +64,7 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "IVA Com")]
         public decimal IVASinComision { get; set; }
-
+        */
         [Display(Name = "Neto A Pagar")]
         public decimal NetoAPagar { get; set; }
         

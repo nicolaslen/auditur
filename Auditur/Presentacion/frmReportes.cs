@@ -213,14 +213,14 @@ namespace Auditur.Presentacion
 
         private bool GenerarDiferenciasIVA()
         {
-            string Reporte = "DiferenciasIVA";
+            string Reporte = "DiferenciasIVAyComs";
             string FileName = GetFileName(Reporte);
 
             if (CheckFile(FileName, Reporte))
             {
                 DiferenciasIVAs ControlIVAs = new DiferenciasIVAs();
                 List<DiferenciasIVA> lstReporte = ControlIVAs.Generar(semanaToReport);
-                List<string> header = GetHeader(semanaToReport, "Diferencias IVA");
+                List<string> header = GetHeader(semanaToReport, "Diferencias IVA y Comisiones");
                 string footer = lstReporte.Count(x => x.Origen == "BSP") + " registros";
                 CreateExcelFile.CreateExcelDocument(lstReporte, Reporte, FileName, header.ToArray(), footer);
                 return true;

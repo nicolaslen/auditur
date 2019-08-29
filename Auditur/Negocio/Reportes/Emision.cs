@@ -22,6 +22,9 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "$/D")]
         public string Moneda { get; set; }
 
+        [Display(Name = "Stat I/D")]
+        public string Stat { get; set; }
+
         [Display(Name = "Tour Code")]
         public string TourCode { get; set; }
 

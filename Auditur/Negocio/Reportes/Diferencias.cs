@@ -34,13 +34,6 @@ namespace Auditur.Negocio.Reportes
                     decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVATarifa, 2);
                     decimal tycBsp = oBSP_Ticket.ImpuestoTyCValor +
                                      oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
-                    
-                    decimal comStdBsp = oBSP_Ticket.ComisionStdValor + oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();
-                    decimal comStdDif = comStdBsp - bo_ticket.ComStd;
-                    decimal comSuplBsp = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
-                    decimal comSuplDif = comSuplBsp - bo_ticket.ComSupl;
-                    decimal ivaComBsp = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();
-                    decimal ivaComDif = ivaComBsp - bo_ticket.IVACom;
                     decimal netoBsp = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
                     decimal netoDif = netoBsp - bo_ticket.Neto;
 
@@ -48,10 +41,7 @@ namespace Auditur.Negocio.Reportes
                         Math.Abs(valorTransaccionDif) > DiferenciaMinima || 
                         Math.Abs(valorTarifaDif) > DiferenciaMinima ||
                         Math.Abs(impuestosDif) > DiferenciaMinima ||
-                        Math.Abs(ivaTarifaDif) > DiferenciaMinima ||
-                        Math.Abs(comStdDif) > DiferenciaMinima ||
-                        Math.Abs(comSuplDif) > DiferenciaMinima ||
-                        Math.Abs(ivaComDif) > DiferenciaMinima)
+                        Math.Abs(ivaTarifaDif) > DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new Diferencia();
                         oDiferenciaBSP.Origen = "BSP";
@@ -73,9 +63,6 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBSP.TyC = tycBsp;
                         oDiferenciaBSP.IVATarifa = ivaTarifaBsp;
                         oDiferenciaBSP.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
-                        oDiferenciaBSP.ComStdValor = comStdBsp;
-                        oDiferenciaBSP.ComSuppValor = comSuplBsp;
-                        oDiferenciaBSP.IVASinComision = ivaComBsp;
                         oDiferenciaBSP.NetoAPagar = netoBsp;
                         lstDiferencia.Add(oDiferenciaBSP);
                         
@@ -92,9 +79,6 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBO.Imp = bo_ticket.Impuestos;
                         oDiferenciaBO.TyC = 0;
                         oDiferenciaBO.IVATarifa = bo_ticket.IVATarifa;
-                        oDiferenciaBO.ComStdValor = bo_ticket.ComStd;
-                        oDiferenciaBO.ComSuppValor = bo_ticket.ComSupl;
-                        oDiferenciaBO.IVASinComision = bo_ticket.IVACom;
                         oDiferenciaBO.NetoAPagar = bo_ticket.Neto;
                         oDiferenciaBO.OperacionNro = bo_ticket.OperacionNro;
                         oDiferenciaBO.Factura = bo_ticket.FacturaNro;
@@ -111,9 +95,6 @@ namespace Auditur.Negocio.Reportes
                         oDiferencia.TyC = tycBsp;
                         oDiferencia.IVATarifa = ivaTarifaDif;
                         oDiferencia.Penalidad = oDiferenciaBSP.Penalidad - oDiferenciaBO.Penalidad;
-                        oDiferencia.ComStdValor = comStdDif;
-                        oDiferencia.ComSuppValor = comSuplDif;
-                        oDiferencia.IVASinComision = ivaComDif;
                         oDiferencia.NetoAPagar = netoDif;
                         lstDiferencia.Add(oDiferencia);
                     }

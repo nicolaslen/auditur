@@ -203,7 +203,7 @@
             this.btnControlIVAs.Name = "btnControlIVAs";
             this.btnControlIVAs.Size = new System.Drawing.Size(140, 33);
             this.btnControlIVAs.TabIndex = 5;
-            this.btnControlIVAs.Text = "Diferencias IVA";
+            this.btnControlIVAs.Text = "Difs IVA y Coms";
             this.btnControlIVAs.UseVisualStyleBackColor = true;
             this.btnControlIVAs.Click += new System.EventHandler(this.btnControlIVAs_Click);
             // 

@@ -295,7 +295,7 @@ namespace Helpers
                         rows = table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL");
                     }
 
-                    if (dt.TableName == "DiferenciasEmisiones" || dt.TableName == "DiferenciasIVA")
+                    if (dt.TableName == "DiferenciasEmisiones" || dt.TableName == "DiferenciasIVAyComs")
                     {
                         rows = table.Rows(x => x.Cell(1).Value.ToString() == "DIF");
                     }

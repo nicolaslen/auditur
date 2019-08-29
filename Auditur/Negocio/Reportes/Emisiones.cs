@@ -26,6 +26,7 @@ namespace Auditur.Negocio.Reportes
                     oEmision.RTDN += " (EX)";
                 oEmision.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket.FechaEmision);
                 oEmision.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
+                oEmision.Stat = oBSP_Ticket.Rg == BSP_Rg.Doméstico ? "D" : "I";
                 oEmision.TourCode = oBSP_Ticket.Tour;
                 oEmision.CodNr = oBSP_Ticket.Nr;
                 oEmision.FopCA = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
