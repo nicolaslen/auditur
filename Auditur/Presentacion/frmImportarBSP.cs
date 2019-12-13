@@ -9,6 +9,7 @@ using Auditur.Presentacion.Classes;
 using Helpers;
 using System.ComponentModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
@@ -392,10 +393,12 @@ namespace Auditur.Presentacion
                     if (long.TryParse(Columnas[3], out BilleteACM))
                     {
                         Observaciones = Linea;
-                        while (Observaciones.IndexOf("||") > -1)
-                            Observaciones = Observaciones.Replace("||", "|");
-                        while (Observaciones.IndexOf("  ") > -1)
-                            Observaciones = Observaciones.Replace("  ", " ");
+                        Regex regex1 = new Regex("[|]{2,}", RegexOptions.None);
+                        Observaciones = regex1.Replace(Observaciones, "|");
+
+                        Regex regex2 = new Regex("[ ]{2,}", RegexOptions.None);
+                        Observaciones = regex2.Replace(Observaciones, " ");
+
                         if (Observaciones.Substring(Observaciones.Length - 1) == "|") Observaciones = Observaciones.Substring(0, Observaciones.Length - 1);
                         oACM = new ACM { Billete = BilleteACM, Observaciones = Observaciones };
                         listACM.Add(oACM);
@@ -431,10 +434,12 @@ namespace Auditur.Presentacion
                     if (long.TryParse(Columnas[3], out BilleteADM))
                     {
                         Observaciones = Linea;
-                        while (Observaciones.IndexOf("||") > -1)
-                            Observaciones = Observaciones.Replace("||", "|");
-                        while (Observaciones.IndexOf("  ") > -1)
-                            Observaciones = Observaciones.Replace("  ", " ");
+                        Regex regex1 = new Regex("[|]{2,}", RegexOptions.None);
+                        Observaciones = regex1.Replace(Observaciones, "|");
+
+                        Regex regex2 = new Regex("[ ]{2,}", RegexOptions.None);
+                        Observaciones = regex2.Replace(Observaciones, " ");
+
                         if (Observaciones.Substring(Observaciones.Length - 1) == "|") Observaciones = Observaciones.Substring(0, Observaciones.Length - 1);
                         oADM = new ADM { Billete = BilleteADM, Observaciones = Observaciones };
                         listADM.Add(oADM);
