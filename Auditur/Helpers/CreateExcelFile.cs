@@ -149,7 +149,7 @@ namespace Helpers
 
                 var azulOscuro = XLColor.FromArgb(100, 54, 96, 146);
                 var azulClarito = XLColor.FromArgb(100, 220, 230, 241);
-                var azul = XLColor.FromArgb(100, 172, 200, 234);
+                var gris = XLColor.FromArgb(100, 210, 215, 220);
 
                 XLWorkbook wb = new XLWorkbook();
                 foreach (DataTable dt in ds.Tables)
@@ -163,8 +163,10 @@ namespace Helpers
                     rgHeader.Style.Font.FontName = "Verdana";
                     rgHeader.Style.Font.FontColor = XLColor.White;
                     rgHeader.Row(1).Style.Font.SetFontSize(14);
-                    ws.Row(1).Height = 58;
-                    ws.Rows(1, 3).Style.Fill.BackgroundColor = azulOscuro;
+                    rgHeader.Row(2).Style.Font.SetFontSize(14);
+                    ws.Row(1).Height = 25;
+                    ws.Row(2).Height = 25;
+                    ws.Rows(1, header.Length).Style.Fill.BackgroundColor = azulOscuro;
 
                     int EspacioHeaderTable = 2;
 
@@ -231,19 +233,17 @@ namespace Helpers
                     {
                         int filaExtra = headerLength + EspacioHeaderTable;
 
-                        ws.Cell(filaExtra, 6).Value = "OVER PESOS";
-                        ws.Cell(filaExtra, 9).Value = "OVER DOLARES";
+                        ws.Cell(filaExtra, 6).Value = "OVER";
 
-                        var rangeWithBorders = ws.Range(filaExtra, 6, filaExtra + 1, 11);
+                        var rangeWithBorders = ws.Range(filaExtra, 6, filaExtra + 1, 8);
                         rangeWithBorders.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
                         rangeWithBorders.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         rangeWithBorders.Style.Border.InsideBorderColor = azulOscuro;
                         rangeWithBorders.Style.Border.OutsideBorderColor = azulOscuro;
 
                         ws.Range(filaExtra, 6, filaExtra, 8).Merge();
-                        ws.Range(filaExtra, 9, filaExtra, 11).Merge();
                         ws.Row(filaExtra).Style.Font.Bold = true;
-                        ws.Range(filaExtra, 1, filaExtra, 14).Style.Fill.BackgroundColor = azulClarito;
+                        ws.Range(filaExtra, 1, filaExtra, 12).Style.Fill.BackgroundColor = azulClarito;
                         ws.Row(filaExtra).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                         EspacioHeaderTable++;
@@ -286,13 +286,20 @@ namespace Helpers
 
                     var rangeHeader = ws.Range(1, 1, headerLength, colCount);
                     for (int i = 1; i <= headerLength; i++)
-                        rangeHeader.Range(i, 1, i, 14).Merge();
+                        rangeHeader.Range(i, 1, i, Math.Min(14, colCount)).Merge();
 
 
                     IXLRangeRows rows = null;
-                    if (dt.TableName == "Over" || dt.TableName == "Creditos" || dt.TableName == "Debitos" || dt.TableName == "Reembolsos")
+                    if (dt.TableName == "Over" || dt.TableName == "Creditos" || dt.TableName == "Debitos" ||
+                        dt.TableName == "Reembolsos")
                     {
                         rows = table.Rows(x => x.Cell(1).Value.ToString() == "TOTAL");
+                        if (dt.TableName == "Over")
+                        {
+                            table.Column(1).Style.Font.SetBold(true);
+                            table.Column(2).Style.Font.SetBold(true);
+                            table.Column(8).Style.Font.SetBold(true);
+                        }
                     }
 
                     if (dt.TableName == "DiferenciasEmisiones" || dt.TableName == "DiferenciasIVAyComs")
@@ -303,7 +310,7 @@ namespace Helpers
                     if (rows != null)
                     {
                         rows.Style.Font.Bold = true;
-                        rows.Style.Fill.BackgroundColor = azul;
+                        rows.Style.Fill.BackgroundColor = gris;
                         rows.Style.Border.TopBorder = XLBorderStyleValues.Thin;
                         rows.Style.Border.TopBorderColor = azulOscuro;
                     }

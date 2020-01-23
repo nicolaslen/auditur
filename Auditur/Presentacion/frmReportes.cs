@@ -362,6 +362,7 @@ namespace Auditur.Presentacion
         private List<string> GetHeader(Semana oSemana, string Titulo)
         {
             List<string> header = new List<string>();
+            header.Add("AUDITUR");
             header.Add("Informe de Auditoría: " + Titulo);
             header.Add("Empresa " + oSemana.Agencia.Nombre + " - IATA " + oSemana.Agencia.ID);
             header.Add("Período de Liquidación del " + oSemana.FechaDesde.ToShortDateString() + " hasta " + oSemana.FechaHasta.ToShortDateString() + " - Semana " + oSemana.Periodo.ToShortDateString());

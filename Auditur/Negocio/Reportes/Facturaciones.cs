@@ -37,14 +37,15 @@ namespace Auditur.Negocio.Reportes
                                          oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL")
                                              .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
                 oFacturacion.Penalidad = oBSP_Ticket.ImpuestoPenValor;
-                oFacturacion.Impuestos = (oBSP_Ticket.ImpuestoCodigo != "QN" && oBSP_Ticket.ImpuestoCodigo != "DL"
+                oFacturacion.Impuestos = (oBSP_Ticket.ImpuestoCodigo != "QN" && oBSP_Ticket.ImpuestoCodigo != "DL" && oBSP_Ticket.ImpuestoCodigo != "O5"
                                              ? oBSP_Ticket.ImpuestoValor
                                              : 0) +
                                          oBSP_Ticket.Detalle
-                                             .Where(x => x.ImpuestoCodigo != "QN" && x.ImpuestoCodigo != "DL")
+                                             .Where(x => x.ImpuestoCodigo != "QN" && x.ImpuestoCodigo != "DL" && x.ImpuestoCodigo != "O5")
                                              .Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum() +
                                          oBSP_Ticket.ImpuestoTyCValor +
                                          oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
+                oFacturacion.Imp30 = (oBSP_Ticket.ImpuestoCodigo == "O5" ? oBSP_Ticket.ImpuestoValor : 0) + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "O5").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
                 oFacturacion.ComStdValor = oBSP_Ticket.ComisionStdValor + oBSP_Ticket.Detalle.Select(x => x.ComisionStdValor).DefaultIfEmpty(0).Sum();
                 oFacturacion.ComSuppValor = oBSP_Ticket.ComisionSuppValor + oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0).Sum();
                 oFacturacion.IVASinComision = oBSP_Ticket.ImpuestoSinComision + oBSP_Ticket.Detalle.Select(x => x.ImpuestoSinComision).DefaultIfEmpty(0).Sum();

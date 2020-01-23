@@ -37,7 +37,10 @@ namespace Auditur.Negocio.Reportes
 
         [Display(Name = "Imp")]
         public decimal Impuestos { get; set; }
-        
+
+        [Display(Name = "Imp 30%")]
+        public decimal Imp30 { get; set; }
+
         [Display(Name = "ComStdValor")]
         public decimal ComStdValor { get; set; }
 

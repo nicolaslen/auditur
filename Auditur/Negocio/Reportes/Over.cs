@@ -13,29 +13,23 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "Fecha Emis.")]
         public string FechaEmision { get; set; }
 
-        [Display(Name = "NET REMIT")]
-        public string NetRemit { get; set; }
+        [Display(Name = "$/D")]
+        public string Moneda { get; set; }
 
         [Display(Name = "TOUR CODE")]
         public string TourCode { get; set; }
 
-        [Display(Name = "Over Ped. $")]
-        public decimal OverPedPesos { get; set; }
+        [Display(Name = "Over Ped.")]
+        public decimal OverPed { get; set; }
 
-        [Display(Name = "Over Rec. $")]
-        public decimal OverRecPesos { get; set; }
+        [Display(Name = "Over Rec.")]
+        public decimal OverRec { get; set; }
 
-        [Display(Name = "(Rec. - Ped.) $")]
-        public decimal DiferenciasPesos { get; set; }
+        [Display(Name = "(Rec. - Ped.)")]
+        public decimal Diferencias { get; set; }
 
-        [Display(Name = "Over Ped. u$s")]
-        public decimal OverPedDolares { get; set; }
-
-        [Display(Name = "Over Rec. u$s")]
-        public decimal OverRecDolares { get; set; }
-
-        [Display(Name = "(Rec. - Ped.) u$s")]
-        public decimal DiferenciasDolares { get; set; }
+        [Display(Name = "Observaciones")]
+        public string Observaciones { get; set; }
 
         [Display(Name = "Operación N°")]
         public string Operacion { get; set; }

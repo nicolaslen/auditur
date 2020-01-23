@@ -37,11 +37,18 @@ namespace Auditur.Negocio.Reportes
                     decimal netoBsp = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
                     decimal netoDif = netoBsp - bo_ticket.Neto;
 
+                    decimal fopCaBsp = (oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CA").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                    decimal fopCcBsp = (oBSP_Ticket.Fop == "CC" ? oBSP_Ticket.ValorTransaccion : 0) + oBSP_Ticket.Detalle.Where(x => x.Fop == "CC").Select(x => x.ValorTransaccion).DefaultIfEmpty(0).Sum();
+                    decimal fopCaDif = fopCaBsp - bo_ticket.CA;
+                    decimal fopCcDif = fopCcBsp - bo_ticket.CC;
+
                     if (oBSP_Ticket.Moneda != bo_ticket.Moneda || 
                         Math.Abs(valorTransaccionDif) > DiferenciaMinima || 
                         Math.Abs(valorTarifaDif) > DiferenciaMinima ||
                         Math.Abs(impuestosDif) > DiferenciaMinima ||
-                        Math.Abs(ivaTarifaDif) > DiferenciaMinima)
+                        Math.Abs(ivaTarifaDif) > DiferenciaMinima ||
+                        Math.Abs(fopCaDif) > DiferenciaMinima ||
+                        Math.Abs(fopCcDif) > DiferenciaMinima)
                     {
                         var oDiferenciaBSP = new Diferencia();
                         oDiferenciaBSP.Origen = "BSP";
@@ -65,7 +72,7 @@ namespace Auditur.Negocio.Reportes
                         oDiferenciaBSP.Penalidad = oBSP_Ticket.ImpuestoPenValor + oBSP_Ticket.Detalle.Select(x => x.ImpuestoPenValor).DefaultIfEmpty(0).Sum();
                         oDiferenciaBSP.NetoAPagar = netoBsp;
                         lstDiferencia.Add(oDiferenciaBSP);
-                        
+
                         var oDiferenciaBO = new Diferencia();
                         oDiferenciaBO.Origen = "BO";
                         oDiferenciaBO.Cia = bo_ticket.Compania.Codigo;

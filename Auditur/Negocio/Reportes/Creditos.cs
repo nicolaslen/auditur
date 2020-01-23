@@ -50,8 +50,9 @@ namespace Auditur.Negocio.Reportes
             oCredito.TotalTransaccion =
                 (oBSP_Ticket.Fop == "CC" || oBSP_Ticket.Fop == "CA" ? oBSP_Ticket.ValorTransaccion : 0);
             oCredito.ValorTarifa = oBSP_Ticket.ValorTarifa;
-            oCredito.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" ? oBSP_Ticket.ImpuestoValor : 0)
-                                 + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oCredito.Imp = (oBSP_Ticket.ImpuestoCodigo != "DL" && oBSP_Ticket.ImpuestoCodigo != "O5" ? oBSP_Ticket.ImpuestoValor : 0)
+                                 + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL" && x.ImpuestoCodigo != "O5").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+            oCredito.Imp30 = (oBSP_Ticket.ImpuestoCodigo == "O5" ? oBSP_Ticket.ImpuestoValor : 0) + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "O5").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
             oCredito.TyC = oBSP_Ticket.ImpuestoTyCValor;
             oCredito.IVATarifa = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0)
                                    + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();

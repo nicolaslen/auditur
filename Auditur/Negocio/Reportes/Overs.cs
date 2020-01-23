@@ -39,19 +39,17 @@ namespace Auditur.Negocio.Reportes
                     lstOverCompania.Add(GetOver(null, bo_ticketFaltante));
                 }
 
+                lstOverCompania = lstOverCompania.OrderBy(x => x.Moneda).ThenByDescending(x => x.Diferencias).ToList();
+
                 if (lstOverCompania.Count > 0)
                 {
                     lstOver.AddRange(lstOverCompania);
 
                     var oOverTotal = new Over();
                     oOverTotal.Cia = "TOTAL";
-                    oOverTotal.OverRecPesos = lstOverCompania.Select(x => x.OverRecPesos).Sum();
-                    oOverTotal.OverPedPesos = lstOverCompania.Select(x => x.OverPedPesos).Sum();
-                    oOverTotal.OverRecDolares = lstOverCompania.Select(x => x.OverRecDolares).Sum();
-                    oOverTotal.OverPedDolares = lstOverCompania.Select(x => x.OverPedDolares).Sum();
-                    oOverTotal.DiferenciasPesos = lstOverCompania.Select(x => x.DiferenciasPesos).Sum();
-                    oOverTotal.DiferenciasDolares = lstOverCompania.Select(x => x.DiferenciasDolares).Sum();
-
+                    oOverTotal.OverRec = lstOverCompania.Select(x => x.OverRec).Sum();
+                    oOverTotal.OverPed = lstOverCompania.Select(x => x.OverPed).Sum();
+                    oOverTotal.Diferencias = lstOverCompania.Select(x => x.Diferencias).Sum();
                     lstOver.Add(oOverTotal);
                 }
             }
@@ -64,9 +62,12 @@ namespace Auditur.Negocio.Reportes
         {
             Over oOver = new Over();
             oOver.Cia = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
-            oOver.BoletoNro = oBSP_Ticket != null ? oBSP_Ticket.NroDocumento.ToString() : oBO_Ticket.Billete.ToString();
+            oOver.BoletoNro = oBSP_Ticket?.NroDocumento.ToString() ?? oBO_Ticket.Billete.ToString();
             oOver.FechaEmision = AuditurHelpers.GetDateTimeString(oBSP_Ticket != null ? oBSP_Ticket.FechaEmision : oBO_Ticket.Fecha);
-            oOver.NetRemit = oBSP_Ticket?.Nr;
+            if (oBSP_Ticket != null)
+                oOver.Moneda = oBSP_Ticket.Moneda == Moneda.Peso ? "$" : "D";
+            else
+                oOver.Moneda = oBO_Ticket.Moneda != null ? (oBO_Ticket.Moneda == Moneda.Peso ? "$" : "D") : "";
             oOver.TourCode = oBSP_Ticket?.Tour;
 
             if (oBSP_Ticket != null)
@@ -74,26 +75,71 @@ namespace Auditur.Negocio.Reportes
                 var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
                                               oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty(0)
                                                   .Sum();
-                if (oBSP_Ticket.Moneda == Moneda.Peso)
-                    oOver.OverRecPesos = -totalComisionSuppValor;
-                else
-                    oOver.OverRecDolares = -totalComisionSuppValor;
+                oOver.OverRec = -totalComisionSuppValor;
             }
 
             if (oBO_Ticket != null)
             {
-                if (oBO_Ticket.Moneda == Moneda.Peso)
-                    oOver.OverPedPesos = oBO_Ticket.ComSupl;
-                else if (oBO_Ticket.Moneda == Moneda.Dolar)
-                    oOver.OverPedDolares = oBO_Ticket.ComSupl;
+                oOver.OverPed = oBO_Ticket.ComSupl;
                 oOver.Factura = oBO_Ticket.FacturaNro;
                 oOver.Pasajero = oBO_Ticket.Pax;
                 oOver.Operacion = oBO_Ticket.OperacionNro;
             }
 
-            oOver.DiferenciasPesos = oOver.OverRecPesos + oOver.OverPedPesos;
-            oOver.DiferenciasDolares = oOver.OverRecDolares + oOver.OverPedDolares;
+            oOver.Diferencias = oOver.OverRec + oOver.OverPed;
+            oOver.Observaciones = GetObservaciones(oOver, !string.IsNullOrWhiteSpace(oBSP_Ticket?.Tour));
+
+
+            
             return oOver;
+        }
+
+        private string GetObservaciones(Over oOver, bool hasTour)
+        {
+            if (hasTour)
+            {
+                if (oOver.Diferencias == 0)
+                {
+                    if (oOver.OverPed != 0)
+                        return "SE ELIMINA";
+
+                    if (new[] {"4M", "LA", "QR", "AR", "AC", "AF", "NZ", "EK", "QR", "QF", "SA"}.Contains(oOver.Cia))
+                        return "ERROR? VER CONTRATO";
+
+                    return "";
+                }
+
+
+                if (oOver.OverPed > oOver.OverRec)
+                {
+                    if (oOver.OverRec == 0)
+                        return "RECLAMAR";
+                    
+                    return "CORREGIR COSTO";
+                }
+
+                if (oOver.OverPed == 0)
+                    return "ERROR EMISIÓN";
+
+                return "ERROR EMISIÓN"; //TODO: Qué pasa acá?
+            }
+
+
+            if (oOver.Diferencias == 0)
+                return "SE ELIMINA";
+
+            if (oOver.OverPed > oOver.OverRec)
+            {
+                if (oOver.OverRec == 0)
+                    return "ERROR DE CÁLCULO";
+
+                return "CORREGIR COSTO";
+            }
+
+            if (oOver.OverPed == 0)
+                return "ERROR EMISIÓN";
+
+            return "ERROR EMISIÓN"; //TODO: Qué pasa acá?
         }
     }
 }

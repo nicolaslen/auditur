@@ -49,6 +49,9 @@ namespace Auditur.Negocio.Reportes
         [Display(Name = "T&C")]
         public decimal TyC { get; set; }
 
+        [Display(Name = "Imp 30%")]
+        public decimal Imp30 { get; set; }
+
         [Display(Name = "IVA Tarifa")]
         public decimal IVATarifa { get; set; }
 
