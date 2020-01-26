@@ -16,6 +16,8 @@ namespace Auditur.Negocio.Reportes
             List<Compania> companias = Companias.GetAll();
             Companias.CloseConnection();
 
+            List<string> companiesCodes = new List<string> { "4M", "LA", "QR", "AR", "AC", "AF", "NZ", "EK", "QF", "SA" };
+
             List<BSP_Ticket> lstTicketsBSP = oSemana.TicketsBSP.Where(x => x.Concepto.Nombre == "ISSUES" && x.Trnc == "TKTT").OrderBy(x => x.Compania.Codigo).ThenBy(x => x.NroDocumento).ToList();
             foreach (Compania compania in companias.OrderBy(x => x.Codigo))
             {
@@ -24,22 +26,15 @@ namespace Auditur.Negocio.Reportes
                 foreach (BSP_Ticket oBSP_Ticket in lstTicketsBSP.Where(x => x.Compania.ID == compania.ID))
                 {
                     BO_Ticket oBO_Ticket = oSemana.TicketsBO.Find(x => x.Billete == oBSP_Ticket.NroDocumento && x.Compania.Codigo == oBSP_Ticket.Compania.Codigo);
-
-                    var totalComisionSuppValor = oBSP_Ticket.ComisionSuppValor +
-                                                 oBSP_Ticket.Detalle.Select(x => x.ComisionSuppValor).DefaultIfEmpty()
-                                                     .Sum();
-                    if (totalComisionSuppValor != 0 || (oBO_Ticket != null && oBO_Ticket.ComSupl != 0))
-                    {
-                        lstOverCompania.Add(GetOver(oBSP_Ticket, oBO_Ticket));
-                    }
+                    lstOverCompania.Add(GetOver(oBSP_Ticket, oBO_Ticket, companiesCodes));
                 }
 
                 foreach (BO_Ticket bo_ticketFaltante in oSemana.TicketsBO.Where(x => x.Compania.ID == compania.ID && !lstTicketsBSP.Any(y => y.NroDocumento == x.Billete && y.Compania.Codigo == compania.Codigo) && x.ComSupl != 0).OrderBy(x => x.Billete))
                 {
-                    lstOverCompania.Add(GetOver(null, bo_ticketFaltante));
+                    lstOverCompania.Add(GetOver(null, bo_ticketFaltante, companiesCodes));
                 }
 
-                lstOverCompania = lstOverCompania.OrderBy(x => x.Moneda).ThenByDescending(x => x.Diferencias).ToList();
+                lstOverCompania = lstOverCompania.Where(x => x.Diferencias != 0 || (x.OverRec == 0 && companiesCodes.Contains(x.Cia))).OrderBy(x => x.Moneda).ThenByDescending(x => x.Diferencias).ToList();
 
                 if (lstOverCompania.Count > 0)
                 {
@@ -58,7 +53,7 @@ namespace Auditur.Negocio.Reportes
             return lstOver;
         }
 
-        private Over GetOver(BSP_Ticket oBSP_Ticket, BO_Ticket oBO_Ticket)
+        private Over GetOver(BSP_Ticket oBSP_Ticket, BO_Ticket oBO_Ticket, List<string> companiesCodes)
         {
             Over oOver = new Over();
             oOver.Cia = oBSP_Ticket != null ? oBSP_Ticket.Compania.Codigo : oBO_Ticket.Compania.Codigo;
@@ -87,59 +82,28 @@ namespace Auditur.Negocio.Reportes
             }
 
             oOver.Diferencias = oOver.OverRec + oOver.OverPed;
-            oOver.Observaciones = GetObservaciones(oOver, !string.IsNullOrWhiteSpace(oBSP_Ticket?.Tour));
+            oOver.Observaciones = GetObservaciones(oOver, !string.IsNullOrWhiteSpace(oBSP_Ticket?.Tour), companiesCodes);
 
 
             
             return oOver;
         }
 
-        private string GetObservaciones(Over oOver, bool hasTour)
+        private string GetObservaciones(Over oOver, bool hasTour, List<string> companiesCodes)
         {
-            if (hasTour)
-            {
-                if (oOver.Diferencias == 0)
-                {
-                    if (oOver.OverPed != 0)
-                        return "SE ELIMINA";
+            if (oOver.OverRec == 0 && oOver.OverPed == 0 && companiesCodes.Contains(oOver.Cia))
+                return hasTour ? "ERROR? VER CONTRATO" : "RECLAMAR";
 
-                    if (new[] {"4M", "LA", "QR", "AR", "AC", "AF", "NZ", "EK", "QR", "QF", "SA"}.Contains(oOver.Cia))
-                        return "ERROR? VER CONTRATO";
-
-                    return "";
-                }
-
-
-                if (oOver.OverPed > oOver.OverRec)
-                {
-                    if (oOver.OverRec == 0)
-                        return "RECLAMAR";
-                    
-                    return "CORREGIR COSTO";
-                }
-
-                if (oOver.OverPed == 0)
-                    return "ERROR EMISIÓN";
-
-                return "ERROR EMISIÓN"; //TODO: Qué pasa acá?
-            }
-
-
-            if (oOver.Diferencias == 0)
-                return "SE ELIMINA";
 
             if (oOver.OverPed > oOver.OverRec)
             {
                 if (oOver.OverRec == 0)
-                    return "ERROR DE CÁLCULO";
-
+                    return "RECLAMAR";
+                    
                 return "CORREGIR COSTO";
             }
 
-            if (oOver.OverPed == 0)
-                return "ERROR EMISIÓN";
-
-            return "ERROR EMISIÓN"; //TODO: Qué pasa acá?
+            return "ERROR EMISIÓN/CORREGIR COSTO";
         }
     }
 }
