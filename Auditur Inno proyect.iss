@@ -7,14 +7,14 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{9A52E712-0B32-4C16-A3EF-E221E9C3362A}}
 AppName=Auditur 3
-AppVerName=Auditur 3.0
+AppVerName=Auditur 3.1
 AppPublisher=Nicolás Len
 DefaultDirName={pf}\Auditur 3
 DisableDirPage=yes
 DefaultGroupName=Auditur
 DisableProgramGroupPage=yes
 OutputDir=D:\Users\Nicolas\Desktop
-OutputBaseFilename=Auditur 3.0 Installer
+OutputBaseFilename=Auditur 3.1 Installer
 Compression=zip
 SolidCompression=no
 

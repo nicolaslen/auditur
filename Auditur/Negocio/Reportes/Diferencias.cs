@@ -28,12 +28,13 @@ namespace Auditur.Negocio.Reportes
                                              oBSP_Ticket.Detalle.Select(x => x.ValorTarifa).DefaultIfEmpty(0).Sum();
                     decimal valorTarifaDif = Math.Round(valorTarifaBsp - bo_ticket.ValorTarifa, 2);
                     decimal impuestosBsp = (oBSP_Ticket.ImpuestoCodigo != "DL" ? oBSP_Ticket.ImpuestoValor : 0) + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo != "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                    
-                    decimal impuestosDif = Math.Round(impuestosBsp - bo_ticket.Impuestos, 2);
-                    decimal ivaTarifaBsp = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
-                    decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVATarifa, 2);
+
                     decimal tycBsp = oBSP_Ticket.ImpuestoTyCValor +
                                      oBSP_Ticket.Detalle.Select(x => x.ImpuestoTyCValor).DefaultIfEmpty(0).Sum();
+                    decimal impuestosDif = Math.Round(impuestosBsp - bo_ticket.Impuestos, 2);
+                    decimal impuestosDif2 = Math.Round(impuestosDif + tycBsp, 2);
+                    decimal ivaTarifaBsp = (oBSP_Ticket.ImpuestoCodigo == "DL" ? oBSP_Ticket.ImpuestoValor : 0) + oBSP_Ticket.Detalle.Where(x => x.ImpuestoCodigo == "DL").Select(x => x.ImpuestoValor).DefaultIfEmpty(0).Sum();
+                    decimal ivaTarifaDif = Math.Round(ivaTarifaBsp - bo_ticket.IVATarifa, 2);
                     decimal netoBsp = oBSP_Ticket.NetoAPagar + oBSP_Ticket.Detalle.Select(x => x.NetoAPagar).DefaultIfEmpty(0).Sum();
                     decimal netoDif = netoBsp - bo_ticket.Neto;
 
@@ -45,7 +46,7 @@ namespace Auditur.Negocio.Reportes
                     if (oBSP_Ticket.Moneda != bo_ticket.Moneda || 
                         Math.Abs(valorTransaccionDif) > DiferenciaMinima || 
                         Math.Abs(valorTarifaDif) > DiferenciaMinima ||
-                        Math.Abs(impuestosDif) > DiferenciaMinima ||
+                        (Math.Abs(impuestosDif) > DiferenciaMinima && Math.Abs(impuestosDif2) > DiferenciaMinima) ||
                         Math.Abs(ivaTarifaDif) > DiferenciaMinima ||
                         Math.Abs(fopCaDif) > DiferenciaMinima ||
                         Math.Abs(fopCcDif) > DiferenciaMinima)

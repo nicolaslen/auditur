@@ -34,7 +34,7 @@ namespace Auditur.Negocio.Reportes
                     lstOverCompania.Add(GetOver(null, bo_ticketFaltante, companiesCodes));
                 }
 
-                lstOverCompania = lstOverCompania.Where(x => x.Diferencias != 0 || (x.OverRec == 0 && companiesCodes.Contains(x.Cia))).OrderBy(x => x.Moneda).ThenByDescending(x => x.Diferencias).ToList();
+                lstOverCompania = lstOverCompania.Where(x => x.Diferencias != 0 || (x.OverPed == 0 && (!string.IsNullOrWhiteSpace(x.TourCode) || companiesCodes.Contains(x.Cia)))).OrderBy(x => x.Moneda).ThenByDescending(x => x.Diferencias).ToList();
 
                 if (lstOverCompania.Count > 0)
                 {
@@ -48,7 +48,6 @@ namespace Auditur.Negocio.Reportes
                     lstOver.Add(oOverTotal);
                 }
             }
-
 
             return lstOver;
         }
@@ -82,28 +81,80 @@ namespace Auditur.Negocio.Reportes
             }
 
             oOver.Diferencias = oOver.OverRec + oOver.OverPed;
-            oOver.Observaciones = GetObservaciones(oOver, !string.IsNullOrWhiteSpace(oBSP_Ticket?.Tour), companiesCodes);
-
-
-            
+            GetObservaciones(oOver, !string.IsNullOrWhiteSpace(oBSP_Ticket?.Tour), companiesCodes);
             return oOver;
         }
 
-        private string GetObservaciones(Over oOver, bool hasTour, List<string> companiesCodes)
+        private void GetObservaciones(Over oOver, bool hasTour, List<string> companiesCodes)
         {
-            if (oOver.OverRec == 0 && oOver.OverPed == 0 && companiesCodes.Contains(oOver.Cia))
-                return hasTour ? "ERROR? VER CONTRATO" : "RECLAMAR";
-
-
-            if (oOver.OverPed > oOver.OverRec)
+            if (hasTour)
             {
-                if (oOver.OverRec == 0)
-                    return "RECLAMAR";
-                    
-                return "CORREGIR COSTO";
-            }
+                if (oOver.Diferencias != 0)
+                {
+                    if (oOver.OverRec == 0) //SI 100 0 100
+                    {
+                        oOver.Observaciones = "RECLAMAR";
+                        return;
+                    }
 
-            return "ERROR EMISIÓN/CORREGIR COSTO";
+                    if (oOver.OverPed == 0) //SI 0 100 100
+                    {
+                        oOver.Observaciones = "ERROR EMISIÓN/CORREGIR COSTO";
+                        return;
+                    }
+
+                    if (oOver.OverPed > oOver.OverRec) //SI 100 90 10
+                    {
+                        oOver.Observaciones = "CORREGIR COSTO";
+                        return;
+                    }
+
+                    if (oOver.OverPed < oOver.OverRec)  //SI 90 100 -10
+                    {
+                        oOver.Observaciones = "ERROR EMISIÓN/CORREGIR COSTO";
+                        return;
+                    }
+                }
+                else //SI 0 0 0
+                {
+                    oOver.Observaciones = "ERROR? VER CONTRATO";
+                    return;
+                }
+            }
+            else
+            {
+                if (oOver.Diferencias != 0)
+                {
+                    if (oOver.OverRec == 0) //NO 100 0 100
+                    {
+                        oOver.Observaciones = "RECLAMAR";
+                        return;
+                    }
+
+                    if (oOver.OverPed == 0) //NO 0 100 100
+                    {
+                        oOver.Observaciones = "ERROR EMISIÓN/CORREGIR COSTO";
+                        return;
+                    }
+
+                    if (oOver.OverPed > oOver.OverRec) //NO 100 90 10
+                    {
+                        oOver.Observaciones = "CORREGIR COSTO";
+                        return;
+                    }
+
+                    if (oOver.OverPed < oOver.OverRec)  //NO 90 100 -10
+                    {
+                        oOver.Observaciones = "ERROR EMISIÓN/CORREGIR COSTO";
+                        return;
+                    }
+                }
+                else if (companiesCodes.Contains(oOver.Cia)) //NO 0 0 0 (compañías)
+                {
+                    oOver.Observaciones = "NEGOCIAR POSIBILIDAD DE RECLAMO";
+                    return;
+                }
+            }
         }
     }
 }
