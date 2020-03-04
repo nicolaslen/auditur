@@ -15,6 +15,46 @@ namespace Auditur.Presentacion.Classes
 {
     public static class BSPExtensions
     {
+        private static Dictionary<string, int> months = new Dictionary<string, int>
+        {
+            {
+                "JAN", 1
+            },
+            {
+                "FEB", 2
+            },
+            {
+                "MAR", 3
+            },
+            {
+                "APR", 4
+            },
+            {
+                "MAY", 5
+            },
+            {
+                "JUN", 6
+            },
+            {
+                "JUL", 7
+            },
+            {
+                "AUG", 8
+            },
+            {
+                "SEP", 9
+            },
+            {
+                "OCT", 10
+            },
+            {
+                "NOV", 11
+            },
+            {
+                "DEC", 12
+            }
+        };
+
         public static List<PageChunks> ExtractChunks(this PdfPage page)
         {
             var textEventListener = new LocationTextExtractionStrategy();
@@ -71,6 +111,27 @@ namespace Auditur.Presentacion.Classes
             return Convert.ToDecimal(value?.Replace("*", ""));
         }
 
+        private static DateTime? GetDateTime(string text)
+        {
+            DateTime? returnDateTime = null;
+            try
+            {
+                int day = int.Parse(text.Substring(0, 2));
+                string month = text.Substring(2, 3);
+                int year = int.Parse(text.Substring(5, 2));
+                returnDateTime = new DateTime(DateTime.Now.Year / 100 * 100 + year, months[month], day);
+            }
+            catch
+            {
+                /*
+                 DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140), out var fechaVenta)
+                    ? (DateTime?)fechaVenta
+                    : null;
+                    */
+            }
+            return returnDateTime;
+        }
+
         public static BSP_Ticket ObtenerBSP_Ticket(this List<PageChunks> orderedLine, Compania compania, Concepto concepto, Moneda moneda, BSP_Rg rg, CultureInfo culture)
         {
             var oBSP_Ticket = new BSP_Ticket();
@@ -81,10 +142,7 @@ namespace Auditur.Presentacion.Classes
             oBSP_Ticket.Rg = rg;
             oBSP_Ticket.Trnc = orderedLine.GetChunkTextBetween(37, 60);
             oBSP_Ticket.NroDocumento = Convert.ToInt64(orderedLine.GetChunkTextBetween(63, 98));
-            oBSP_Ticket.FechaEmision =
-                DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140), out var fechaVenta)
-                    ? (DateTime?)fechaVenta
-                    : null;
+            oBSP_Ticket.FechaEmision = GetDateTime(orderedLine.GetChunkTextBetween(110, 140));
             oBSP_Ticket.Cpn = orderedLine.GetChunkTextBetween(143, 168);
             oBSP_Ticket.Nr = orderedLine.GetChunkTextBetween(169, 192);
             oBSP_Ticket.Stat = orderedLine.GetChunkTextBetween(200, 211);
