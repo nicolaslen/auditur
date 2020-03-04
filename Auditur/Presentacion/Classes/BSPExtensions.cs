@@ -15,7 +15,7 @@ namespace Auditur.Presentacion.Classes
 {
     public static class BSPExtensions
     {
-        private static Dictionary<string, int> months = new Dictionary<string, int>
+        public static Dictionary<string, int> Months = new Dictionary<string, int>
         {
             {
                 "JAN", 1
@@ -119,7 +119,7 @@ namespace Auditur.Presentacion.Classes
                 int day = int.Parse(text.Substring(0, 2));
                 string month = text.Substring(2, 3);
                 int year = int.Parse(text.Substring(5, 2));
-                returnDateTime = new DateTime(DateTime.Now.Year / 100 * 100 + year, months[month], day);
+                returnDateTime = new DateTime(DateTime.Now.Year / 100 * 100 + year, Months[month], day);
             }
             catch
             {

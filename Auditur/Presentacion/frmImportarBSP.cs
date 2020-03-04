@@ -77,6 +77,22 @@ namespace Auditur.Presentacion
             }
         }
 
+        private static DateTime GetDateTime(string text)
+        {
+            DateTime returnDateTime = DateTime.Now;
+            try
+            {
+                int day = int.Parse(text.Substring(0, 2));
+                string month = text.Substring(3, 3);
+                int year = int.Parse(text.Substring(7, 4));
+                returnDateTime = new DateTime(year, BSPExtensions.Months[month], day);
+            }
+            catch
+            {
+            }
+            return returnDateTime;
+        }
+
         #region BSP
         public void BSP_ReadPdfFile_Cabecera(string fileName)
         {
@@ -118,8 +134,8 @@ namespace Auditur.Presentacion
                         oSemanaAux = new Semana
                         {
                             Periodo = new DateTime(int.Parse(DateTime.Now.Year.ToString().Substring(0, 2) + periodo.Substring(0, 2)), int.Parse(periodo.Substring(2, 2)), int.Parse(periodo.Substring(4, 2))),
-                            FechaDesde = Convert.ToDateTime(fechaDesde),
-                            FechaHasta = Convert.ToDateTime(fechaHasta),
+                            FechaDesde = GetDateTime(fechaDesde),
+                            FechaHasta = GetDateTime(fechaHasta),
                             Agencia = oAgencia
                         };
 
