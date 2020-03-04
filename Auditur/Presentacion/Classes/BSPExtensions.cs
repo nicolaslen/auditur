@@ -187,10 +187,11 @@ namespace Auditur.Presentacion.Classes
                 detalle.Cpn = orderedLine.GetChunkTextBetween(143, 168);
             }
 
-            detalle.FechaEmision = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140),
+            /*detalle.FechaEmision = DateTime.TryParse(orderedLine.GetChunkTextBetween(110, 140),
                 out var fechaVentaDetalle)
                 ? (DateTime?)fechaVentaDetalle
-                : null;
+                : null;*/
+            detalle.FechaEmision = GetDateTime(orderedLine.GetChunkTextBetween(110, 140));
             detalle.Nr = orderedLine.GetChunkTextBetween(169, 192);
             detalle.Stat = orderedLine.GetChunkTextBetween(200, 211);
             detalle.Fop = orderedLine.GetChunkTextBetween(218, 235);
