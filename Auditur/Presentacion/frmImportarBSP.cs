@@ -165,7 +165,7 @@ namespace Auditur.Presentacion
 
         public void BSP_ReadPdfFile(string fileName)
         {
-            int page = 0, index = 0;
+            int page = 0;
 
             BSP_Ticket oBSP_Ticket = null;
             //BSP_Ticket_Detalle oBSP_Ticket_Detalle = null;
@@ -264,7 +264,7 @@ namespace Auditur.Presentacion
                             if (concepto == null)
                             {
                                 string posibleLlave = orderedLine.First().Text;
-                                if (posibleLlave.Length < 3 || posibleLlave.Substring(0, 3) != "***")
+                                if (posibleLlave.Length < 4 || posibleLlave.Substring(0, 4) != "*** ")
                                     continue;
 
                                 string llave = posibleLlave.Substring(4);
@@ -363,7 +363,7 @@ namespace Auditur.Presentacion
             catch (Exception Exception1)
             {
                 TextToFile.Errores(TextToFile.Error(Exception1));
-                MessageBox.Show("Error: " + Exception1.Message + "\nfileName: " + fileName + "\npage: " + page + "\nline: " + index, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + Exception1.Message + "\nfileName: " + fileName + "\npage: " + page + "\nline: " + 0, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
